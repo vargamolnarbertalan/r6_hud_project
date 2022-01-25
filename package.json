@@ -10,10 +10,12 @@
     "ip": "^1.1.5",
     "jquery": "^3.6.0",
     "keypress": "^0.2.1",
+    "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.15",
     "nugget": "^2.0.1",
     "path": "^0.12.7",
+    "prohairesis": "^1.2.5",
     "pump": "^3.0.0",
     "rc": "^1.2.8",
     "request": "^2.88.2",
@@ -21,6 +23,6 @@
     "ws": "^8.4.2"
   },
   "scripts": {
-    "start" : "node server.js"
+    "start": "node server.js"
   }
 }
