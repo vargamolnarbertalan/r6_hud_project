@@ -11,24 +11,54 @@ const http = require('http');
 const http_port = 8083;
 const ip = require("ip");
 const path = require('path');
-const indexRouter = require('./routes/index.js');
 const keypress = require('keypress');
+const morgan = require('morgan');
 
 app.set('view engine','ejs');
-app.set('views', __dirname + '/views');
-app.set('layout', 'layouts/layout');
+app.set('views', 'views');
+app.set('layout','layout');
 app.use(expressLayouts);
 app.use(express.static('public'));
 
-app.use('/', indexRouter);
-
-app.listen(http_port, () => console.log("Home page available at " + ip.address() + ":" + http_port + ""));
+app.listen(http_port, () => console.log("Admin page is available at " + ip.address() + ":" + http_port + "/admin"));
 
 const db = mysql.createConnection({
   host      : "localhost",
   user      : "root",
   password  : "",
   database  : "r6_hud_db"
+});
+
+app.use(morgan('dev'));
+app.use(express.static('public'));
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
+
+
+app.get('/admin', (req, res) => {
+  res.render('admin');
+});
+
+app.post('/add/team', (req, res) => {
+  var sql = `
+    INSERT INTO teams (
+      teamname,
+      shorthandle,
+      logo
+    ) VALUES (
+      '${req.body.teamname}',
+      '${req.body.shorthandle}',
+      '${req.body.logo}'
+    );
+  `;
+
+
+      db.query(sql, (err,res) => {
+        if(err) throw err;
+        console.log("Response:");
+        console.log(res);
+    });
+    res.render('success', { success_message : `${req.body.teamname}` + " successfully added!" });
 });
 
 
