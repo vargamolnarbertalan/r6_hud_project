@@ -1,8 +1,8 @@
-const keypress = require('keypress');
 const WebSocket = require("ws");
 const express = require("express");
 const bodyParser = require('body-parser');
 const app = express();
+const jquery = require('jquery');
 const expressLayouts = require('express-ejs-layouts');
 const request = require('request');
 const mysql = require("mysql");
@@ -10,10 +10,9 @@ const wss = new WebSocket.Server({port: 6969});
 const http = require('http');
 const http_port = 8083;
 const ip = require("ip");
-//var user = require('../user/user');
-var path = require('path');
-
+const path = require('path');
 const indexRouter = require('./routes/index.js');
+const keypress = require('keypress');
 
 app.set('view engine','ejs');
 app.set('views', __dirname + '/views');
@@ -40,28 +39,9 @@ db.connect((err) => {
   console.log("MySQL connected.")
 });
 
-keypress(process.stdin);
 
 wss.on("connection", ws => {
   console.log("New client connected.");
-
-
- /* KEYPRESS ELKAPÁS
-
-  process.stdin.on('keypress', function (ch, key) {
-    console.log('got "keypress"', key);
-    if (key.name == 'c') {
-      console.log("c pressed!");
-      ws.send("egy");
-    }
-    else if (key.name == 'd') {
-      console.log("d pressed!");
-      ws.send("ketto");
-    }
-  });
-
-  */
-
 
   ws.on("close", ws => {
     console.log("Client disconnected.");
@@ -77,31 +57,24 @@ wss.on("connection", ws => {
       console.log("Response:");
       console.log(res);
       ws.send(res.toString());
-
-
     })
   }
 
-/* PROBALKOZAS
-  app.get('/team_list', (req, res) => {
+  // make `process.stdin` begin emitting "keypress" events
+  keypress(process.stdin);
 
-    var sql = "SELECT shorthandle FROM teams WHERE id>0";
-    db.query(sql, (err, result) => {
-        if(err) throw err;
-        var resultString = "";
-        for (var i = 0; i < result.length; i++) {
-          resultString += result[i].shorthandle + ", ";
-        }
-        res.send(resultString);
-    });
+  // listen for the "keypress" event
+  process.stdin.on('keypress', function (ch, key) {
+    console.log('got "keypress"', key);
+    if (key.name == 'c') {
+      ws.send('egy');
+    }
+    else if (key.name == 'd') {
+      ws.send('ketto');
+    }
+  });
+
+  process.stdin.setRawMode(true);
+  process.stdin.resume();
+
 });
-
-*/
-
-
-});
-
-
-
-
-// listen for the "keypress" event

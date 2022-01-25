@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!--   <iframe allow="autoplay;camera" src="https://vdo.ninja/?view=7fDjacc&label=proba" width="1920" height="1080"></iframe> -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -18,5 +19,33 @@
   After
 
 </body>
+
+<script>
+
+// MESSAGE-RE REAKCIÓ
+$(document).ready(function () {
+const ws = new WebSocket("ws://localhost:6969");
+
+ws.addEventListener("open", () =>{
+  console.log("Connected!");
+});
+
+ws.onmessage = function(e){
+  var server_message = e.data;
+  console.log(server_message);
+  if (server_message == "egy") {
+    $('body').hide();
+  }
+  else if (server_message == "ketto") {
+    $('body').show();
+  }
+}
+
+
+});
+
+
+
+</script>
 
 </html>
