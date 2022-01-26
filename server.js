@@ -5,7 +5,6 @@ const wss = new WebSocket.Server({port: 6969});
 const keypress = require('keypress');
 
 const bodyParser = require('body-parser');
-const expressLayouts = require('express-ejs-layouts');
 const mysql = require("mysql");
 const http_port = 8083;
 const ip = require("ip");
@@ -16,8 +15,6 @@ const app = express();
 
 app.set('view engine','ejs');
 app.set('views', 'views');
-//app.set('layout','layout');
-//app.use(expressLayouts);
 app.use(express.static('public'));
 
 app.listen(http_port, () => console.log("Admin page is available at " + ip.address() + ":" + http_port + "/admin"));
