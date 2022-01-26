@@ -13,7 +13,7 @@
   <h1>Create new team</h1>
   <form method="post" action="/add/team">
     <input name="add_teamname" type="text" placeholder="teamname" required>
-    <input name="add_shorthandle" type="text" placeholder="shorthandle" required maxlength="4" required>
+    <input name="add_shorthandle" type="text" placeholder="shorthandle" required maxlength="4">
     <input name="add_logo" type="text" placeholder="logo.png" required>
 
     <button type="submit">Create</button>
@@ -21,14 +21,14 @@
 
   <h1>Edit existing team</h1>
   <form method="post" action="/edit/team">
-    <select id="edit_team_list" name="edit_team_select">
+    <select id="edit_team_list" name="edit_team_list">
+      <option value=""></option>
       <% teams.forEach(function( eachTeam){ %>
           <option> <%= eachTeam %> </option>
       <% }) %>
     </select>
-    <input type="hidden" id="edit_hidden" name="edit_index" value="">
     <input name="edit_teamname" type="text" placeholder="teamname" required>
-    <input name="edit_shorthandle" type="text" placeholder="shorthandle" required maxlength="4" required>
+    <input name="edit_shorthandle" type="text" placeholder="shorthandle" required maxlength="4">
     <input name="edit_logo" type="text" placeholder="logo.png" required>
 
     <button type="submit">Edit</button>
@@ -36,29 +36,68 @@
 
   <h1>Delete team</h1>
   <form method="post" action="/delete/team">
-    <select id="delete_team_list" name="delete_delete_select">
+    <select id="delete_team_list" name="delete_team_list">
+      <option value=""></option>
       <% teams.forEach(function( eachTeam){ %>
           <option> <%= eachTeam %> </option>
       <% }) %>
     </select>
-    <input type="hidden" id="delete_hidden" name="delete_index" value="">
 
+    <button type="submit">Delete</button>
+  </form>
+
+  <h1>Create new player</h1>
+  <form method="post" action="/add/player">
+    <input name="add_nickname" type="text" placeholder="nickname" required>
+    <input name="add_fullaname" type="text" placeholder="fullname" required>
+    <input name="add_nationality" type="text" placeholder="country code" required>
+    <select id="playeradd_team_list" name="playeradd_team_list">
+      <option value=""></option>
+      <% teams.forEach(function( eachTeam){ %>
+          <option> <%= eachTeam %> </option>
+      <% }) %>
+    </select>
+    <input name="add_con_link" type="text" placeholder="https://invite.cam/U2FsdGVkX1/rvY8ZayKN6Sk794TaTJCxl8SbPxUW5UC/L2hgeLFHVi+7ZJo4Xgz404tSWjW8Tf1NTZrcXG5l4A==" required>
+    <input name="add_view_link" type="text" placeholder="https://vdo.ninja/?view=c8FzkEb&label=proba" required>
+    <input name="add_avatar" type="text" placeholder="player.png" required>
+    <button type="submit">Create</button>
+  </form>
+
+  <h1>Edit existing player</h1>
+  <form method="post" action="/edit/player">
+    <select id="playeredit_player_list" name="playeredit_player_list">
+      <option value=""></option>
+      <% players.forEach(function( eachPlayer){ %>
+          <option> <%= eachPlayer %> </option>
+      <% }) %>
+    </select>
+    <input name="edit_nickname" type="text" placeholder="nickname" required>
+    <input name="edit_fullname" type="text" placeholder="fullname" required>
+    <input name="edit_nationality" type="text" placeholder="country code" required>
+    <select id="playeredit_team_list" name="playeredit_team_list">
+      <option value=""></option>
+      <% teams.forEach(function( eachTeam){ %>
+          <option> <%= eachTeam %> </option>
+      <% }) %>
+    </select>
+    <input name="edit_avatar" type="text" placeholder="player.png" required>
+    <button type="submit">Edit</button>
+  </form>
+
+  <h1>Delete player</h1>
+  <form method="post" action="/delete/player">
+    <select id="delete_player_list" name="delete_player_list">
+      <option value=""></option>
+      <% players.forEach(function( eachPlayer){ %>
+          <option> <%= eachPlayer %> </option>
+      <% }) %>
+    </select>
     <button type="submit">Delete</button>
   </form>
 
 </body>
 
 <script>
-
-  $('#edit_team_list').on('change', function() {
-    $('#edit_hidden').val(this.value);
-    console.log(this.value);
-  });
-
-  $('#delete_team_list').on('change', function() {
-    $('#delete_hidden').val(this.value);
-    console.log(this.value);
-  });
 
 
 </script>

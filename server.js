@@ -23,7 +23,8 @@ const db = mysql.createConnection({
   host      : "localhost",
   user      : "root",
   password  : "",
-  database  : "r6_hud_db"
+  database  : "r6_hud_db",
+  multipleStatements: true
 });
 
 app.use(morgan('dev')); // get és post logging
@@ -42,25 +43,36 @@ db.connect((err) => {
 });
 
 app.get('/admin', (req, res) => {
-  var sql = `
-    SELECT teamname FROM teams;
-  `;
-      db.query(sql, (err,dbres) => {
-        if(err){
-          console.log(err.message);
-        }
-        else {
-          var row;
-          var seged_array = [];
-          Object.keys(dbres).forEach(function(key) {
-              row = dbres[key];
-              console.log(row.teamname);
-              seged_array.push(row.teamname);
-                    });
-              console.log("elso team: " + seged_array[0]);
-          res.render('admin', { teams: seged_array } );
-          }
-        });
+
+  db.query('SELECT * FROM teams ORDER BY shorthandle; SELECT * FROM players ORDER BY nickname;', [1, 2], function(err, results) {
+    if (err){
+      console.log(err.message);
+      res.render('error', { error_message : err.message });
+      res.send();
+    }
+
+  // `results` is an array with one element for every statement in the query:
+  //console.log(results[0]); // [{1: 1}]
+  //console.log(results[1]); // [{2: 2}]
+
+  var team_array = [];
+  var player_array = [];
+  var row;
+
+  Object.keys(results[0]).forEach(function(key) {
+      row = results[0][key];
+      team_array.push(row.shorthandle);
+            });
+
+  Object.keys(results[1]).forEach(function(key) {
+      row = results[1][key];
+      player_array.push(row.nickname);
+            });
+
+  res.render('admin', {teams: team_array, players: player_array} );
+
+});
+
 });
 
 app.post('/add/team', (req, res) => {
@@ -75,52 +87,153 @@ app.post('/add/team', (req, res) => {
       '${req.body.add_logo}'
     );
   `;
-      db.query(sql, (err,res) => {
-        if(err){
+      db.query(sql, (err,dbres) => {
+        if (err){
           console.log(err.message);
+          res.render('error', { error_message : err.message });
+          res.send();
+          //throw err;
         }
         else {
           console.log("Response:");
-          console.log(res);        }
-
+          console.log(dbres);
+          res.render('success', { success_message : `${req.body.add_teamname}` + " successfully added!" });
+        }
     });
-    res.render('success', { success_message : `${req.body.teamname}` + " successfully added!" });
+
 });
 
 app.post('/edit/team', (req, res) => {
   var sql = `
   UPDATE teams
-  SET teamname = '${req.body.edit_teamname}', shorthandle = '${req.body.edit_shorthandle}', logo = '${req.body.edit_logo}'
-  WHERE teamname = '${req.body.edit_index}';
+  SET teamname = '${req.body.edit_teamname}',
+  shorthandle = '${req.body.edit_shorthandle}',
+  logo = '${req.body.edit_logo}'
+  WHERE shorthandle = '${req.body.edit_team_list}';
+  UPDATE players
+  SET team_id = '${req.body.edit_shorthandle}'
+  WHERE team_id = '${req.body.edit_team_list}';
   `;
-
-
-      db.query(sql, (err,res) => {
-        if(err){
+      db.query(sql, (err,dbres) => {
+        if (err){
           console.log(err.message);
+          res.render('error', { error_message : err.message });
+          res.send();
+          //throw err;
         }
         else {
           console.log("Response:");
-          console.log(res);        }
-
+          console.log(dbres);        }
+          res.render('success', { success_message : `${req.body.edit_teamname}` + " successfully edited!" });
     });
-    res.render('success', { success_message : `${req.body.edit_teamname}` + " successfully edited!" });
+
 });
 
 app.post('/delete/team', (req, res) => {
   var sql = `
-  DELETE FROM teams WHERE teamname = '${req.body.delete_index}';
+  DELETE FROM teams WHERE shorthandle = '${req.body.delete_team_list}';
+  UPDATE players
+  SET team_id = 'NULL'
+  WHERE team_id = '${req.body.delete_team_list}';
   `;
-      db.query(sql, (err,res) => {
-        if(err){
+      db.query(sql, (err,dbres) => {
+        if (err){
           console.log(err.message);
+          res.render('error', { error_message : err.message });
+          res.send();
+          //throw err;
         }
         else {
           console.log("Response:");
-          console.log(res);        }
+          console.log(dbres);
+          res.render('success', { success_message : `${req.body.delete_team_list}` + " successfully deleted!" });
+          }
 
     });
-    res.render('success', { success_message : `${req.body.delete_index}` + " successfully deleted!" });
+
+});
+
+app.post('/add/player', (req, res) => {
+  var sql = `
+    INSERT INTO players (
+      nickname,
+      fullname,
+      nationality,
+      team_id,
+      con_link,
+      view_link,
+      avatar
+    ) VALUES (
+      '${req.body.add_nickname}',
+      '${req.body.add_fullaname}',
+      '${req.body.add_nationality}',
+      '${req.body.playeradd_team_list}',
+      '${req.body.add_con_link}',
+      '${req.body.add_view_link}',
+      '${req.body.add_avatar}'
+    );
+  `;
+      db.query(sql, (err,dbres) => {
+        if (err){
+          console.log(err.message);
+          res.render('error', { error_message : err.message });
+          res.send();
+          //throw err;
+        }
+        else {
+          console.log("Response:");
+          console.log(dbres);
+          res.render('success', { success_message : `${req.body.add_nickname}` + " successfully added!" });
+           }
+
+    });
+
+});
+
+app.post('/edit/player', (req, res) => {
+  var sql = `
+  UPDATE players
+  SET nickname = '${req.body.playeredit_player_list}',
+  fullname = '${req.body.edit_fullname}',
+  nationality = '${req.body.edit_nationality}',
+  team_id = '${req.body.playeredit_team_list}',
+  avatar = '${req.body.edit_avatar}'
+  WHERE nickname = '${req.body.edit_player_nick_hidden}';
+  `;
+      db.query(sql, (err,dbres) => {
+        if (err){
+          console.log(err.message);
+          res.render('error', { error_message : err.message });
+          res.send();
+          //throw err;
+        }
+        else {
+          console.log("Response:");
+          console.log(dbres);        }
+          res.render('success', { success_message : `${req.body.playeredit_player_list}` + " successfully edited!" });
+    });
+
+});
+
+app.post('/delete/player', (req, res) => {
+  var sql = `
+  DELETE FROM players WHERE nickname = '${req.body.delete_player_list}';
+  `;
+      db.query(sql, (err,dbres) => {
+        if (err){
+          console.log(err.message);
+          res.render('error', { error_message : err.message });
+          res.send();
+          //throw err;
+        }
+        else {
+          console.log("Response:");
+          console.log(dbres);
+          res.render('success', { success_message : `${req.body.delete_player_list}` + " successfully deleted!" });
+          }
+
+    });
+
 });
 
 
