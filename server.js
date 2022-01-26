@@ -1,18 +1,18 @@
-const WebSocket = require("ws");
 const express = require("express");
-const bodyParser = require('body-parser');
-const app = express();
-const jquery = require('jquery');
-const expressLayouts = require('express-ejs-layouts');
-const request = require('request');
-const mysql = require("mysql");
+
+const WebSocket = require("ws");
 const wss = new WebSocket.Server({port: 6969});
-const http = require('http');
+const keypress = require('keypress');
+
+const bodyParser = require('body-parser');
+const expressLayouts = require('express-ejs-layouts');
+const mysql = require("mysql");
 const http_port = 8083;
 const ip = require("ip");
-const path = require('path');
-const keypress = require('keypress');
-const morgan = require('morgan');
+
+const morgan = require('morgan'); // get és post logging
+
+const app = express();
 
 app.set('view engine','ejs');
 app.set('views', 'views');
@@ -29,11 +29,20 @@ const db = mysql.createConnection({
   database  : "r6_hud_db"
 });
 
-app.use(morgan('dev'));
+app.use(morgan('dev')); // get és post logging
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
+db.connect((err) => {
+  if (err) {
+    console.log("Couldn't connect to database");
+    console.log(err.message);
+  }
+  else {
+    console.log("Database connected.");
+  }
+});
 
 app.get('/admin', (req, res) => {
   res.render('admin');
@@ -59,18 +68,6 @@ app.post('/add/team', (req, res) => {
         console.log(res);
     });
     res.render('success', { success_message : `${req.body.teamname}` + " successfully added!" });
-});
-
-
-db.connect((err) => {
-  if (err) {
-    console.log("Couldn't connect to database");
-    console.log(err.message);
-  }
-  else {
-    console.log("Database connected.");
-  }
-
 });
 
 
