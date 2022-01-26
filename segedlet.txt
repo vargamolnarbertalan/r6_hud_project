@@ -1,0 +1,32 @@
+<%
+var array;
+for ( var i = 0; i < array.length; i++ ){
+    %><option value="<%=array[i]%>"</option><%
+}
+%>
+
+
+/*
+//MESSAGE-RE REAKCIÓ
+$(document).ready(function () {
+const ws = new WebSocket("ws://localhost:6969");
+
+ws.addEventListener("open", () =>{
+  console.log("Connected!");
+});
+
+ws.onmessage = function(e){
+  var server_message = e.data;
+  console.log(server_message);
+  if (server_message == "egy") {
+    $('body').hide();
+  }
+  else if (server_message == "ketto") {
+    $('body').show();
+  }
+}
+
+
+});
+
+*/

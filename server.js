@@ -16,8 +16,8 @@ const app = express();
 
 app.set('view engine','ejs');
 app.set('views', 'views');
-app.set('layout','layout');
-app.use(expressLayouts);
+//app.set('layout','layout');
+//app.use(expressLayouts);
 app.use(express.static('public'));
 
 app.listen(http_port, () => console.log("Admin page is available at " + ip.address() + ":" + http_port + "/admin"));
@@ -45,7 +45,25 @@ db.connect((err) => {
 });
 
 app.get('/admin', (req, res) => {
-  res.render('admin');
+  var sql = `
+    SELECT teamname FROM teams;
+  `;
+      db.query(sql, (err,dbres) => {
+        if(err){
+          console.log(err.message);
+        }
+        else {
+          var row;
+          var seged_array = [];
+          Object.keys(dbres).forEach(function(key) {
+              row = dbres[key];
+              console.log(row.teamname);
+              seged_array.push(row.teamname);
+                    });
+              console.log("elso team: " + seged_array[0]);
+          res.render('admin', { teams: seged_array } );
+          }
+        });
 });
 
 app.post('/add/team', (req, res) => {
@@ -55,10 +73,28 @@ app.post('/add/team', (req, res) => {
       shorthandle,
       logo
     ) VALUES (
-      '${req.body.teamname}',
-      '${req.body.shorthandle}',
-      '${req.body.logo}'
+      '${req.body.add_teamname}',
+      '${req.body.add_shorthandle}',
+      '${req.body.add_logo}'
     );
+  `;
+      db.query(sql, (err,res) => {
+        if(err){
+          console.log(err.message);
+        }
+        else {
+          console.log("Response:");
+          console.log(res);        }
+
+    });
+    res.render('success', { success_message : `${req.body.teamname}` + " successfully added!" });
+});
+
+app.post('/edit/team', (req, res) => {
+  var sql = `
+  UPDATE teams
+  SET teamname = '${req.body.edit_teamname}', shorthandle = '${req.body.edit_shorthandle}', logo = '${req.body.edit_logo}'
+  WHERE teamname = '${req.body.edit_index}';
   `;
 
 
@@ -71,7 +107,23 @@ app.post('/add/team', (req, res) => {
           console.log(res);        }
 
     });
-    res.render('success', { success_message : `${req.body.teamname}` + " successfully added!" });
+    res.render('success', { success_message : `${req.body.edit_teamname}` + " successfully edited!" });
+});
+
+app.post('/delete/team', (req, res) => {
+  var sql = `
+  DELETE FROM teams WHERE teamname = '${req.body.delete_index}';
+  `;
+      db.query(sql, (err,res) => {
+        if(err){
+          console.log(err.message);
+        }
+        else {
+          console.log("Response:");
+          console.log(res);        }
+
+    });
+    res.render('success', { success_message : `${req.body.delete_index}` + " successfully deleted!" });
 });
 
 
