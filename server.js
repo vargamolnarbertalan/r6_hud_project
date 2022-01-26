@@ -63,9 +63,13 @@ app.post('/add/team', (req, res) => {
 
 
       db.query(sql, (err,res) => {
-        if(err) throw err;
-        console.log("Response:");
-        console.log(res);
+        if(err){
+          console.log(err.message);
+        }
+        else {
+          console.log("Response:");
+          console.log(res);        }
+
     });
     res.render('success', { success_message : `${req.body.teamname}` + " successfully added!" });
 });
@@ -76,19 +80,11 @@ wss.on("connection", ws => {
 
   ws.on("close", ws => {
     console.log("Client disconnected.");
-
   });
 
   ws.onmessage = function(e){
     var client_message = e.data;
     console.log("client message: " + client_message);
-    var sql = client_message;
-    db.query(sql, (err,res) => {
-      if(err) throw err;
-      console.log("Response:");
-      console.log(res);
-      ws.send(res.toString());
-    })
   }
 
   // make `process.stdin` begin emitting "keypress" events
