@@ -64,9 +64,13 @@ app.post('/add/team', (req, res) => {
 
 db.connect((err) => {
   if (err) {
-    throw err;
+    console.log("Couldn't connect to database");
+    console.log(err.message);
   }
-  console.log("MySQL connected.")
+  else {
+    console.log("Database connected.");
+  }
+
 });
 
 
