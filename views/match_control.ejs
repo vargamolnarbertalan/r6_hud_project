@@ -62,8 +62,8 @@ $(document).ready(function(){
 
     $('#config_team1').on('change', function() {
       $('#submit_button').prop( "disabled", false );
-      //console.log(this.value);
-      //console.log($('#config_team2').val());
+      console.log(this.value);
+      console.log($('#config_team2').val());
         if($('#config_team1').val() == "nan" || $('#config_team2').val() == "nan") {
           $('#submit_button').prop( "disabled", true );
         }
@@ -91,8 +91,8 @@ $(document).ready(function(){
 
     $('#config_team2').on('change', function() {
       $('#submit_button').prop( "disabled", false );
-      //console.log(this.value);
-      //console.log($('#config_team2').val());
+      console.log(this.value);
+      console.log($('#config_team1').val());
         if($('#config_team1').val() == "nan" || $('#config_team2').val() == "nan") {
           $('#submit_button').prop( "disabled", true );
         }
@@ -117,7 +117,6 @@ $(document).ready(function(){
           });
         }
     });
-
 });
 
 

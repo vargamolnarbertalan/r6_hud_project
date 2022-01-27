@@ -1,0 +1,7 @@
+- match_control-ban playerek választása is működjön
+- match_control betöltéskor az aktuálisan live meccs adatai legyenek betöltve
+
+- admin felület formázása
+- match_control formázása
+
+- viewk elkezdése

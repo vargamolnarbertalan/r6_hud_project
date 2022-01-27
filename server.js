@@ -75,10 +75,9 @@ app.get('/admin', (req, res) => {
 
 });
 
+
 app.get('/match_control', (req, res) => {
-
   res.render('match_control');
-
 });
 
 app.post('/add/team', (req, res) => {
@@ -279,6 +278,39 @@ app.post('/get/players', (req, res) => {
           console.log(dbres);
           res.send(dbres);
         }
+    });
+
+});
+
+app.post('/match/config', (req, res) => {
+  var sql = `
+  UPDATE live_teams, teams
+  SET
+    live_teams.teamname=teams.teamname,
+    live_teams.shorthandle=teams.shorthandle,
+    live_teams.logo=teams.logo
+  WHERE
+    team_pos = 0 AND teams.teamname = '${req.body.config_team1}';
+
+    UPDATE live_teams, teams
+    SET
+      live_teams.teamname=teams.teamname,
+      live_teams.shorthandle=teams.shorthandle,
+      live_teams.logo=teams.logo
+    WHERE
+      team_pos = 1 AND teams.teamname = '${req.body.config_team2}';
+  `;
+      db.query(sql, (err,dbres) => {
+        if (err){
+          console.log(err.message);
+          res.render('error', { error_message : err.message });
+          res.send();
+          //throw err;
+        }
+        else {
+          console.log("Response:");
+          console.log(dbres);        }
+          res.render('success', { success_message : "HUDs for " + `${req.body.config_team1}` + " vs " + `${req.body.config_team2}` + " are now live!" });
     });
 
 });
