@@ -299,6 +299,106 @@ app.post('/match/config', (req, res) => {
       live_teams.logo=teams.logo
     WHERE
       team_pos = 1 AND teams.teamname = '${req.body.config_team2}';
+
+      UPDATE live_players, players
+     SET
+       live_players.nickname=players.nickname,
+       live_players.fullname=players.fullname,
+       live_players.nationality=players.nationality,
+       live_players.view_link=players.view_link,
+       live_players.avatar=players.avatar
+     WHERE
+       spec_pos = 0 AND players.nickname = '${req.body.config_player0}';
+
+       UPDATE live_players, players
+      SET
+        live_players.nickname=players.nickname,
+        live_players.fullname=players.fullname,
+        live_players.nationality=players.nationality,
+        live_players.view_link=players.view_link,
+        live_players.avatar=players.avatar
+      WHERE
+        spec_pos = 1 AND players.nickname = '${req.body.config_player1}';
+
+        UPDATE live_players, players
+       SET
+         live_players.nickname=players.nickname,
+         live_players.fullname=players.fullname,
+         live_players.nationality=players.nationality,
+         live_players.view_link=players.view_link,
+         live_players.avatar=players.avatar
+       WHERE
+         spec_pos = 2 AND players.nickname = '${req.body.config_player2}';
+
+         UPDATE live_players, players
+        SET
+          live_players.nickname=players.nickname,
+          live_players.fullname=players.fullname,
+          live_players.nationality=players.nationality,
+          live_players.view_link=players.view_link,
+          live_players.avatar=players.avatar
+        WHERE
+          spec_pos = 3 AND players.nickname = '${req.body.config_player3}';
+
+          UPDATE live_players, players
+         SET
+           live_players.nickname=players.nickname,
+           live_players.fullname=players.fullname,
+           live_players.nationality=players.nationality,
+           live_players.view_link=players.view_link,
+           live_players.avatar=players.avatar
+         WHERE
+           spec_pos = 4 AND players.nickname = '${req.body.config_player4}';
+
+           UPDATE live_players, players
+          SET
+            live_players.nickname=players.nickname,
+            live_players.fullname=players.fullname,
+            live_players.nationality=players.nationality,
+            live_players.view_link=players.view_link,
+            live_players.avatar=players.avatar
+          WHERE
+            spec_pos = 5 AND players.nickname = '${req.body.config_player5}';
+
+            UPDATE live_players, players
+           SET
+             live_players.nickname=players.nickname,
+             live_players.fullname=players.fullname,
+             live_players.nationality=players.nationality,
+             live_players.view_link=players.view_link,
+             live_players.avatar=players.avatar
+           WHERE
+             spec_pos = 6 AND players.nickname = '${req.body.config_player6}';
+
+             UPDATE live_players, players
+            SET
+              live_players.nickname=players.nickname,
+              live_players.fullname=players.fullname,
+              live_players.nationality=players.nationality,
+              live_players.view_link=players.view_link,
+              live_players.avatar=players.avatar
+            WHERE
+              spec_pos = 7 AND players.nickname = '${req.body.config_player7}';
+
+              UPDATE live_players, players
+             SET
+               live_players.nickname=players.nickname,
+               live_players.fullname=players.fullname,
+               live_players.nationality=players.nationality,
+               live_players.view_link=players.view_link,
+               live_players.avatar=players.avatar
+             WHERE
+               spec_pos = 8 AND players.nickname = '${req.body.config_player8}';
+
+               UPDATE live_players, players
+              SET
+                live_players.nickname=players.nickname,
+                live_players.fullname=players.fullname,
+                live_players.nationality=players.nationality,
+                live_players.view_link=players.view_link,
+                live_players.avatar=players.avatar
+              WHERE
+                spec_pos = 9 AND players.nickname = '${req.body.config_player9}';
   `;
       db.query(sql, (err,dbres) => {
         if (err){
@@ -313,6 +413,44 @@ app.post('/match/config', (req, res) => {
           res.render('success', { success_message : "HUDs for " + `${req.body.config_team1}` + " vs " + `${req.body.config_team2}` + " are now live!" });
     });
 
+});
+
+app.post('/get/live_teams', (req, res) => {
+  var sql = `
+    SELECT * FROM live_teams ORDER BY team_pos ASC;
+  `;
+      db.query(sql, (err,dbres) => {
+        if (err){
+          console.log(err.message);
+          res.send(err.message);
+          res.send();
+          //throw err;
+        }
+        else {
+          //console.log("Response:");
+          //console.log(dbres);
+          res.send(dbres);
+        }
+    });
+});
+
+app.post('/get/live_players', (req, res) => {
+  var sql = `
+    SELECT * FROM live_players ORDER BY spec_pos ASC;
+  `;
+      db.query(sql, (err,dbres) => {
+        if (err){
+          console.log(err.message);
+          res.send(err.message);
+          res.send();
+          //throw err;
+        }
+        else {
+          //console.log("Response:");
+          //console.log(dbres);
+          res.send(dbres);
+        }
+    });
 });
 
 wss.on("connection", ws => {

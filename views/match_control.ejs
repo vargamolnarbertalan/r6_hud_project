@@ -20,22 +20,26 @@
     <select id="config_team2" name="config_team2"><option value="nan">Select a team...</option></select>
     <br>
     <select id="config_player0" name="config_player0" class="playerselect1" placeholder="Select a player..."></select>
-    <select id="config_player5" name="config_player1" class="playerselect2" placeholder="Select a player..."></select>
+    <select id="config_player5" name="config_player5" class="playerselect2" placeholder="Select a player..."></select>
     <br>
-    <select id="config_player1" name="config_player2" class="playerselect1" placeholder="Select a player..."></select>
-    <select id="config_player6" name="config_player3" class="playerselect2" placeholder="Select a player..."></select>
+    <select id="config_player1" name="config_player1" class="playerselect1" placeholder="Select a player..."></select>
+    <select id="config_player6" name="config_player6" class="playerselect2" placeholder="Select a player..."></select>
     <br>
-    <select id="config_player2" name="config_player4" class="playerselect1" placeholder="Select a player..."></select>
-    <select id="config_player7" name="config_player5" class="playerselect2" placeholder="Select a player..."></select>
+    <select id="config_player2" name="config_player2" class="playerselect1" placeholder="Select a player..."></select>
+    <select id="config_player7" name="config_player7" class="playerselect2" placeholder="Select a player..."></select>
     <br>
-    <select id="config_player3" name="config_player6" class="playerselect1" placeholder="Select a player..."></select>
-    <select id="config_player8" name="config_player7" class="playerselect2" placeholder="Select a player..."></select>
+    <select id="config_player3" name="config_player3" class="playerselect1" placeholder="Select a player..."></select>
+    <select id="config_player8" name="config_player8" class="playerselect2" placeholder="Select a player..."></select>
     <br>
-    <select id="config_player4" name="config_player8" class="playerselect1" placeholder="Select a player..."></select>
+    <select id="config_player4" name="config_player4" class="playerselect1" placeholder="Select a player..."></select>
     <select id="config_player9" name="config_player9" class="playerselect2" placeholder="Select a player..."></select>
     <br>
     <button id="submit_button" type="submit">Save</button>
   </form>
+
+  <br>
+  <a href="/admin">GO TO ADMIN PAGE</a>
+
 </body>
 
 <script>
@@ -43,7 +47,7 @@
 $(document).ready(function(){
     $('#submit_button').prop( "disabled", true );
 
-    $.ajax({
+    $.ajax({  //full db betöltés
         url: "/get/teams",
         type: "POST",
         success: function(data){
@@ -57,6 +61,52 @@ $(document).ready(function(){
               text: data[i].teamname
             }));
           }
+          $.ajax({  //live_config betöltés
+              url: "/get/live_teams",
+              type: "POST",
+              success: function(data){
+                for (var i = 0; i < data.length; i++) {
+                  console.log(data[i].teamname);
+                  $('#config_team' + (i+1) + '').val(data[i].teamname);
+                  console.log($('#config_team' + (i+1) + '').val());
+                }
+                $.ajax({
+                    url: "/get/players",
+                    type: "POST",
+                    data: {'team': $('#config_team1').val()},
+                    success: function(data){
+                      for (var i = 0; i < data.length; i++) {
+                        $(".playerselect1").append($('<option>', {
+                          value: data[i].nickname,
+                          text: data[i].nickname
+                        }));
+                      }
+                    }
+                });
+                $.ajax({
+                    url: "/get/players",
+                    type: "POST",
+                    data: {'team': $('#config_team2').val()},
+                    success: function(data){
+                      for (var i = 0; i < data.length; i++) {
+                        $(".playerselect2").append($('<option>', {
+                          value: data[i].nickname,
+                          text: data[i].nickname
+                        }));
+                      }
+                    }
+                });
+                $.ajax({
+                    url: "/get/live_players",
+                    type: "POST",
+                    success: function(data){
+                      for (var i = 0; i < data.length; i++) {
+                          $('#config_player' + i + '').val(data[i].nickname);
+                      }
+                    }
+                });
+              }
+          });
         }
     });
 
