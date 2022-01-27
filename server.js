@@ -1,7 +1,9 @@
 const express = require("express");
 
 const WebSocket = require("ws");
-const wss = new WebSocket.Server({port: 6969});
+const wss = new WebSocket.Server({
+  port: 6969
+});
 const keypress = require('keypress');
 
 const bodyParser = require('body-parser');
@@ -13,31 +15,32 @@ const morgan = require('morgan'); // get és post logging
 
 const app = express();
 
-app.set('view engine','ejs');
+app.set('view engine', 'ejs');
 app.set('views', 'views');
 app.use(express.static('public'));
 
 app.listen(http_port, () => console.log("Admin page is available at " + ip.address() + ":" + http_port + "/admin"));
 
 const db = mysql.createConnection({
-  host      : "localhost",
-  user      : "root",
-  password  : "",
-  database  : "r6_hud_db",
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "r6_hud_db",
   multipleStatements: true
 });
 
 app.use(morgan('dev')); // get és post logging
 app.use(express.static('public'));
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 app.use(bodyParser.json());
 
 db.connect((err) => {
   if (err) {
     console.log("Couldn't connect to database");
     console.log(err.message);
-  }
-  else {
+  } else {
     console.log("Database connected.");
   }
 });
@@ -45,33 +48,38 @@ db.connect((err) => {
 app.get('/admin', (req, res) => {
 
   db.query('SELECT * FROM teams ORDER BY shorthandle; SELECT * FROM players ORDER BY nickname;', [1, 2], function(err, results) {
-    if (err){
+    if (err) {
       console.log(err.message);
-      res.render('error', { error_message : err.message });
+      res.render('error', {
+        error_message: err.message
+      });
       res.send();
     }
 
-  // `results` is an array with one element for every statement in the query:
-  //console.log(results[0]); // [{1: 1}]
-  //console.log(results[1]); // [{2: 2}]
+    // `results` is an array with one element for every statement in the query:
+    //console.log(results[0]); // [{1: 1}]
+    //console.log(results[1]); // [{2: 2}]
 
-  var team_array = [];
-  var player_array = [];
-  var row;
+    var team_array = [];
+    var player_array = [];
+    var row;
 
-  Object.keys(results[0]).forEach(function(key) {
+    Object.keys(results[0]).forEach(function(key) {
       row = results[0][key];
       team_array.push(row.shorthandle);
-            });
+    });
 
-  Object.keys(results[1]).forEach(function(key) {
+    Object.keys(results[1]).forEach(function(key) {
       row = results[1][key];
       player_array.push(row.nickname);
-            });
+    });
 
-  res.render('admin', {teams: team_array, players: player_array} );
+    res.render('admin', {
+      teams: team_array,
+      players: player_array
+    });
 
-});
+  });
 
 });
 
@@ -92,19 +100,22 @@ app.post('/add/team', (req, res) => {
       '${req.body.add_logo}'
     );
   `;
-      db.query(sql, (err,dbres) => {
-        if (err){
-          console.log(err.message);
-          res.render('error', { error_message : err.message });
-          res.send();
-          //throw err;
-        }
-        else {
-          console.log("Response:");
-          console.log(dbres);
-          res.render('success', { success_message : `${req.body.add_teamname}` + " successfully added!" });
-        }
-    });
+  db.query(sql, (err, dbres) => {
+    if (err) {
+      console.log(err.message);
+      res.render('error', {
+        error_message: err.message
+      });
+      res.send();
+      //throw err;
+    } else {
+      console.log("Response:");
+      console.log(dbres);
+      res.render('success', {
+        success_message: `${req.body.add_teamname}` + " successfully added!"
+      });
+    }
+  });
 
 });
 
@@ -119,18 +130,22 @@ app.post('/edit/team', (req, res) => {
   SET team_id = '${req.body.edit_shorthandle}'
   WHERE team_id = '${req.body.edit_team_list}';
   `;
-      db.query(sql, (err,dbres) => {
-        if (err){
-          console.log(err.message);
-          res.render('error', { error_message : err.message });
-          res.send();
-          //throw err;
-        }
-        else {
-          console.log("Response:");
-          console.log(dbres);        }
-          res.render('success', { success_message : `${req.body.edit_teamname}` + " successfully edited!" });
+  db.query(sql, (err, dbres) => {
+    if (err) {
+      console.log(err.message);
+      res.render('error', {
+        error_message: err.message
+      });
+      res.send();
+      //throw err;
+    } else {
+      console.log("Response:");
+      console.log(dbres);
+    }
+    res.render('success', {
+      success_message: `${req.body.edit_teamname}` + " successfully edited!"
     });
+  });
 
 });
 
@@ -141,20 +156,23 @@ app.post('/delete/team', (req, res) => {
   SET team_id = 'NULL'
   WHERE team_id = '${req.body.delete_team_list}';
   `;
-      db.query(sql, (err,dbres) => {
-        if (err){
-          console.log(err.message);
-          res.render('error', { error_message : err.message });
-          res.send();
-          //throw err;
-        }
-        else {
-          console.log("Response:");
-          console.log(dbres);
-          res.render('success', { success_message : `${req.body.delete_team_list}` + " successfully deleted!" });
-          }
+  db.query(sql, (err, dbres) => {
+    if (err) {
+      console.log(err.message);
+      res.render('error', {
+        error_message: err.message
+      });
+      res.send();
+      //throw err;
+    } else {
+      console.log("Response:");
+      console.log(dbres);
+      res.render('success', {
+        success_message: `${req.body.delete_team_list}` + " successfully deleted!"
+      });
+    }
 
-    });
+  });
 
 });
 
@@ -178,20 +196,23 @@ app.post('/add/player', (req, res) => {
       '${req.body.add_avatar}'
     );
   `;
-      db.query(sql, (err,dbres) => {
-        if (err){
-          console.log(err.message);
-          res.render('error', { error_message : err.message });
-          res.send();
-          //throw err;
-        }
-        else {
-          console.log("Response:");
-          console.log(dbres);
-          res.render('success', { success_message : `${req.body.add_nickname}` + " successfully added!" });
-           }
+  db.query(sql, (err, dbres) => {
+    if (err) {
+      console.log(err.message);
+      res.render('error', {
+        error_message: err.message
+      });
+      res.send();
+      //throw err;
+    } else {
+      console.log("Response:");
+      console.log(dbres);
+      res.render('success', {
+        success_message: `${req.body.add_nickname}` + " successfully added!"
+      });
+    }
 
-    });
+  });
 
 });
 
@@ -205,18 +226,22 @@ app.post('/edit/player', (req, res) => {
   avatar = '${req.body.edit_avatar}'
   WHERE nickname = '${req.body.playeredit_player_list}';
   `;
-      db.query(sql, (err,dbres) => {
-        if (err){
-          console.log(err.message);
-          res.render('error', { error_message : err.message });
-          res.send();
-          //throw err;
-        }
-        else {
-          console.log("Response:");
-          console.log(dbres);        }
-          res.render('success', { success_message : `${req.body.playeredit_player_list}` + " successfully edited!" });
+  db.query(sql, (err, dbres) => {
+    if (err) {
+      console.log(err.message);
+      res.render('error', {
+        error_message: err.message
+      });
+      res.send();
+      //throw err;
+    } else {
+      console.log("Response:");
+      console.log(dbres);
+    }
+    res.render('success', {
+      success_message: `${req.body.playeredit_player_list}` + " successfully edited!"
     });
+  });
 
 });
 
@@ -224,20 +249,23 @@ app.post('/delete/player', (req, res) => {
   var sql = `
   DELETE FROM players WHERE nickname = '${req.body.delete_player_list}';
   `;
-      db.query(sql, (err,dbres) => {
-        if (err){
-          console.log(err.message);
-          res.render('error', { error_message : err.message });
-          res.send();
-          //throw err;
-        }
-        else {
-          console.log("Response:");
-          console.log(dbres);
-          res.render('success', { success_message : `${req.body.delete_player_list}` + " successfully deleted!" });
-          }
+  db.query(sql, (err, dbres) => {
+    if (err) {
+      console.log(err.message);
+      res.render('error', {
+        error_message: err.message
+      });
+      res.send();
+      //throw err;
+    } else {
+      console.log("Response:");
+      console.log(dbres);
+      res.render('success', {
+        success_message: `${req.body.delete_player_list}` + " successfully deleted!"
+      });
+    }
 
-    });
+  });
 
 });
 
@@ -245,19 +273,18 @@ app.post('/get/teams', (req, res) => {
   var sql = `
     SELECT * FROM teams ORDER BY teamname ASC;
   `;
-      db.query(sql, (err,dbres) => {
-        if (err){
-          console.log(err.message);
-          res.send(err.message);
-          res.send();
-          //throw err;
-        }
-        else {
-          //console.log("Response:");
-          //console.log(dbres);
-          res.send(dbres);
-        }
-    });
+  db.query(sql, (err, dbres) => {
+    if (err) {
+      console.log(err.message);
+      res.send(err.message);
+      res.send();
+      //throw err;
+    } else {
+      //console.log("Response:");
+      //console.log(dbres);
+      res.send(dbres);
+    }
+  });
 });
 
 app.post('/get/players', (req, res) => {
@@ -266,19 +293,18 @@ app.post('/get/players', (req, res) => {
     WHERE teams.teamname = '${req.body.team}'
     ORDER BY players.nickname ASC;
   `;
-      db.query(sql, (err,dbres) => {
-        if (err){
-          console.log(err.message);
-          res.send(err.message);
-          res.send();
-          //throw err;
-        }
-        else {
-          //console.log("Response:");
-          console.log(dbres);
-          res.send(dbres);
-        }
-    });
+  db.query(sql, (err, dbres) => {
+    if (err) {
+      console.log(err.message);
+      res.send(err.message);
+      res.send();
+      //throw err;
+    } else {
+      //console.log("Response:");
+      console.log(dbres);
+      res.send(dbres);
+    }
+  });
 
 });
 
@@ -400,18 +426,22 @@ app.post('/match/config', (req, res) => {
               WHERE
                 spec_pos = 9 AND players.nickname = '${req.body.config_player9}';
   `;
-      db.query(sql, (err,dbres) => {
-        if (err){
-          console.log(err.message);
-          res.render('error', { error_message : err.message });
-          res.send();
-          //throw err;
-        }
-        else {
-          console.log("Response:");
-          console.log(dbres);        }
-          res.render('success', { success_message : "HUDs for " + `${req.body.config_team1}` + " vs " + `${req.body.config_team2}` + " are now live!" });
+  db.query(sql, (err, dbres) => {
+    if (err) {
+      console.log(err.message);
+      res.render('error', {
+        error_message: err.message
+      });
+      res.send();
+      //throw err;
+    } else {
+      console.log("Response:");
+      console.log(dbres);
+    }
+    res.render('success', {
+      success_message: "HUDs for " + `${req.body.config_team1}` + " vs " + `${req.body.config_team2}` + " are now live!"
     });
+  });
 
 });
 
@@ -419,38 +449,36 @@ app.post('/get/live_teams', (req, res) => {
   var sql = `
     SELECT * FROM live_teams ORDER BY team_pos ASC;
   `;
-      db.query(sql, (err,dbres) => {
-        if (err){
-          console.log(err.message);
-          res.send(err.message);
-          res.send();
-          //throw err;
-        }
-        else {
-          //console.log("Response:");
-          //console.log(dbres);
-          res.send(dbres);
-        }
-    });
+  db.query(sql, (err, dbres) => {
+    if (err) {
+      console.log(err.message);
+      res.send(err.message);
+      res.send();
+      //throw err;
+    } else {
+      //console.log("Response:");
+      //console.log(dbres);
+      res.send(dbres);
+    }
+  });
 });
 
 app.post('/get/live_players', (req, res) => {
   var sql = `
     SELECT * FROM live_players ORDER BY spec_pos ASC;
   `;
-      db.query(sql, (err,dbres) => {
-        if (err){
-          console.log(err.message);
-          res.send(err.message);
-          res.send();
-          //throw err;
-        }
-        else {
-          //console.log("Response:");
-          //console.log(dbres);
-          res.send(dbres);
-        }
-    });
+  db.query(sql, (err, dbres) => {
+    if (err) {
+      console.log(err.message);
+      res.send(err.message);
+      res.send();
+      //throw err;
+    } else {
+      //console.log("Response:");
+      //console.log(dbres);
+      res.send(dbres);
+    }
+  });
 });
 
 wss.on("connection", ws => {
@@ -460,7 +488,7 @@ wss.on("connection", ws => {
     console.log("Client disconnected.");
   });
 
-  ws.onmessage = function(e){
+  ws.onmessage = function(e) {
     var client_message = e.data;
     console.log("client message: " + client_message);
   }
@@ -469,12 +497,11 @@ wss.on("connection", ws => {
   keypress(process.stdin);
 
   // listen for the "keypress" event
-  process.stdin.on('keypress', function (ch, key) {
+  process.stdin.on('keypress', function(ch, key) {
     console.log('got "keypress"', key);
     if (key.name == 'c') {
       ws.send('egy');
-    }
-    else if (key.name == 'd') {
+    } else if (key.name == 'd') {
       ws.send('ketto');
     }
   });

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>R6 HUD MATCH CONTROL</title>
   <meta charset="UTF-8">
@@ -16,8 +17,12 @@
   <h1>Match control</h1>
   <form method="post" action="/match/config">
 
-    <select id="config_team1" name="config_team1"><option value="nan">Select a team...</option></select>
-    <select id="config_team2" name="config_team2"><option value="nan">Select a team...</option></select>
+    <select id="config_team1" name="config_team1">
+      <option value="nan">Select a team...</option>
+    </select>
+    <select id="config_team2" name="config_team2">
+      <option value="nan">Select a team...</option>
+    </select>
     <br>
     <select id="config_player0" name="config_player0" class="playerselect1" placeholder="Select a player..."></select>
     <select id="config_player5" name="config_player5" class="playerselect2" placeholder="Select a player..."></select>
@@ -43,91 +48,39 @@
 </body>
 
 <script>
+  $(document).ready(function() {
+    $('#submit_button').prop("disabled", true);
 
-$(document).ready(function(){
-    $('#submit_button').prop( "disabled", true );
-
-    $.ajax({  //full db betöltés
-        url: "/get/teams",
-        type: "POST",
-        success: function(data){
-          for (var i = 0; i < data.length; i++) {
-            $("#config_team1").append($('<option>', {
-              value: data[i].teamname,
-              text: data[i].teamname
-            }));
-            $("#config_team2").append($('<option>', {
-              value: data[i].teamname,
-              text: data[i].teamname
-            }));
-          }
-          $.ajax({  //live_config betöltés
-              url: "/get/live_teams",
-              type: "POST",
-              success: function(data){
-                for (var i = 0; i < data.length; i++) {
-                  console.log(data[i].teamname);
-                  $('#config_team' + (i+1) + '').val(data[i].teamname);
-                  console.log($('#config_team' + (i+1) + '').val());
-                }
-                $.ajax({
-                    url: "/get/players",
-                    type: "POST",
-                    data: {'team': $('#config_team1').val()},
-                    success: function(data){
-                      for (var i = 0; i < data.length; i++) {
-                        $(".playerselect1").append($('<option>', {
-                          value: data[i].nickname,
-                          text: data[i].nickname
-                        }));
-                      }
-                    }
-                });
-                $.ajax({
-                    url: "/get/players",
-                    type: "POST",
-                    data: {'team': $('#config_team2').val()},
-                    success: function(data){
-                      for (var i = 0; i < data.length; i++) {
-                        $(".playerselect2").append($('<option>', {
-                          value: data[i].nickname,
-                          text: data[i].nickname
-                        }));
-                      }
-                    }
-                });
-                $.ajax({
-                    url: "/get/live_players",
-                    type: "POST",
-                    success: function(data){
-                      for (var i = 0; i < data.length; i++) {
-                          $('#config_player' + i + '').val(data[i].nickname);
-                      }
-                    }
-                });
-              }
-          });
+    $.ajax({ //full db betöltés
+      url: "/get/teams",
+      type: "POST",
+      success: function(data) {
+        for (var i = 0; i < data.length; i++) {
+          $("#config_team1").append($('<option>', {
+            value: data[i].teamname,
+            text: data[i].teamname
+          }));
+          $("#config_team2").append($('<option>', {
+            value: data[i].teamname,
+            text: data[i].teamname
+          }));
         }
-    });
-
-    $('#config_team1').on('change', function() {
-      $('#submit_button').prop( "disabled", false );
-      console.log(this.value);
-      console.log($('#config_team2').val());
-        if($('#config_team1').val() == "nan" || $('#config_team2').val() == "nan") {
-          $('#submit_button').prop( "disabled", true );
-        }
-        if (this.value == $('#config_team2').val()) {
-          $('#submit_button').prop( "disabled", true );
-          alert("Select different teams for team1 and team2!");
-        }
-        else {
-          $(".playerselect1").empty();
-          $.ajax({
+        $.ajax({ //live_config betöltés
+          url: "/get/live_teams",
+          type: "POST",
+          success: function(data) {
+            for (var i = 0; i < data.length; i++) {
+              console.log(data[i].teamname);
+              $('#config_team' + (i + 1) + '').val(data[i].teamname);
+              console.log($('#config_team' + (i + 1) + '').val());
+            }
+            $.ajax({
               url: "/get/players",
               type: "POST",
-              data: {'team': this.value},
-              success: function(data){
+              data: {
+                'team': $('#config_team1').val()
+              },
+              success: function(data) {
                 for (var i = 0; i < data.length; i++) {
                   $(".playerselect1").append($('<option>', {
                     value: data[i].nickname,
@@ -135,28 +88,14 @@ $(document).ready(function(){
                   }));
                 }
               }
-          });
-        }
-    });
-
-    $('#config_team2').on('change', function() {
-      $('#submit_button').prop( "disabled", false );
-      console.log(this.value);
-      console.log($('#config_team1').val());
-        if($('#config_team1').val() == "nan" || $('#config_team2').val() == "nan") {
-          $('#submit_button').prop( "disabled", true );
-        }
-        if (this.value == $('#config_team1').val()) {
-          $('#submit_button').prop( "disabled", true );
-          alert("Select different teams for team1 and team2!");
-        }
-        else {
-          $(".playerselect2").empty();
-          $.ajax({
+            });
+            $.ajax({
               url: "/get/players",
               type: "POST",
-              data: {'team': this.value},
-              success: function(data){
+              data: {
+                'team': $('#config_team2').val()
+              },
+              success: function(data) {
                 for (var i = 0; i < data.length; i++) {
                   $(".playerselect2").append($('<option>', {
                     value: data[i].nickname,
@@ -164,13 +103,81 @@ $(document).ready(function(){
                   }));
                 }
               }
-          });
-        }
+            });
+            $.ajax({
+              url: "/get/live_players",
+              type: "POST",
+              success: function(data) {
+                for (var i = 0; i < data.length; i++) {
+                  $('#config_player' + i + '').val(data[i].nickname);
+                }
+              }
+            });
+          }
+        });
+      }
     });
-});
 
+    $('#config_team1').on('change', function() {
+      $('#submit_button').prop("disabled", false);
+      console.log(this.value);
+      console.log($('#config_team2').val());
+      if ($('#config_team1').val() == "nan" || $('#config_team2').val() == "nan") {
+        $('#submit_button').prop("disabled", true);
+      }
+      if (this.value == $('#config_team2').val()) {
+        $('#submit_button').prop("disabled", true);
+        alert("Select different teams for team1 and team2!");
+      } else {
+        $(".playerselect1").empty();
+        $.ajax({
+          url: "/get/players",
+          type: "POST",
+          data: {
+            'team': this.value
+          },
+          success: function(data) {
+            for (var i = 0; i < data.length; i++) {
+              $(".playerselect1").append($('<option>', {
+                value: data[i].nickname,
+                text: data[i].nickname
+              }));
+            }
+          }
+        });
+      }
+    });
 
-
+    $('#config_team2').on('change', function() {
+      $('#submit_button').prop("disabled", false);
+      console.log(this.value);
+      console.log($('#config_team1').val());
+      if ($('#config_team1').val() == "nan" || $('#config_team2').val() == "nan") {
+        $('#submit_button').prop("disabled", true);
+      }
+      if (this.value == $('#config_team1').val()) {
+        $('#submit_button').prop("disabled", true);
+        alert("Select different teams for team1 and team2!");
+      } else {
+        $(".playerselect2").empty();
+        $.ajax({
+          url: "/get/players",
+          type: "POST",
+          data: {
+            'team': this.value
+          },
+          success: function(data) {
+            for (var i = 0; i < data.length; i++) {
+              $(".playerselect2").append($('<option>', {
+                value: data[i].nickname,
+                text: data[i].nickname
+              }));
+            }
+          }
+        });
+      }
+    });
+  });
 </script>
 
 </html>

@@ -1,5 +1,3 @@
-- match_control betöltéskor az aktuálisan live meccs adatai legyenek betöltve
-
 - admin felület formázása
 - match_control formázása
 
