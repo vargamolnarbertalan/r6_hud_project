@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>R6 HUD MATCH CONTROL</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--   <iframe allow="autoplay;camera" src="https://vdo.ninja/?view=7fDjacc&label=proba" width="1920" height="1080"></iframe> -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <script>
+
+  </script>
+
+  <h1>Match control</h1>
+  <form method="post" action="/match/config">
+
+    <select id="config_team1" name="config_team1"><option value="nan">Select a team...</option></select>
+    <select id="config_team2" name="config_team2"><option value="nan">Select a team...</option></select>
+    <br>
+    <select id="config_player0" name="config_player0" class="playerselect1" placeholder="Select a player..."></select>
+    <select id="config_player5" name="config_player1" class="playerselect2" placeholder="Select a player..."></select>
+    <br>
+    <select id="config_player1" name="config_player2" class="playerselect1" placeholder="Select a player..."></select>
+    <select id="config_player6" name="config_player3" class="playerselect2" placeholder="Select a player..."></select>
+    <br>
+    <select id="config_player2" name="config_player4" class="playerselect1" placeholder="Select a player..."></select>
+    <select id="config_player7" name="config_player5" class="playerselect2" placeholder="Select a player..."></select>
+    <br>
+    <select id="config_player3" name="config_player6" class="playerselect1" placeholder="Select a player..."></select>
+    <select id="config_player8" name="config_player7" class="playerselect2" placeholder="Select a player..."></select>
+    <br>
+    <select id="config_player4" name="config_player8" class="playerselect1" placeholder="Select a player..."></select>
+    <select id="config_player9" name="config_player9" class="playerselect2" placeholder="Select a player..."></select>
+    <br>
+    <button id="submit_button" type="submit">Save</button>
+  </form>
+</body>
+
+<script>
+
+$(document).ready(function(){
+    $('#submit_button').prop( "disabled", true );
+
+    $.ajax({
+        url: "/get/teams",
+        type: "POST",
+        success: function(data){
+          for (var i = 0; i < data.length; i++) {
+            $("#config_team1").append($('<option>', {
+              value: data[i].teamname,
+              text: data[i].teamname
+            }));
+            $("#config_team2").append($('<option>', {
+              value: data[i].teamname,
+              text: data[i].teamname
+            }));
+          }
+        }
+    });
+
+    $('#config_team1').on('change', function() {
+      $('#submit_button').prop( "disabled", false );
+      //console.log(this.value);
+      //console.log($('#config_team2').val());
+        if($('#config_team1').val() == "nan" || $('#config_team2').val() == "nan") {
+          $('#submit_button').prop( "disabled", true );
+        }
+        if (this.value == $('#config_team2').val()) {
+          $('#submit_button').prop( "disabled", true );
+          alert("Select different teams for team1 and team2!");
+        }
+        else {
+          $(".playerselect1").empty();
+          $.ajax({
+              url: "/get/players",
+              type: "POST",
+              data: {'team': this.value},
+              success: function(data){
+                for (var i = 0; i < data.length; i++) {
+                  $(".playerselect1").append($('<option>', {
+                    value: data[i].nickname,
+                    text: data[i].nickname
+                  }));
+                }
+              }
+          });
+        }
+    });
+
+    $('#config_team2').on('change', function() {
+      $('#submit_button').prop( "disabled", false );
+      //console.log(this.value);
+      //console.log($('#config_team2').val());
+        if($('#config_team1').val() == "nan" || $('#config_team2').val() == "nan") {
+          $('#submit_button').prop( "disabled", true );
+        }
+        if (this.value == $('#config_team1').val()) {
+          $('#submit_button').prop( "disabled", true );
+          alert("Select different teams for team1 and team2!");
+        }
+        else {
+          $(".playerselect2").empty();
+          $.ajax({
+              url: "/get/players",
+              type: "POST",
+              data: {'team': this.value},
+              success: function(data){
+                for (var i = 0; i < data.length; i++) {
+                  $(".playerselect2").append($('<option>', {
+                    value: data[i].nickname,
+                    text: data[i].nickname
+                  }));
+                }
+              }
+          });
+        }
+    });
+
+});
+
+
+
+</script>
+
+</html>

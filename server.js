@@ -75,6 +75,12 @@ app.get('/admin', (req, res) => {
 
 });
 
+app.get('/match_control', (req, res) => {
+
+  res.render('match_control');
+
+});
+
 app.post('/add/team', (req, res) => {
   var sql = `
     INSERT INTO teams (
@@ -198,7 +204,7 @@ app.post('/edit/player', (req, res) => {
   nationality = '${req.body.edit_nationality}',
   team_id = '${req.body.playeredit_team_list}',
   avatar = '${req.body.edit_avatar}'
-  WHERE nickname = '${req.body.edit_player_nick_hidden}';
+  WHERE nickname = '${req.body.playeredit_player_list}';
   `;
       db.query(sql, (err,dbres) => {
         if (err){
@@ -236,6 +242,46 @@ app.post('/delete/player', (req, res) => {
 
 });
 
+app.post('/get/teams', (req, res) => {
+  var sql = `
+    SELECT * FROM teams ORDER BY teamname ASC;
+  `;
+      db.query(sql, (err,dbres) => {
+        if (err){
+          console.log(err.message);
+          res.send(err.message);
+          res.send();
+          //throw err;
+        }
+        else {
+          //console.log("Response:");
+          //console.log(dbres);
+          res.send(dbres);
+        }
+    });
+});
+
+app.post('/get/players', (req, res) => {
+  var sql = `
+    SELECT * FROM teams INNER JOIN players ON teams.shorthandle = players.team_id
+    WHERE teams.teamname = '${req.body.team}'
+    ORDER BY players.nickname ASC;
+  `;
+      db.query(sql, (err,dbres) => {
+        if (err){
+          console.log(err.message);
+          res.send(err.message);
+          res.send();
+          //throw err;
+        }
+        else {
+          //console.log("Response:");
+          console.log(dbres);
+          res.send(dbres);
+        }
+    });
+
+});
 
 wss.on("connection", ws => {
   console.log("New client connected.");
