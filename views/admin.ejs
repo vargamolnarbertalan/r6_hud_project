@@ -31,9 +31,9 @@
       <option> <%= eachTeam %> </option>
       <% }) %>
     </select>
-    <input name="edit_teamname" type="text" placeholder="teamname" required>
-    <input name="edit_shorthandle" type="text" placeholder="shorthandle" required maxlength="4">
-    <input name="edit_logo" type="text" placeholder="logo.png" required>
+    <input name="edit_teamname" id="edit_teamname" type="text" placeholder="teamname" required>
+    <input name="edit_shorthandle" id="edit_shorthandle" type="text" placeholder="shorthandle" required maxlength="4">
+    <input name="edit_logo" id="edit_logo" type="text" placeholder="logo.png" required>
 
     <button type="submit">Edit</button>
   </form>
@@ -75,16 +75,18 @@
       <option> <%= eachPlayer %> </option>
       <% }) %>
     </select>
-    <input name="edit_nickname" type="text" placeholder="nickname" required>
-    <input name="edit_fullname" type="text" placeholder="fullname" required>
-    <input name="edit_nationality" type="text" placeholder="country code" required>
+    <input name="edit_nickname" id="edit_nickname" type="text" placeholder="nickname" required>
+    <input name="edit_fullname" id="edit_fullname" type="text" placeholder="fullname" required>
+    <input name="edit_nationality" id="edit_nationality" type="text" placeholder="country code" required>
     <select id="playeredit_team_list" name="playeredit_team_list">
       <option value=""></option>
       <% teams.forEach(function( eachTeam){ %>
       <option> <%= eachTeam %> </option>
       <% }) %>
     </select>
-    <input name="edit_avatar" type="text" placeholder="player.png" required>
+    <input name="edit_con_link" id="edit_con_link" type="text" placeholder="https://invite.cam/U2FsdGVkX1/rvY8ZayKN6Sk794TaTJCxl8SbPxUW5UC/L2hgeLFHVi+7ZJo4Xgz404tSWjW8Tf1NTZrcXG5l4A==" required>
+    <input name="edit_view_link" id="edit_view_link" type="text" placeholder="https://vdo.ninja/?view=c8FzkEb&label=proba" required>
+    <input name="edit_avatar" id="edit_avatar" type="text" placeholder="player.png" required>
     <button type="submit">Edit</button>
   </form>
 
@@ -111,26 +113,54 @@
 <script>
 
 $(document).ready(function() {
+  console.log($('#playeredit_player_list').children('option').length);
+  $("#playeredit_player_list > option").each(function() {
+    this.value = this.text;
+});
 
 
-
-  $('#edit_team_list').on('change', function() {
-    console.log("selected player: " + $('#edit_team_list').text);
+  $('#playeredit_player_list').on('change', function() {
+    console.log("selected player: " + $('#playeredit_player_list').val());
     $.ajax({
       url: "/get/edit_player_data",
       type: "POST",
       data: {
-        'player': $('#edit_team_list').text
+        'player': $('#playeredit_player_list').val()
       },
       success: function(data) {
-        $('#edit_nickname').val(data.nickname);
-        $('#edit_fullname').val(data.fullname);
-        $('#edit_nationality').val(data.nationality);
-        $('#playeredit_team_list').val(data.team_id);
-        $('#edit_avatar').val(data.avatar);
+        $('#edit_nickname').val(data[0].nickname);
+        $('#edit_fullname').val(data[0].fullname);
+        $('#edit_nationality').val(data[0].nationality);
+        $('#playeredit_team_list').val(data[0].team_id);
+        $('#edit_con_link').val(data[0].con_link);
+        $('#edit_view_link').val(data[0].view_link);
+        $('#edit_avatar').val(data[0].avatar);
+        /*
+        $('#edit_nickname').text = data[0].nickname;
+        $('#edit_fullname').text = data[0].fullname;
+        $('#edit_nationality').text = data[0].nationality;
+        $('#playeredit_team_list').text = data[0].team_id;
+        $('#edit_avatar').text = data[0].avatar; */
       }
     });
   });
+
+  $('#edit_team_list').on('change', function() {
+    console.log("selected team: " + $('#edit_team_list').val());
+    $.ajax({
+      url: "/get/edit_team_data",
+      type: "POST",
+      data: {
+        'team': $('#edit_team_list').val()
+      },
+      success: function(data) {
+        $('#edit_teamname').val(data[0].teamname);
+        $('#edit_shorthandle').val(data[0].shorthandle);
+        $('#edit_logo').val(data[0].logo);      
+      }
+    });
+  });
+
 });
 
 </script>

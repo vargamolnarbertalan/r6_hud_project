@@ -223,6 +223,8 @@ app.post('/edit/player', (req, res) => {
   fullname = '${req.body.edit_fullname}',
   nationality = '${req.body.edit_nationality}',
   team_id = '${req.body.playeredit_team_list}',
+  con_link = '${req.body.edit_con_link}',
+  view_link = '${req.body.edit_view_link}',
   avatar = '${req.body.edit_avatar}'
   WHERE nickname = '${req.body.playeredit_player_list}';
   `;
@@ -485,6 +487,26 @@ app.post('/get/edit_player_data', (req, res) => {
   var sql = `
     SELECT * FROM players
     WHERE nickname = '${req.body.player}';
+  `;
+  db.query(sql, (err, dbres) => {
+    if (err) {
+      console.log(err.message);
+      res.send(err.message);
+      res.send();
+      //throw err;
+    } else {
+      //console.log("Response:");
+      console.log(dbres);
+      res.send(dbres);
+    }
+  });
+
+});
+
+app.post('/get/edit_team_data', (req, res) => {
+  var sql = `
+    SELECT * FROM teams
+    WHERE shorthandle = '${req.body.team}';
   `;
   db.query(sql, (err, dbres) => {
     if (err) {
