@@ -30,7 +30,8 @@ const db = mysql.createConnection({
 });
 
 app.use(morgan('dev')); // get és post logging
-app.use(express.static('public'));
+//app.use(express.static('public'));
+app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({
   extended: false
 }));
@@ -82,7 +83,6 @@ app.get('/admin', (req, res) => {
   });
 
 });
-
 
 app.get('/match_control', (req, res) => {
   res.render('match_control');
@@ -479,6 +479,26 @@ app.post('/get/live_players', (req, res) => {
       res.send(dbres);
     }
   });
+});
+
+app.post('/get/edit_player_data', (req, res) => {
+  var sql = `
+    SELECT * FROM players
+    WHERE nickname = '${req.body.player}';
+  `;
+  db.query(sql, (err, dbres) => {
+    if (err) {
+      console.log(err.message);
+      res.send(err.message);
+      res.send();
+      //throw err;
+    } else {
+      //console.log("Response:");
+      console.log(dbres);
+      res.send(dbres);
+    }
+  });
+
 });
 
 wss.on("connection", ws => {

@@ -7,9 +7,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!--   <iframe allow="autoplay;camera" src="https://vdo.ninja/?view=7fDjacc&label=proba" width="1920" height="1080"></iframe> -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link href="/css/general.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
+
+  <div id="container">
 
   <h1>Create new team</h1>
   <form method="post" action="/add/team">
@@ -96,12 +99,39 @@
     <button type="submit">Delete</button>
   </form>
 
-  <br>
-  <a href="/match_control">GO TO MATCH CONTROL</a>
+  </div>
+
+  <div class="linkek">
+    <a href="/match_control">GO TO MATCH CONTROL</a>
+  </div>
+
 
 </body>
 
 <script>
+
+$(document).ready(function() {
+
+
+
+  $('#edit_team_list').on('change', function() {
+    console.log("selected player: " + $('#edit_team_list').text);
+    $.ajax({
+      url: "/get/edit_player_data",
+      type: "POST",
+      data: {
+        'player': $('#edit_team_list').text
+      },
+      success: function(data) {
+        $('#edit_nickname').val(data.nickname);
+        $('#edit_fullname').val(data.fullname);
+        $('#edit_nationality').val(data.nationality);
+        $('#playeredit_team_list').val(data.team_id);
+        $('#edit_avatar').val(data.avatar);
+      }
+    });
+  });
+});
 
 </script>
 
