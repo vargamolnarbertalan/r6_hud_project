@@ -1,4 +1,1 @@
-- admin felület formázása
-- match_control formázása
-
 - viewk elkezdése

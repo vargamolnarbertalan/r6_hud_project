@@ -61,8 +61,8 @@
       <option> <%= eachTeam %> </option>
       <% }) %>
     </select>
-    <input name="add_con_link" type="text" placeholder="https://invite.cam/U2FsdGVkX1/rvY8ZayKN6Sk794TaTJCxl8SbPxUW5UC/L2hgeLFHVi+7ZJo4Xgz404tSWjW8Tf1NTZrcXG5l4A==" required>
-    <input name="add_view_link" type="text" placeholder="https://vdo.ninja/?view=c8FzkEb&label=proba" required>
+    <input name="add_con_link" type="text" placeholder="join_link" required>
+    <input name="add_view_link" type="text" placeholder="view_link" required>
     <input name="add_avatar" type="text" placeholder="player.png" required>
     <button type="submit">Create</button>
   </form>
@@ -84,8 +84,8 @@
       <option> <%= eachTeam %> </option>
       <% }) %>
     </select>
-    <input name="edit_con_link" id="edit_con_link" type="text" placeholder="https://invite.cam/U2FsdGVkX1/rvY8ZayKN6Sk794TaTJCxl8SbPxUW5UC/L2hgeLFHVi+7ZJo4Xgz404tSWjW8Tf1NTZrcXG5l4A==" required>
-    <input name="edit_view_link" id="edit_view_link" type="text" placeholder="https://vdo.ninja/?view=c8FzkEb&label=proba" required>
+    <input name="edit_con_link" id="edit_con_link" type="text" placeholder="join_link" required>
+    <input name="edit_view_link" id="edit_view_link" type="text" placeholder="view_link" required>
     <input name="edit_avatar" id="edit_avatar" type="text" placeholder="player.png" required>
     <button type="submit">Edit</button>
   </form>
@@ -156,7 +156,7 @@ $(document).ready(function() {
       success: function(data) {
         $('#edit_teamname').val(data[0].teamname);
         $('#edit_shorthandle').val(data[0].shorthandle);
-        $('#edit_logo').val(data[0].logo);      
+        $('#edit_logo').val(data[0].logo);
       }
     });
   });

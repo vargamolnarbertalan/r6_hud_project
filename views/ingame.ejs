@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>R6 HUD INGAME</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="/css/ingame.css">
+</head>
+
+<body>
+
+<div class="ingame_insert0">
+  <embed id="spec_pos0" src="https://vdo.ninja/?view=UB2HdBw&label=berci&cleanoutput&transparent?autoplay=on"></embed>
+  <embed id="spec_pos1" src="https://vdo.ninja/?view=UB2HdBw&label=berci&cleanoutput&transparent?autoplay=on"></embed>
+  <embed id="spec_pos2" src="https://vdo.ninja/?view=UB2HdBw&label=berci&cleanoutput&transparent?autoplay=on"></embed>
+  <embed id="spec_pos3" src="https://vdo.ninja/?view=UB2HdBw&label=berci&cleanoutput&transparent?autoplay=on"></embed>
+  <embed id="spec_pos4" src="https://vdo.ninja/?view=UB2HdBw&label=berci&cleanoutput&transparent?autoplay=on"></embed>
+</div>
+
+<div class="ingame_insert1">
+  <embed id="spec_pos5" src="https://vdo.ninja/?view=UB2HdBw&label=berci&cleanoutput&transparent?autoplay=on"></embed>
+  <embed id="spec_pos6" src="https://vdo.ninja/?view=UB2HdBw&label=berci&cleanoutput&transparent?autoplay=on"></embed>
+  <embed id="spec_pos7" src="https://vdo.ninja/?view=UB2HdBw&label=berci&cleanoutput&transparent?autoplay=on"></embed>
+  <embed id="spec_pos8" src="https://vdo.ninja/?view=UB2HdBw&label=berci&cleanoutput&transparent?autoplay=on"></embed>
+  <embed id="spec_pos9" src="https://vdo.ninja/?view=UB2HdBw&label=berci&cleanoutput&transparent?autoplay=on"></embed>
+</div>
+
+</body>
+
+<script>
+
+$(document).ready(function(){
+  $.ajax({
+    url: "/fill/ingame",
+    type: "POST",
+    success: function(data) {
+      for (var i = 0; i < data.length; i++) {
+        $('#spec_pos' + i + '').prop('src', data[i].view_link + '&cleanoutput&transparent?autoplay=on' );
+      }
+    }
+  });
+});
+
+</script>
+
+</html>

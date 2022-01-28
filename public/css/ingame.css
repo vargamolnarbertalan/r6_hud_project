@@ -1,0 +1,55 @@
+body{
+    height: 1080px;
+    width: 1920px;
+    overflow: hidden;
+    padding: 0px;
+    margin: 0px;
+}
+
+embed{
+  object-fit: cover;
+  height: 101%;
+  text-align: center;
+  position: relative;
+  vertical-align: center;
+  left: -33%;
+  padding: 0px;
+  margin: 0px;
+  overflow: hidden;
+}
+
+.ingame_insert0 {
+  text-align: center;
+  vertical-align: center;
+  overflow: hidden;
+  border-width: 6.35px;
+  border-color: rgb(10, 101, 182);
+  border-style: solid;
+  background-color: black;
+  position: fixed;
+  left: 643px;
+  top: 895px;
+  width: 178.3px;
+  height: 131.3px;
+  z-index: 11;
+  padding: 0px;
+  margin: 0px;
+}
+
+.ingame_insert1 {
+  text-align: center;
+  vertical-align: center;
+  overflow: hidden;
+  border-width: 6.35px;
+  border-color: rgb(227, 128, 29);
+  border-style: solid;
+  background-color: black;
+  position: fixed;
+  left: 643px;
+  top: 895px;
+  width: 178.3px;
+  height: 131.3px;
+  z-index: 11;
+  padding: 0px;
+  margin: 0px;
+}

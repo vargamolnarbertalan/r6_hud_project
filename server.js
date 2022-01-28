@@ -19,7 +19,7 @@ app.set('view engine', 'ejs');
 app.set('views', 'views');
 app.use(express.static('public'));
 
-app.listen(http_port, () => console.log("Admin page is available at " + ip.address() + ":" + http_port + "/admin"));
+app.listen(http_port, () => console.log("Admin page is available at localhost:" + http_port + "/admin"));
 
 const db = mysql.createConnection({
   host: "localhost",
@@ -522,6 +522,31 @@ app.post('/get/edit_team_data', (req, res) => {
   });
 
 });
+
+app.get('/ingame', (req, res) => {
+
+    res.render('ingame');
+
+  });
+
+app.post('/fill/ingame', (req, res) => {
+    var sql = `
+      SELECT * FROM live_players;
+    `;
+    db.query(sql, (err, dbres) => {
+      if (err) {
+        console.log(err.message);
+        res.send(err.message);
+        res.send();
+        //throw err;
+      } else {
+        //console.log("Response:");
+        console.log(dbres);
+        res.send(dbres);
+      }
+    });
+
+  });
 
 wss.on("connection", ws => {
   console.log("New client connected.");
