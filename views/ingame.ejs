@@ -12,19 +12,30 @@
 <body>
 
 <div class="ingame_insert0">
-  <embed id="spec_pos0" src="https://vdo.ninja/?view=UB2HdBw&label=berci&cleanoutput&transparent?autoplay=on"></embed>
-  <embed id="spec_pos1" src="https://vdo.ninja/?view=UB2HdBw&label=berci&cleanoutput&transparent?autoplay=on"></embed>
-  <embed id="spec_pos2" src="https://vdo.ninja/?view=UB2HdBw&label=berci&cleanoutput&transparent?autoplay=on"></embed>
-  <embed id="spec_pos3" src="https://vdo.ninja/?view=UB2HdBw&label=berci&cleanoutput&transparent?autoplay=on"></embed>
-  <embed id="spec_pos4" src="https://vdo.ninja/?view=UB2HdBw&label=berci&cleanoutput&transparent?autoplay=on"></embed>
+  <!-- <img id="spec_pos0_pic" src=""></img> -->
+  <iframe id="spec_pos0" src=""></iframe>
+  <!-- <img id="spec_pos1_pic" src=""></img> -->
+  <iframe id="spec_pos1" src=""></iframe>
+  <!-- <img id="spec_pos2_pic" src=""></img> -->
+  <iframe id="spec_pos2" src=""></iframe>
+  <!-- <img id="spec_pos3_pic" src=""></img> -->
+  <iframe id="spec_pos3" src=""></iframe>
+  <!-- <img id="spec_pos4_pic" src=""></img> -->
+  <iframe id="spec_pos4" src=""></iframe>
+
 </div>
 
 <div class="ingame_insert1">
-  <embed id="spec_pos5" src="https://vdo.ninja/?view=UB2HdBw&label=berci&cleanoutput&transparent?autoplay=on"></embed>
-  <embed id="spec_pos6" src="https://vdo.ninja/?view=UB2HdBw&label=berci&cleanoutput&transparent?autoplay=on"></embed>
-  <embed id="spec_pos7" src="https://vdo.ninja/?view=UB2HdBw&label=berci&cleanoutput&transparent?autoplay=on"></embed>
-  <embed id="spec_pos8" src="https://vdo.ninja/?view=UB2HdBw&label=berci&cleanoutput&transparent?autoplay=on"></embed>
-  <embed id="spec_pos9" src="https://vdo.ninja/?view=UB2HdBw&label=berci&cleanoutput&transparent?autoplay=on"></embed>
+  <iframe id="spec_pos5" src=""></iframe>
+  <!-- <img id="spec_pos5_pic" src=""></img> -->
+  <iframe id="spec_pos6" src=""></iframe>
+  <!-- <img id="spec_pos6_pic" src=""></img> -->
+  <iframe id="spec_pos7" src=""></iframe>
+  <!-- <img id="spec_pos7_pic" src=""></img> -->
+  <iframe id="spec_pos8" src=""></iframe>
+  <!-- <img id="spec_pos8_pic" src=""></img> -->
+  <iframe id="spec_pos9" src=""></iframe>
+  <!-- <img id="spec_pos9_pic" src=""></img> -->
 </div>
 
 </body>
@@ -32,15 +43,42 @@
 <script>
 
 $(document).ready(function(){
+
   $.ajax({
     url: "/fill/ingame",
     type: "POST",
     success: function(data) {
       for (var i = 0; i < data.length; i++) {
         $('#spec_pos' + i + '').prop('src', data[i].view_link + '&cleanoutput&transparent?autoplay=on' );
+        $('#spec_pos' + i + '_pic').prop('src', data[i].avatar);
       }
     }
   });
+
+  const ws = new WebSocket("ws://localhost:6969");
+  var insert_hidden = false;
+
+  ws.addEventListener("open", () =>{
+    console.log("Connected!");
+
+    ws.onmessage = function(e){
+      var server_message = e.data;
+      console.log(server_message);
+      if (server_message == "c" && insert_hidden) {
+        $('body').css('opacity','1');
+        insert_hidden = false;
+      }
+      else if (server_message == "c" && !insert_hidden) {
+        $('body').css('opacity','0');
+        insert_hidden = true;
+      }
+      else if (server_message == "reload_view") {
+        location.reload();
+      }
+    }
+
+  });
+
 });
 
 </script>

@@ -6,16 +6,32 @@ body{
     margin: 0px;
 }
 
-embed{
+iframe{
   object-fit: cover;
-  height: 101%;
+  height: 102%;
   text-align: center;
-  position: relative;
+  position: absolute;
   vertical-align: center;
   left: -33%;
+  top: -2%;
   padding: 0px;
   margin: 0px;
   overflow: hidden;
+  z-index: 1;
+}
+
+img{
+  object-fit: cover;
+  height: 102%;
+  text-align: center;
+  position: absolute;
+  vertical-align: center;
+  left: -33%;
+  top: -2%;
+  padding: 0px;
+  margin: 0px;
+  overflow: hidden;
+  z-index: 0;
 }
 
 .ingame_insert0 {
@@ -31,9 +47,9 @@ embed{
   top: 895px;
   width: 178.3px;
   height: 131.3px;
-  z-index: 11;
   padding: 0px;
   margin: 0px;
+  z-index: -1;
 }
 
 .ingame_insert1 {
@@ -49,7 +65,8 @@ embed{
   top: 895px;
   width: 178.3px;
   height: 131.3px;
-  z-index: 11;
   padding: 0px;
   margin: 0px;
+  z-index: -1;
+  opacity: 0;
 }

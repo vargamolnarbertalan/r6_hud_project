@@ -5,11 +5,15 @@ const wss = new WebSocket.Server({
   port: 6969
 });
 const keypress = require('keypress');
+const keycode = require('keycode');
 
 const bodyParser = require('body-parser');
 const mysql = require("mysql");
 const http_port = 8083;
 const ip = require("ip");
+
+var events = require('events');
+var eventEmitter = new events.EventEmitter();
 
 const morgan = require('morgan'); // get és post logging
 
@@ -45,6 +49,8 @@ db.connect((err) => {
     console.log("Database connected.");
   }
 });
+
+
 
 app.get('/admin', (req, res) => {
 
@@ -109,8 +115,8 @@ app.post('/add/team', (req, res) => {
       res.send();
       //throw err;
     } else {
-      console.log("Response:");
-      console.log(dbres);
+      //console.log("Response:");
+      //console.log(dbres);
       res.render('success', {
         success_message: `${req.body.add_teamname}` + " successfully added!"
       });
@@ -120,6 +126,7 @@ app.post('/add/team', (req, res) => {
 });
 
 app.post('/edit/team', (req, res) => {
+
   var sql = `
   UPDATE teams
   SET teamname = '${req.body.edit_teamname}',
@@ -139,12 +146,13 @@ app.post('/edit/team', (req, res) => {
       res.send();
       //throw err;
     } else {
-      console.log("Response:");
-      console.log(dbres);
+      //console.log("Response:");
+      //console.log(dbres);
     }
     res.render('success', {
       success_message: `${req.body.edit_teamname}` + " successfully edited!"
     });
+    eventEmitter.emit('force_resfresh');
   });
 
 });
@@ -165,11 +173,12 @@ app.post('/delete/team', (req, res) => {
       res.send();
       //throw err;
     } else {
-      console.log("Response:");
-      console.log(dbres);
+      //console.log("Response:");
+      //console.log(dbres);
       res.render('success', {
         success_message: `${req.body.delete_team_list}` + " successfully deleted!"
       });
+      eventEmitter.emit('force_resfresh');
     }
 
   });
@@ -205,8 +214,8 @@ app.post('/add/player', (req, res) => {
       res.send();
       //throw err;
     } else {
-      console.log("Response:");
-      console.log(dbres);
+      //console.log("Response:");
+      //console.log(dbres);
       res.render('success', {
         success_message: `${req.body.add_nickname}` + " successfully added!"
       });
@@ -237,12 +246,13 @@ app.post('/edit/player', (req, res) => {
       res.send();
       //throw err;
     } else {
-      console.log("Response:");
-      console.log(dbres);
+      //console.log("Response:");
+      //console.log(dbres);
     }
     res.render('success', {
       success_message: `${req.body.playeredit_player_list}` + " successfully edited!"
     });
+    eventEmitter.emit('force_resfresh');
   });
 
 });
@@ -260,11 +270,12 @@ app.post('/delete/player', (req, res) => {
       res.send();
       //throw err;
     } else {
-      console.log("Response:");
-      console.log(dbres);
+      //console.log("Response:");
+      //console.log(dbres);
       res.render('success', {
         success_message: `${req.body.delete_player_list}` + " successfully deleted!"
       });
+      eventEmitter.emit('force_resfresh');
     }
 
   });
@@ -282,8 +293,8 @@ app.post('/get/teams', (req, res) => {
       res.send();
       //throw err;
     } else {
-      //console.log("Response:");
-      //console.log(dbres);
+      ////console.log("Response:");
+      ////console.log(dbres);
       res.send(dbres);
     }
   });
@@ -302,8 +313,8 @@ app.post('/get/players', (req, res) => {
       res.send();
       //throw err;
     } else {
-      //console.log("Response:");
-      console.log(dbres);
+      ////console.log("Response:");
+      //console.log(dbres);
       res.send(dbres);
     }
   });
@@ -311,6 +322,7 @@ app.post('/get/players', (req, res) => {
 });
 
 app.post('/match/config', (req, res) => {
+  eventEmitter.emit('force_resfresh');
   var sql = `
   UPDATE live_teams, teams
   SET
@@ -437,8 +449,8 @@ app.post('/match/config', (req, res) => {
       res.send();
       //throw err;
     } else {
-      console.log("Response:");
-      console.log(dbres);
+      //console.log("Response:");
+      //console.log(dbres);
     }
     res.render('success', {
       success_message: "HUDs for " + `${req.body.config_team1}` + " vs " + `${req.body.config_team2}` + " are now live!"
@@ -458,8 +470,8 @@ app.post('/get/live_teams', (req, res) => {
       res.send();
       //throw err;
     } else {
-      //console.log("Response:");
-      //console.log(dbres);
+      ////console.log("Response:");
+      ////console.log(dbres);
       res.send(dbres);
     }
   });
@@ -476,8 +488,8 @@ app.post('/get/live_players', (req, res) => {
       res.send();
       //throw err;
     } else {
-      //console.log("Response:");
-      //console.log(dbres);
+      ////console.log("Response:");
+      ////console.log(dbres);
       res.send(dbres);
     }
   });
@@ -495,8 +507,8 @@ app.post('/get/edit_player_data', (req, res) => {
       res.send();
       //throw err;
     } else {
-      //console.log("Response:");
-      console.log(dbres);
+      ////console.log("Response:");
+      //console.log(dbres);
       res.send(dbres);
     }
   });
@@ -515,8 +527,8 @@ app.post('/get/edit_team_data', (req, res) => {
       res.send();
       //throw err;
     } else {
-      //console.log("Response:");
-      console.log(dbres);
+      ////console.log("Response:");
+      //console.log(dbres);
       res.send(dbres);
     }
   });
@@ -540,8 +552,8 @@ app.post('/fill/ingame', (req, res) => {
         res.send();
         //throw err;
       } else {
-        //console.log("Response:");
-        console.log(dbres);
+        ////console.log("Response:");
+        //console.log(dbres);
         res.send(dbres);
       }
     });
@@ -550,6 +562,13 @@ app.post('/fill/ingame', (req, res) => {
 
 wss.on("connection", ws => {
   console.log("New client connected.");
+
+  var myEventHandler = function () {
+  console.log('Emitted force_resfresh!');
+  ws.send("reload_view");
+}
+
+eventEmitter.on('force_resfresh', myEventHandler);
 
   ws.on("close", ws => {
     console.log("Client disconnected.");
@@ -560,20 +579,27 @@ wss.on("connection", ws => {
     console.log("client message: " + client_message);
   }
 
-  // make `process.stdin` begin emitting "keypress" events
-  keypress(process.stdin);
+  var stdin = process.stdin;
 
-  // listen for the "keypress" event
-  process.stdin.on('keypress', function(ch, key) {
-    console.log('got "keypress"', key);
-    if (key.name == 'c') {
-      ws.send('egy');
-    } else if (key.name == 'd') {
-      ws.send('ketto');
-    }
-  });
+// without this, we would only get streams once enter is pressed
+stdin.setRawMode( true );
 
-  process.stdin.setRawMode(true);
-  process.stdin.resume();
+// resume stdin in the parent process (node app won't quit all by itself
+// unless an error or process.exit() happens)
+stdin.resume();
+
+// i don't want binary, do you?
+stdin.setEncoding( 'utf8' );
+
+// on any data into stdin
+stdin.on( 'data', function( key ){
+  console.log(key + " pressed")
+  // ctrl-c ( end of text )
+  if ( key === '\u001B\u005B\u0032\u0031\u007E' ) {
+    console.log('f10 pressed');
+  }
+  // write the key to stdout all normal like
+  //process.stdout.write( key );
+});
 
 });

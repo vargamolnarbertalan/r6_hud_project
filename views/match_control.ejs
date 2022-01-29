@@ -122,9 +122,7 @@
           type: "POST",
           success: function(data) {
             for (var i = 0; i < data.length; i++) {
-              console.log(data[i].teamname);
               $('#config_team' + (i + 1) + '').val(data[i].teamname);
-              console.log($('#config_team' + (i + 1) + '').val());
             }
             $.ajax({
               url: "/get/players",
@@ -172,8 +170,7 @@
 
     $('#config_team1').on('change', function() {
       $('#submit_button').prop("disabled", false);
-      console.log(this.value);
-      console.log($('#config_team2').val());
+
       if ($('#config_team1').val() == "nan" || $('#config_team2').val() == "nan") {
         $('#submit_button').prop("disabled", true);
       }
@@ -202,8 +199,6 @@
 
     $('#config_team2').on('change', function() {
       $('#submit_button').prop("disabled", false);
-      console.log(this.value);
-      console.log($('#config_team1').val());
       if ($('#config_team1').val() == "nan" || $('#config_team2').val() == "nan") {
         $('#submit_button').prop("disabled", true);
       }

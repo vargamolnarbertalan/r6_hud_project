@@ -30,3 +30,70 @@ ws.onmessage = function(e){
 });
 
 */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+if (key = 'c') {
+  ws.send('c');
+}
+else if (toUnicode(key) == '\u0031') {
+  ws.send('1');
+}
+else if (toUnicode(key) == '\u0032') {
+  ws.send('2');
+}
+else if (toUnicode(key) == '\u0033') {
+  ws.send('3');
+}
+else if (toUnicode(key) == '\u0034') {
+  ws.send('4');
+}
+else if (toUnicode(key) == '\u0035') {
+  ws.send('5');
+}
+else if (toUnicode(key) == '\u0036') {
+  ws.send('6');
+}
+else if (toUnicode(key) == '\u0037') {
+  ws.send('7');
+}
+else if (toUnicode(key) == '\u0038') {
+  ws.send('8');
+}
+else if (toUnicode(key) == '\u0039') {
+  ws.send('9');
+}
+else if (toUnicode(key) == '\u00F6') {
+  ws.send('ö');
+}
+else if (toUnicode(key) == '\u001B\u005B\u0032\u0031\u007E') {
+  ws.send('F10');
+}
+else if (toUnicode(key) == '\u001B\u005B\u0032\u0033\u007E') {
+  ws.send('F11');
+}
+else if (toUnicode(key) == '\u001B\u005B\u0032\u0034\u007E') {
+  ws.send('F12');
+}
