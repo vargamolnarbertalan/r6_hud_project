@@ -4,6 +4,7 @@ body{
     overflow: hidden;
     padding: 0px;
     margin: 0px;
+    background-color: rgba(0, 0, 0, 0.0);
 }
 
 iframe{
@@ -22,15 +23,10 @@ iframe{
 
 img{
   object-fit: cover;
-  height: 102%;
-  text-align: center;
-  position: absolute;
-  vertical-align: center;
-  left: -33%;
-  top: -2%;
+  width: 178.3px;
+  height: 131.3px;
   padding: 0px;
   margin: 0px;
-  overflow: hidden;
   z-index: 0;
 }
 
@@ -68,5 +64,4 @@ img{
   padding: 0px;
   margin: 0px;
   z-index: -1;
-  opacity: 0;
 }

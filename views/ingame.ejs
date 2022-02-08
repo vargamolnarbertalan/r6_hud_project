@@ -11,31 +11,37 @@
 
 <body>
 
+
 <div class="ingame_insert0">
-  <!-- <img id="spec_pos0_pic" src=""></img> -->
+
+  <img id="spec_pos0_pic" src=""></img>
   <iframe id="spec_pos0" src=""></iframe>
-  <!-- <img id="spec_pos1_pic" src=""></img> -->
+  <img id="spec_pos1_pic" src=""></img>
   <iframe id="spec_pos1" src=""></iframe>
-  <!-- <img id="spec_pos2_pic" src=""></img> -->
+  <img id="spec_pos2_pic" src=""></img>
   <iframe id="spec_pos2" src=""></iframe>
-  <!-- <img id="spec_pos3_pic" src=""></img> -->
+  <img id="spec_pos3_pic" src=""></img>
   <iframe id="spec_pos3" src=""></iframe>
-  <!-- <img id="spec_pos4_pic" src=""></img> -->
+  <img id="spec_pos4_pic" src=""></img>
   <iframe id="spec_pos4" src=""></iframe>
 
 </div>
 
+
 <div class="ingame_insert1">
+
+
   <iframe id="spec_pos5" src=""></iframe>
-  <!-- <img id="spec_pos5_pic" src=""></img> -->
+  <img id="spec_pos5_pic" src=""></img>
   <iframe id="spec_pos6" src=""></iframe>
-  <!-- <img id="spec_pos6_pic" src=""></img> -->
+  <img id="spec_pos6_pic" src=""></img>
   <iframe id="spec_pos7" src=""></iframe>
-  <!-- <img id="spec_pos7_pic" src=""></img> -->
+  <img id="spec_pos7_pic" src=""></img>
   <iframe id="spec_pos8" src=""></iframe>
-  <!-- <img id="spec_pos8_pic" src=""></img> -->
+  <img id="spec_pos8_pic" src=""></img>
   <iframe id="spec_pos9" src=""></iframe>
-  <!-- <img id="spec_pos9_pic" src=""></img> -->
+  <img id="spec_pos9_pic" src=""></img>
+
 </div>
 
 </body>
@@ -72,9 +78,158 @@ $(document).ready(function(){
         $('body').css('opacity','0');
         insert_hidden = true;
       }
+      else if (server_message == "force_hide") {
+        $('body').css('opacity','0');
+        insert_hidden = true;
+      }
+      else if (server_message == "force_show") {
+        $('body').css('opacity','1');
+        insert_hidden = false;
+      }
       else if (server_message == "reload_view") {
         location.reload();
       }
+      else if (server_message == "select_pos0") {
+        $('.ingame_insert1').css('opacity','0');
+        $('.ingame_insert0').css('opacity','1');
+        $('#spec_pos0').css('opacity','1');
+        $('#spec_pos1').css('opacity','0');
+        $('#spec_pos2').css('opacity','0');
+        $('#spec_pos3').css('opacity','0');
+        $('#spec_pos4').css('opacity','0');
+        $('#spec_pos5').css('opacity','0');
+        $('#spec_pos6').css('opacity','0');
+        $('#spec_pos7').css('opacity','0');
+        $('#spec_pos8').css('opacity','0');
+        $('#spec_pos9').css('opacity','0');
+      }
+      else if (server_message == "select_pos1") {
+        $('.ingame_insert1').css('opacity','0');
+        $('.ingame_insert0').css('opacity','1');
+        $('#spec_pos0').css('opacity','0');
+        $('#spec_pos1').css('opacity','1');
+        $('#spec_pos2').css('opacity','0');
+        $('#spec_pos3').css('opacity','0');
+        $('#spec_pos4').css('opacity','0');
+        $('#spec_pos5').css('opacity','0');
+        $('#spec_pos6').css('opacity','0');
+        $('#spec_pos7').css('opacity','0');
+        $('#spec_pos8').css('opacity','0');
+        $('#spec_pos9').css('opacity','0');
+      }
+      else if (server_message == "select_pos2") {
+        $('.ingame_insert1').css('opacity','0');
+        $('.ingame_insert0').css('opacity','1');
+        $('#spec_pos0').css('opacity','0');
+        $('#spec_pos1').css('opacity','0');
+        $('#spec_pos2').css('opacity','1');
+        $('#spec_pos3').css('opacity','0');
+        $('#spec_pos4').css('opacity','0');
+        $('#spec_pos5').css('opacity','0');
+        $('#spec_pos6').css('opacity','0');
+        $('#spec_pos7').css('opacity','0');
+        $('#spec_pos8').css('opacity','0');
+        $('#spec_pos9').css('opacity','0');
+      }
+      else if (server_message == "select_pos3") {
+        $('.ingame_insert1').css('opacity','0');
+        $('.ingame_insert0').css('opacity','1');
+        $('#spec_pos0').css('opacity','0');
+        $('#spec_pos1').css('opacity','0');
+        $('#spec_pos2').css('opacity','0');
+        $('#spec_pos3').css('opacity','1');
+        $('#spec_pos4').css('opacity','0');
+        $('#spec_pos5').css('opacity','0');
+        $('#spec_pos6').css('opacity','0');
+        $('#spec_pos7').css('opacity','0');
+        $('#spec_pos8').css('opacity','0');
+        $('#spec_pos9').css('opacity','0');
+      }
+      else if (server_message == "select_pos4") {
+        $('.ingame_insert1').css('opacity','0');
+        $('.ingame_insert0').css('opacity','1');
+        $('#spec_pos0').css('opacity','0');
+        $('#spec_pos1').css('opacity','0');
+        $('#spec_pos2').css('opacity','0');
+        $('#spec_pos3').css('opacity','0');
+        $('#spec_pos4').css('opacity','1');
+        $('#spec_pos5').css('opacity','0');
+        $('#spec_pos6').css('opacity','0');
+        $('#spec_pos7').css('opacity','0');
+        $('#spec_pos8').css('opacity','0');
+        $('#spec_pos9').css('opacity','0');
+      }
+      else if (server_message == "select_pos5") {
+        $('.ingame_insert1').css('opacity','1');
+        $('.ingame_insert0').css('opacity','0');
+        $('#spec_pos0').css('opacity','0');
+        $('#spec_pos1').css('opacity','0');
+        $('#spec_pos2').css('opacity','0');
+        $('#spec_pos3').css('opacity','0');
+        $('#spec_pos4').css('opacity','0');
+        $('#spec_pos5').css('opacity','1');
+        $('#spec_pos6').css('opacity','0');
+        $('#spec_pos7').css('opacity','0');
+        $('#spec_pos8').css('opacity','0');
+        $('#spec_pos9').css('opacity','0');
+      }
+      else if (server_message == "select_pos6") {
+        $('.ingame_insert1').css('opacity','1');
+        $('.ingame_insert0').css('opacity','0');
+        $('#spec_pos0').css('opacity','0');
+        $('#spec_pos1').css('opacity','0');
+        $('#spec_pos2').css('opacity','0');
+        $('#spec_pos3').css('opacity','0');
+        $('#spec_pos4').css('opacity','0');
+        $('#spec_pos5').css('opacity','0');
+        $('#spec_pos6').css('opacity','1');
+        $('#spec_pos7').css('opacity','0');
+        $('#spec_pos8').css('opacity','0');
+        $('#spec_pos9').css('opacity','0');
+      }
+      else if (server_message == "select_pos7") {
+        $('.ingame_insert1').css('opacity','1');
+        $('.ingame_insert0').css('opacity','0');
+        $('#spec_pos0').css('opacity','0');
+        $('#spec_pos1').css('opacity','0');
+        $('#spec_pos2').css('opacity','0');
+        $('#spec_pos3').css('opacity','0');
+        $('#spec_pos4').css('opacity','0');
+        $('#spec_pos5').css('opacity','0');
+        $('#spec_pos6').css('opacity','0');
+        $('#spec_pos7').css('opacity','1');
+        $('#spec_pos8').css('opacity','0');
+        $('#spec_pos9').css('opacity','0');
+      }
+      else if (server_message == "select_pos8") {
+        $('.ingame_insert1').css('opacity','1');
+        $('.ingame_insert0').css('opacity','0');
+        $('#spec_pos0').css('opacity','0');
+        $('#spec_pos1').css('opacity','0');
+        $('#spec_pos2').css('opacity','0');
+        $('#spec_pos3').css('opacity','0');
+        $('#spec_pos4').css('opacity','0');
+        $('#spec_pos5').css('opacity','0');
+        $('#spec_pos6').css('opacity','0');
+        $('#spec_pos7').css('opacity','0');
+        $('#spec_pos8').css('opacity','1');
+        $('#spec_pos9').css('opacity','0');
+      }
+      else if (server_message == "select_pos9") {
+        $('.ingame_insert1').css('opacity','1');
+        $('.ingame_insert0').css('opacity','0');
+        $('#spec_pos0').css('opacity','0');
+        $('#spec_pos1').css('opacity','0');
+        $('#spec_pos2').css('opacity','0');
+        $('#spec_pos3').css('opacity','0');
+        $('#spec_pos4').css('opacity','0');
+        $('#spec_pos5').css('opacity','0');
+        $('#spec_pos6').css('opacity','0');
+        $('#spec_pos7').css('opacity','0');
+        $('#spec_pos8').css('opacity','0');
+        $('#spec_pos9').css('opacity','1');
+      }
+
     }
 
   });
