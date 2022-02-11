@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>R6 HUD FULLSCREEN</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="/css/fullscreen.css">
+</head>
+
+<body>
+
+<div id="infobox">
+ <img id="teamlogo"></img>
+ <div id="playernick">playernick</div>
+ <div id="playerfullname">player fullname</div>
+ <img id="flag"></img>
+</div>
+<div class="ingame_insert0">
+
+  <img id="spec_pos0_pic" src=""></img>
+  <iframe id="spec_pos0" src=""></iframe>
+  <img id="spec_pos1_pic" src=""></img>
+  <iframe id="spec_pos1" src=""></iframe>
+  <img id="spec_pos2_pic" src=""></img>
+  <iframe id="spec_pos2" src=""></iframe>
+  <img id="spec_pos3_pic" src=""></img>
+  <iframe id="spec_pos3" src=""></iframe>
+  <img id="spec_pos4_pic" src=""></img>
+  <iframe id="spec_pos4" src=""></iframe>
+
+</div>
+
+
+<div class="ingame_insert1">
+
+
+  <iframe id="spec_pos5" src=""></iframe>
+  <img id="spec_pos5_pic" src=""></img>
+  <iframe id="spec_pos6" src=""></iframe>
+  <img id="spec_pos6_pic" src=""></img>
+  <iframe id="spec_pos7" src=""></iframe>
+  <img id="spec_pos7_pic" src=""></img>
+  <iframe id="spec_pos8" src=""></iframe>
+  <img id="spec_pos8_pic" src=""></img>
+  <iframe id="spec_pos9" src=""></iframe>
+  <img id="spec_pos9_pic" src=""></img>
+
+</div>
+
+</body>
+
+<script>
+
+var teamlogo = [];
+var playernick = [];
+var playerfullname = [];
+var flag = [];
+
+$(document).ready(function(){
+
+  $.ajax({
+    url: "/fill/ingame",
+    type: "POST",
+    success: function(data) {
+      for (var i = 0; i < data.length; i++) {
+        $('#spec_pos' + i + '').prop('src', data[i].view_link + '&cleanoutput&transparent?autoplay=on' );
+        $('#spec_pos' + i + '_pic').prop('src', data[i].avatar);
+        playernick[i] = data[i].nickname;
+        playerfullname[i] = data[i].fullname;
+        flag[i] = data[i].nationality;
+        console.log(playernick[i] + " " + playerfullname[i] + " " + flag[i])
+      }
+    }
+  });
+
+  $.ajax({
+    url: "/fill/fs_team",
+    type: "POST",
+    success: function(data) {
+      for (var i = 0; i < data.length; i++) {
+        teamlogo[i] = data[i].logo;
+      }
+    }
+  });
+
+  const ws = new WebSocket("ws://localhost:6969");
+  var insert_hidden = false;
+
+  ws.addEventListener("open", () =>{
+    console.log("Connected!");
+
+    ws.onmessage = function(e){
+      var server_message = e.data;
+      console.log(server_message);
+      if (server_message == "reload_view") {
+        location.reload();
+      }
+      else if (server_message == "select_pos0") {
+        $('.ingame_insert1').css('opacity','0');
+        $('.ingame_insert0').css('opacity','1');
+        $('#spec_pos0').css('opacity','1');
+        $('#spec_pos1').css('opacity','0');
+        $('#spec_pos2').css('opacity','0');
+        $('#spec_pos3').css('opacity','0');
+        $('#spec_pos4').css('opacity','0');
+        $('#spec_pos5').css('opacity','0');
+        $('#spec_pos6').css('opacity','0');
+        $('#spec_pos7').css('opacity','0');
+        $('#spec_pos8').css('opacity','0');
+        $('#spec_pos9').css('opacity','0');
+        $('#teamlogo').prop('src', teamlogo[0]);
+        $('#flag').prop('src', flag[0]);
+        $('#playernick').text(playernick[0]);
+        $('#playerfullname').text(playerfullname[0]);
+      }
+      else if (server_message == "select_pos1") {
+        $('.ingame_insert1').css('opacity','0');
+        $('.ingame_insert0').css('opacity','1');
+        $('#spec_pos0').css('opacity','0');
+        $('#spec_pos1').css('opacity','1');
+        $('#spec_pos2').css('opacity','0');
+        $('#spec_pos3').css('opacity','0');
+        $('#spec_pos4').css('opacity','0');
+        $('#spec_pos5').css('opacity','0');
+        $('#spec_pos6').css('opacity','0');
+        $('#spec_pos7').css('opacity','0');
+        $('#spec_pos8').css('opacity','0');
+        $('#spec_pos9').css('opacity','0');
+        $('#teamlogo').prop('src', teamlogo[1]);
+        $('#flag').prop('src', flag[1]);
+        $('#playernick').text(playernick[1]);
+        $('#playerfullname').text(playerfullname[1]);
+      }
+      else if (server_message == "select_pos2") {
+        $('.ingame_insert1').css('opacity','0');
+        $('.ingame_insert0').css('opacity','1');
+        $('#spec_pos0').css('opacity','0');
+        $('#spec_pos1').css('opacity','0');
+        $('#spec_pos2').css('opacity','1');
+        $('#spec_pos3').css('opacity','0');
+        $('#spec_pos4').css('opacity','0');
+        $('#spec_pos5').css('opacity','0');
+        $('#spec_pos6').css('opacity','0');
+        $('#spec_pos7').css('opacity','0');
+        $('#spec_pos8').css('opacity','0');
+        $('#spec_pos9').css('opacity','0');
+        $('#teamlogo').prop('src', teamlogo[2]);
+        $('#flag').prop('src', flag[2]);
+        $('#playernick').text(playernick[2]);
+        $('#playerfullname').text(playerfullname[2]);
+      }
+      else if (server_message == "select_pos3") {
+        $('.ingame_insert1').css('opacity','0');
+        $('.ingame_insert0').css('opacity','1');
+        $('#spec_pos0').css('opacity','0');
+        $('#spec_pos1').css('opacity','0');
+        $('#spec_pos2').css('opacity','0');
+        $('#spec_pos3').css('opacity','1');
+        $('#spec_pos4').css('opacity','0');
+        $('#spec_pos5').css('opacity','0');
+        $('#spec_pos6').css('opacity','0');
+        $('#spec_pos7').css('opacity','0');
+        $('#spec_pos8').css('opacity','0');
+        $('#spec_pos9').css('opacity','0');
+        $('#teamlogo').prop('src', teamlogo[3]);
+        $('#flag').prop('src', flag[3]);
+        $('#playernick').text(playernick[3]);
+        $('#playerfullname').text(playerfullname[3]);
+      }
+      else if (server_message == "select_pos4") {
+        $('.ingame_insert1').css('opacity','0');
+        $('.ingame_insert0').css('opacity','1');
+        $('#spec_pos0').css('opacity','0');
+        $('#spec_pos1').css('opacity','0');
+        $('#spec_pos2').css('opacity','0');
+        $('#spec_pos3').css('opacity','0');
+        $('#spec_pos4').css('opacity','1');
+        $('#spec_pos5').css('opacity','0');
+        $('#spec_pos6').css('opacity','0');
+        $('#spec_pos7').css('opacity','0');
+        $('#spec_pos8').css('opacity','0');
+        $('#spec_pos9').css('opacity','0');
+        $('#teamlogo').prop('src', teamlogo[4]);
+        $('#flag').prop('src', flag[4]);
+        $('#playernick').text(playernick[4]);
+        $('#playerfullname').text(playerfullname[4]);
+      }
+      else if (server_message == "select_pos5") {
+        $('.ingame_insert1').css('opacity','1');
+        $('.ingame_insert0').css('opacity','0');
+        $('#spec_pos0').css('opacity','0');
+        $('#spec_pos1').css('opacity','0');
+        $('#spec_pos2').css('opacity','0');
+        $('#spec_pos3').css('opacity','0');
+        $('#spec_pos4').css('opacity','0');
+        $('#spec_pos5').css('opacity','1');
+        $('#spec_pos6').css('opacity','0');
+        $('#spec_pos7').css('opacity','0');
+        $('#spec_pos8').css('opacity','0');
+        $('#spec_pos9').css('opacity','0');
+        $('#teamlogo').prop('src', teamlogo[5]);
+        $('#flag').prop('src', flag[5]);
+        $('#playernick').text(playernick[5]);
+        $('#playerfullname').text(playerfullname[5]);
+      }
+      else if (server_message == "select_pos6") {
+        $('.ingame_insert1').css('opacity','1');
+        $('.ingame_insert0').css('opacity','0');
+        $('#spec_pos0').css('opacity','0');
+        $('#spec_pos1').css('opacity','0');
+        $('#spec_pos2').css('opacity','0');
+        $('#spec_pos3').css('opacity','0');
+        $('#spec_pos4').css('opacity','0');
+        $('#spec_pos5').css('opacity','0');
+        $('#spec_pos6').css('opacity','1');
+        $('#spec_pos7').css('opacity','0');
+        $('#spec_pos8').css('opacity','0');
+        $('#spec_pos9').css('opacity','0');
+        $('#teamlogo').prop('src', teamlogo[6]);
+        $('#flag').prop('src', flag[6]);
+        $('#playernick').text(playernick[6]);
+        $('#playerfullname').text(playerfullname[6]);
+      }
+      else if (server_message == "select_pos7") {
+        $('.ingame_insert1').css('opacity','1');
+        $('.ingame_insert0').css('opacity','0');
+        $('#spec_pos0').css('opacity','0');
+        $('#spec_pos1').css('opacity','0');
+        $('#spec_pos2').css('opacity','0');
+        $('#spec_pos3').css('opacity','0');
+        $('#spec_pos4').css('opacity','0');
+        $('#spec_pos5').css('opacity','0');
+        $('#spec_pos6').css('opacity','0');
+        $('#spec_pos7').css('opacity','1');
+        $('#spec_pos8').css('opacity','0');
+        $('#spec_pos9').css('opacity','0');
+        $('#teamlogo').prop('src', teamlogo[7]);
+        $('#flag').prop('src', flag[7]);
+        $('#playernick').text(playernick[7]);
+        $('#playerfullname').text(playerfullname[7]);
+      }
+      else if (server_message == "select_pos8") {
+        $('.ingame_insert1').css('opacity','1');
+        $('.ingame_insert0').css('opacity','0');
+        $('#spec_pos0').css('opacity','0');
+        $('#spec_pos1').css('opacity','0');
+        $('#spec_pos2').css('opacity','0');
+        $('#spec_pos3').css('opacity','0');
+        $('#spec_pos4').css('opacity','0');
+        $('#spec_pos5').css('opacity','0');
+        $('#spec_pos6').css('opacity','0');
+        $('#spec_pos7').css('opacity','0');
+        $('#spec_pos8').css('opacity','1');
+        $('#spec_pos9').css('opacity','0');
+        $('#teamlogo').prop('src', teamlogo[8]);
+        $('#flag').prop('src', flag[8]);
+        $('#playernick').text(playernick[8]);
+        $('#playerfullname').text(playerfullname[8]);
+      }
+      else if (server_message == "select_pos9") {
+        $('.ingame_insert1').css('opacity','1');
+        $('.ingame_insert0').css('opacity','0');
+        $('#spec_pos0').css('opacity','0');
+        $('#spec_pos1').css('opacity','0');
+        $('#spec_pos2').css('opacity','0');
+        $('#spec_pos3').css('opacity','0');
+        $('#spec_pos4').css('opacity','0');
+        $('#spec_pos5').css('opacity','0');
+        $('#spec_pos6').css('opacity','0');
+        $('#spec_pos7').css('opacity','0');
+        $('#spec_pos8').css('opacity','0');
+        $('#spec_pos9').css('opacity','1');
+        $('#teamlogo').prop('src', teamlogo[9]);
+        $('#flag').prop('src', flag[9]);
+        $('#playernick').text(playernick[9]);
+        $('#playerfullname').text(playerfullname[9]);
+      }
+
+    }
+
+  });
+
+});
+
+</script>
+
+</html>

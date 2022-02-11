@@ -541,9 +541,34 @@ app.get('/ingame', (req, res) => {
 
   });
 
+app.get('/fullscreen', (req, res) => {
+
+    res.render('fullscreen');
+
+  });
+
 app.post('/fill/ingame', (req, res) => {
     var sql = `
       SELECT * FROM live_players;
+    `;
+    db.query(sql, (err, dbres) => {
+      if (err) {
+        console.log(err.message);
+        res.send(err.message);
+        res.send();
+        //throw err;
+      } else {
+        ////console.log("Response:");
+        //console.log(dbres);
+        res.send(dbres);
+      }
+    });
+
+  });
+
+app.post('/fill/fs_team', (req, res) => {
+    var sql = `
+      SELECT * FROM live_teams;
     `;
     db.query(sql, (err, dbres) => {
       if (err) {

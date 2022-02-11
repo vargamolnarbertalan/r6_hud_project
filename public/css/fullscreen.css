@@ -1,0 +1,129 @@
+body{
+    height: 1080px;
+    width: 1920px;
+    overflow: hidden;
+    padding: 0px;
+    margin: 0px;
+    background-color: rgba(0, 0, 0, 0.0);
+}
+
+iframe{
+  object-fit: cover;
+  height: 102%;
+  width: 102%;
+  text-align: center;
+  position: fixed;
+  vertical-align: center;
+  top: -1%;
+  left: -1%;
+  padding: 0px;
+  margin: 0px;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.ingame_insert0 img{
+  object-fit: cover;
+  width: 1920px;
+  height: 1080px;
+  padding: 0px;
+  margin: 0px;
+  z-index: 0;
+}
+.ingame_insert1 img{
+  object-fit: cover;
+  width: 1920px;
+  height: 1080px;
+  padding: 0px;
+  margin: 0px;
+  z-index: 0;
+}
+
+.ingame_insert0 {
+  text-align: center;
+  vertical-align: center;
+  overflow: hidden;
+  background-color: black;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 1920px;
+  height: 1080px;
+  padding: 0px;
+  margin: 0px;
+  z-index: -1;
+}
+
+.ingame_insert1 {
+  text-align: center;
+  vertical-align: center;
+  overflow: hidden;
+  background-color: black;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 1920px;
+  height: 1080px;
+  padding: 0px;
+  margin: 0px;
+  z-index: -1;
+}
+
+#infobox {
+background-color: rgba(0, 0, 0, 0.702);
+position: fixed;
+left: 26px;
+top: 905px;
+width: 738px;
+height: 152px;
+z-index: 10;
+}
+
+#teamlogo{
+  object-fit: contain;
+  position: fixed;
+  left: 50px;
+  top: 937px;
+  width: 92px;
+  height: 92px;
+  z-index: 14;
+}
+
+#playernick {
+  font-size: 60px;
+  font-family: "Chakra Petch";
+  color: rgb(255, 255, 255);
+  font-weight: bold;
+  text-transform: uppercase;
+  height: 120px;
+  width: 500px;
+  text-align: left;
+  position: fixed;
+  left: 171.094px;
+  top: 922px;
+  z-index: 100;
+}
+
+#playerfullname {
+  font-size: 30px;
+  font-family: "Chakra Petch";
+  color: rgb(255, 255, 255);
+  text-transform: uppercase;
+  text-align: left;
+  position: fixed;
+  left: 228.594px;
+  top: 998px;
+  z-index: 13;
+  height: 120px;
+  width: 500px;
+}
+
+#flag {
+  object-fit: contain;
+  position: fixed;
+  left: 171.094px;
+  top: 1004px;
+  width: 35px;
+  height: 24px;
+  z-index: 12;
+}
