@@ -547,6 +547,18 @@ app.get('/fullscreen', (req, res) => {
 
   });
 
+app.get('/team_left', (req, res) => {
+
+    res.render('team_left');
+
+  });
+
+app.get('/team_right', (req, res) => {
+
+    res.render('team_right');
+
+  });
+
 app.post('/fill/ingame', (req, res) => {
     var sql = `
       SELECT * FROM live_players;

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>R6 HUD RIGHT TEAM</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="/css/team_right.css">
+</head>
+
+<body>
+
+<div id="overlay"></div>
+
+<div id="nick5" class="nick">PLAYER5</div>
+<div id="nick6" class="nick">PLAYER6</div>
+<div id="nick7" class="nick">PLAYER7</div>
+<div id="nick8" class="nick">PLAYER8</div>
+<div id="nick9" class="nick">PLAYER9</div>
+
+  <div id="teamname">TEAM LONGNAME</div>
+ <img id="teamlogo"></img>
+
+<div class="ingame_insert0">
+
+  <img id="spec_pos5_pic" src=""></img>
+  <iframe id="spec_pos5" src=""></iframe>
+  <img id="spec_pos6_pic" src=""></img>
+  <iframe id="spec_pos6" src=""></iframe>
+  <img id="spec_pos7_pic" src=""></img>
+  <iframe id="spec_pos7" src=""></iframe>
+  <img id="spec_pos8_pic" src=""></img>
+  <iframe id="spec_pos8" src=""></iframe>
+  <img id="spec_pos9_pic" src=""></img>
+  <iframe id="spec_pos9" src=""></iframe>
+
+</div>
+
+</body>
+
+<script>
+
+var teamlogo = [];
+var playernick = [];
+
+$(document).ready(function(){
+
+  $.ajax({
+    url: "/fill/ingame",
+    type: "POST",
+    success: function(data) {
+      for (var i = 5; i < 10; i++) {
+        $('#spec_pos' + i + '').prop('src', data[i].view_link + '&cleanoutput&transparent?autoplay=on' );
+        $('#spec_pos' + i + '_pic').prop('src', data[i].avatar);
+        $('#nick' + i + '').text(data[i].nickname);
+      }
+    }
+  });
+
+  $.ajax({
+    url: "/fill/fs_team",
+    type: "POST",
+    success: function(data) {
+
+        $('#teamlogo').prop('src', data[1].logo);
+        $('#teamname').text(data[1].teamname);
+
+    }
+  });
+
+ const ws = new WebSocket("ws://localhost:6969");
+
+  ws.addEventListener("open", () =>{
+    console.log("Connected!");
+
+    ws.onmessage = function(e){
+      var server_message = e.data;
+      console.log(server_message);
+      if (server_message == "reload_view") {
+        location.reload();
+      }
+    }
+});
+
+});
+</script>
+
+</html>

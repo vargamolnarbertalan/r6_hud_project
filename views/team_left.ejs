@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>R6 HUD LEFT TEAM</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="/css/team_left.css">
+</head>
+
+<body>
+
+<div id="overlay"></div>
+
+<div id="nick0" class="nick">PLAYER0</div>
+<div id="nick1" class="nick">PLAYER1</div>
+<div id="nick2" class="nick">PLAYER2</div>
+<div id="nick3" class="nick">PLAYER3</div>
+<div id="nick4" class="nick">PLAYER4</div>
+
+  <div id="teamname">TEAM LONGNAME</div>
+ <img id="teamlogo"></img>
+
+<div class="ingame_insert0">
+
+  <img id="spec_pos0_pic" src=""></img>
+  <iframe id="spec_pos0" src=""></iframe>
+  <img id="spec_pos1_pic" src=""></img>
+  <iframe id="spec_pos1" src=""></iframe>
+  <img id="spec_pos2_pic" src=""></img>
+  <iframe id="spec_pos2" src=""></iframe>
+  <img id="spec_pos3_pic" src=""></img>
+  <iframe id="spec_pos3" src=""></iframe>
+  <img id="spec_pos4_pic" src=""></img>
+  <iframe id="spec_pos4" src=""></iframe>
+
+</div>
+
+</body>
+
+<script>
+
+var teamlogo = [];
+var playernick = [];
+
+$(document).ready(function(){
+
+  $.ajax({
+    url: "/fill/ingame",
+    type: "POST",
+    success: function(data) {
+      for (var i = 0; i < 5; i++) {
+        $('#spec_pos' + i + '').prop('src', data[i].view_link + '&cleanoutput&transparent?autoplay=on' );
+        $('#spec_pos' + i + '_pic').prop('src', data[i].avatar);
+        $('#nick' + i + '').text(data[i].nickname);
+      }
+    }
+  });
+
+  $.ajax({
+    url: "/fill/fs_team",
+    type: "POST",
+    success: function(data) {
+
+        $('#teamlogo').prop('src', data[0].logo);
+        $('#teamname').text(data[0].teamname);
+
+    }
+  });
+
+ const ws = new WebSocket("ws://localhost:6969");
+
+  ws.addEventListener("open", () =>{
+    console.log("Connected!");
+
+    ws.onmessage = function(e){
+      var server_message = e.data;
+      console.log(server_message);
+      if (server_message == "reload_view") {
+        location.reload();
+      }
+    }
+});
+
+});
+</script>
+
+</html>
