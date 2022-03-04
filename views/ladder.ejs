@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>R6 HUD LADDER</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="/css/ladder.css">
+</head>
+
+<body>
+
+<div id="overlay"></div>
+<div id="nick0" class="nick">PLAYER0</div>
+<div id="nick1" class="nick">PLAYER1</div>
+<div id="nick2" class="nick">PLAYER2</div>
+<div id="nick3" class="nick">PLAYER3</div>
+<div id="nick4" class="nick">PLAYER4</div>
+<div id="nick5" class="nick">PLAYER5</div>
+<div id="nick6" class="nick">PLAYER6</div>
+<div id="nick7" class="nick">PLAYER7</div>
+<div id="nick8" class="nick">PLAYER8</div>
+<div id="nick9" class="nick">PLAYER9</div>
+
+<div id="container0" style="width: 211px; height: 158px; overflow: hidden">
+  <iframe id="spec_pos0" frameBorder="0" style="position: relative; left: -33%" src=""></iframe>
+</div>
+
+<div id="container1" style="width: 211px; height: 158px; overflow: hidden">
+  <iframe id="spec_pos1" frameBorder="0" style="position: relative; left: -33%" src=""></iframe>
+</div>
+
+<div id="container2" style="width: 211px; height: 158px; overflow: hidden">
+  <iframe id="spec_pos2" frameBorder="0" style="position: relative; left: -33%" src=""></iframe>
+</div>
+
+<div id="container3" style="width: 211px; height: 158px; overflow: hidden">
+  <iframe id="spec_pos3" frameBorder="0" style="position: relative; left: -33%" src=""></iframe>
+</div>
+
+<div id="container4" style="width: 211px; height: 158px; overflow: hidden">
+  <iframe id="spec_pos4" frameBorder="0" style="position: relative; left: -33%" src=""></iframe>
+</div>
+
+  <img id="spec_pos0_pic" src=""></img>
+  <img id="spec_pos1_pic" src=""></img>
+  <img id="spec_pos2_pic" src=""></img>
+  <img id="spec_pos3_pic" src=""></img>
+  <img id="spec_pos4_pic" src=""></img>
+
+
+</div>
+
+</body>
+
+<script>
+
+$(document).ready(function(){
+
+  $.ajax({
+    url: "/fill/ingame",
+    type: "POST",
+    success: function(data) {
+      for (var i = 0; i < data.length; i++) {
+        $('#spec_pos' + i + '').prop('src', data[i].view_link + '&cleanoutput&transparent?autoplay=on' );
+        $('#spec_pos' + i + '_pic').prop('src', data[i].avatar);
+        $('#nick' + i + '').text(data[i].nickname);
+      }
+    }
+  });
+
+  $.ajax({
+    url: "/fill/fs_team",
+    type: "POST",
+    success: function(data) {
+
+        $('#teamlogo').prop('src', data[1].logo);
+        $('#teamname').text(data[1].teamname);
+
+    }
+  });
+
+ const ws = new WebSocket("ws://localhost:6969");
+
+  ws.addEventListener("open", () =>{
+    console.log("Connected!");
+
+    ws.onmessage = function(e){
+      var server_message = e.data;
+      console.log(server_message);
+      if (server_message == "reload_view") {
+        location.reload();
+      }
+    }
+});
+
+});
+</script>
+
+</html>
