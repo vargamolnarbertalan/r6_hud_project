@@ -626,22 +626,22 @@ app.post('/fill/fs_team', (req, res) => {
   });
 
 wss.on("connection", ws => {
-  console.log("New client connected.");
+  //console.log("New client connected.");
 
   var myEventHandler = function () {
-  console.log('Emitted force_resfresh!');
+  //console.log('Emitted force_resfresh!');
   ws.send("reload_view");
 }
 
 eventEmitter.on('force_resfresh', myEventHandler);
 
   ws.on("close", ws => {
-    console.log("Client disconnected.");
+    //console.log("Client disconnected.");
   });
 
   ws.onmessage = function(e) {
     var client_message = e.data;
-    console.log("client message: " + client_message);
+    //console.log("client message: " + client_message);
   }
 
   var stdin = process.stdin;
@@ -658,63 +658,63 @@ stdin.setEncoding( 'utf8' );
 
 // on any data into stdin
 stdin.on( 'data', function( key ){
-  console.log(key + " pressed");
-   console.log(toUnicode(key));
+  //console.log(key + " pressed");
+  // console.log(toUnicode(key));
 
   if ( key.toLowerCase() == 'ö' ) {
-    console.log("select_pos9");
+    //console.log("select_pos9");
     ws.send("select_pos9");
   }
   else if (key == '1') {
-    console.log("select_pos0");
+    //console.log("select_pos0");
     ws.send("select_pos0");
   }
   else if (key == '2') {
-    console.log("select_pos1");
+    //console.log("select_pos1");
     ws.send("select_pos1");
   }
   else if (key == '3') {
-    console.log("select_pos2");
+    //console.log("select_pos2");
     ws.send("select_pos2");
   }
   else if (key == '4') {
-    console.log("select_pos3");
+    //console.log("select_pos3");
     ws.send("select_pos3");
   }
   else if (key == '5') {
-    console.log("select_pos4");
+    //console.log("select_pos4");
     ws.send("select_pos4");
   }
   else if (key == '6') {
-    console.log("select_pos5");
+    //console.log("select_pos5");
     ws.send("select_pos5");
   }
   else if (key == '7') {
-    console.log("select_pos6");
+    //console.log("select_pos6");
     ws.send("select_pos6");
   }
   else if (key == '8') {
-    console.log("select_pos7");
+    //console.log("select_pos7");
     ws.send("select_pos7");
   }
   else if (key == '9') {
-    console.log("select_pos8");
+    //console.log("select_pos8");
     ws.send("select_pos8");
   }
   else if (key == '\u001B\u005B\u0032\u0031\u007E') { // f10
-    console.log("reload_view");
+    //console.log("reload_view");
     ws.send("reload_view");
   }
   else if (key == '\u001B\u005B\u0032\u0033\u007E') { // f11
-    console.log("force_hide");
+    //console.log("force_hide");
     ws.send("force_hide");
   }
   else if (key == '\u001B\u005B\u0032\u0034\u007E') { // f12
-    console.log("force_show");
+    //console.log("force_show");
     ws.send("force_show");
   }
   else if (key.toLowerCase() == 'c') { // f12
-    console.log("toggle c");
+    //console.log("toggle c");
     ws.send("c");
   }
 
