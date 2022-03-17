@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>R6 HUD PICKSCREEN</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="/css/pickscreen.css">
+</head>
+
+<body>
+
+
+
+<div id="container0" style="width: 333px; height: 187px; overflow: hidden">
+  <iframe id="spec_pos0" frameBorder="0" style="position: relative" src=""></iframe>
+</div>
+
+<div id="container1" style="width: 333px; height: 187px; overflow: hidden">
+  <iframe id="spec_pos1" frameBorder="0" style="position: relative" src=""></iframe>
+</div>
+
+<div id="container2" style="width: 333px; height: 187px; overflow: hidden">
+  <iframe id="spec_pos2" frameBorder="0" style="position: relative" src=""></iframe>
+</div>
+
+<div id="container3" style="width: 333px; height: 187px; overflow: hidden">
+  <iframe id="spec_pos3" frameBorder="0" style="position: relative" src=""></iframe>
+</div>
+
+<div id="container4" style="width: 333px; height: 187px; overflow: hidden">
+  <iframe id="spec_pos4" frameBorder="0" style="position: relative" src=""></iframe>
+</div>
+
+  <img id="spec_pos0_pic" src=""></img>
+  <img id="spec_pos1_pic" src=""></img>
+  <img id="spec_pos2_pic" src=""></img>
+  <img id="spec_pos3_pic" src=""></img>
+  <img id="spec_pos4_pic" src=""></img>
+
+  <div id="container5" style="width: 333px; height: 187px; overflow: hidden">
+    <iframe id="spec_pos5" frameBorder="0" style="position: relative" src=""></iframe>
+  </div>
+
+  <div id="container6" style="width: 333px; height: 187px; overflow: hidden">
+    <iframe id="spec_pos6" frameBorder="0" style="position: relative" src=""></iframe>
+  </div>
+
+  <div id="container7" style="width: 333px; height: 187px; overflow: hidden">
+    <iframe id="spec_pos7" frameBorder="0" style="position: relative" src=""></iframe>
+  </div>
+
+  <div id="container8" style="width: 333px; height: 187px; overflow: hidden">
+    <iframe id="spec_pos8" frameBorder="0" style="position: relative" src=""></iframe>
+  </div>
+
+  <div id="container9" style="width: 333px; height: 187px; overflow: hidden">
+    <iframe id="spec_pos9" frameBorder="0" style="position: relative" src=""></iframe>
+  </div>
+
+    <img id="spec_pos5_pic" src=""></img>
+    <img id="spec_pos6_pic" src=""></img>
+    <img id="spec_pos7_pic" src=""></img>
+    <img id="spec_pos8_pic" src=""></img>
+    <img id="spec_pos9_pic" src=""></img>
+
+</div>
+
+</body>
+
+<script>
+
+$(document).ready(function(){
+
+  $.ajax({
+    url: "/fill/ingame",
+    type: "POST",
+    success: function(data) {
+      for (var i = 0; i < data.length; i++) {
+        $('#spec_pos' + i + '').prop('src', data[i].view_link + '&cleanoutput&transparent?autoplay=on' );
+        $('#spec_pos' + i + '_pic').prop('src', data[i].avatar);
+      }
+    }
+  });
+
+ const ws = new WebSocket("ws://localhost:6969");
+
+  ws.addEventListener("open", () =>{
+    console.log("Connected!");
+
+    ws.onmessage = function(e){
+      var server_message = e.data;
+      console.log(server_message);
+      if (server_message == "reload_view") {
+        location.reload();
+      }
+    }
+});
+
+});
+</script>
+
+</html>
