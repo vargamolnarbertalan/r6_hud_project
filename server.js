@@ -17,23 +17,26 @@ var eventEmitter = new events.EventEmitter();
 
 const morgan = require('morgan'); // get és post logging
 
+const prompt = require('prompt-sync')();
+
 const app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 app.use(express.static('public'));
 
-app.listen(http_port, () => console.log("Admin page is available at localhost:" + http_port + "/admin"));
+const db_host = prompt(`IP address of the database host: `);
+
 
 const db = mysql.createConnection({
-  host: "localhost",
+  host: db_host,
   user: "root",
   password: "",
   database: "r6_hud_db",
   multipleStatements: true
 });
 
-app.use(morgan('dev')); // get és post logging
+//app.use(morgan('dev')); // get és post logging
 //app.use(express.static('public'));
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({
@@ -43,10 +46,23 @@ app.use(bodyParser.json());
 
 db.connect((err) => {
   if (err) {
-    console.log("Couldn't connect to database");
-    console.log(err.message);
+    console.log("\x1b[31m%s\x1b[0m","Couldn't connect to database.");
+    console.log("Error message: " + err.message);
+    console.log("--- Close the app and try again ---");
   } else {
-    console.log("Database connected.");
+    app.listen(http_port);
+    console.log("\x1b[32m%s\x1b[0m","Database connected.");
+    console.log("--- Access config pages via the links below ---");
+    console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/admin");
+    console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/match_control");
+    console.log("--- Access views via the links below ---");
+    console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/ingame");
+    console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/fullscreen");
+    console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/ladder");
+    console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/pickscreen");
+    console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/team_left");
+    console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/team_right");
+
   }
 });
 
