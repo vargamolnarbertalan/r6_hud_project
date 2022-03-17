@@ -565,6 +565,12 @@ app.get('/team_right', (req, res) => {
 
     });
 
+  app.get('/pickscreen', (req, res) => {
+
+      res.render('pickscreen');
+
+    });
+
 app.post('/fill/ingame', (req, res) => {
     var sql = `
       SELECT * FROM live_players;
