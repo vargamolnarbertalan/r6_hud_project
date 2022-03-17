@@ -149,9 +149,17 @@ app.post('/edit/team', (req, res) => {
   shorthandle = '${req.body.edit_shorthandle}',
   logo = '${req.body.edit_logo}'
   WHERE shorthandle = '${req.body.edit_team_list}';
+
   UPDATE players
   SET team_id = '${req.body.edit_shorthandle}'
   WHERE team_id = '${req.body.edit_team_list}';
+
+  UPDATE live_teams
+  SET teamname = '${req.body.edit_teamname}',
+  shorthandle = '${req.body.edit_shorthandle}',
+  logo = '${req.body.edit_logo}'
+  WHERE shorthandle = '${req.body.edit_team_list}';
+
   `;
   db.query(sql, (err, dbres) => {
     if (err) {
@@ -164,11 +172,12 @@ app.post('/edit/team', (req, res) => {
     } else {
       //console.log("Response:");
       //console.log(dbres);
+      res.render('success', {
+        success_message: `${req.body.edit_teamname}` + " successfully edited!"
+      });
+      eventEmitter.emit('force_resfresh');
     }
-    res.render('success', {
-      success_message: `${req.body.edit_teamname}` + " successfully edited!"
-    });
-    eventEmitter.emit('force_resfresh');
+
   });
 
 });
@@ -176,9 +185,17 @@ app.post('/edit/team', (req, res) => {
 app.post('/delete/team', (req, res) => {
   var sql = `
   DELETE FROM teams WHERE shorthandle = '${req.body.delete_team_list}';
+
   UPDATE players
   SET team_id = 'NULL'
   WHERE team_id = '${req.body.delete_team_list}';
+
+  UPDATE live_teams
+  SET teamname = 'NULL',
+  shorthandle = 'NULL',
+  logo = 'NULL'
+  WHERE shorthandle = '${req.body.delete_team_list}';
+
   `;
   db.query(sql, (err, dbres) => {
     if (err) {
@@ -252,6 +269,15 @@ app.post('/edit/player', (req, res) => {
   view_link = '${req.body.edit_view_link}',
   avatar = '${req.body.edit_avatar}'
   WHERE nickname = '${req.body.playeredit_player_list}';
+
+  UPDATE live_players
+  SET nickname = '${req.body.playeredit_player_list}',
+  fullname = '${req.body.edit_fullname}',
+  nationality = '${req.body.edit_nationality}',
+  view_link = '${req.body.edit_view_link}',
+  avatar = '${req.body.edit_avatar}'
+  WHERE nickname = '${req.body.playeredit_player_list}';
+
   `;
   db.query(sql, (err, dbres) => {
     if (err) {
@@ -264,11 +290,12 @@ app.post('/edit/player', (req, res) => {
     } else {
       //console.log("Response:");
       //console.log(dbres);
+      res.render('success', {
+        success_message: `${req.body.playeredit_player_list}` + " successfully edited!"
+      });
+      eventEmitter.emit('force_resfresh');
     }
-    res.render('success', {
-      success_message: `${req.body.playeredit_player_list}` + " successfully edited!"
-    });
-    eventEmitter.emit('force_resfresh');
+
   });
 
 });
@@ -276,6 +303,15 @@ app.post('/edit/player', (req, res) => {
 app.post('/delete/player', (req, res) => {
   var sql = `
   DELETE FROM players WHERE nickname = '${req.body.delete_player_list}';
+
+  UPDATE live_players
+  SET nickname = 'NULL',
+  fullname = 'NULL',
+  nationality = 'NULL',
+  view_link = 'NULL',
+  avatar = 'NULL'
+  WHERE nickname = '${req.body.delete_player_list}';
+
   `;
   db.query(sql, (err, dbres) => {
     if (err) {
@@ -338,7 +374,7 @@ app.post('/get/players', (req, res) => {
 });
 
 app.post('/match/config', (req, res) => {
-  eventEmitter.emit('force_resfresh');
+
   var sql = `
   UPDATE live_teams, teams
   SET
@@ -467,10 +503,12 @@ app.post('/match/config', (req, res) => {
     } else {
       //console.log("Response:");
       //console.log(dbres);
+      res.render('success', {
+        success_message: "HUDs for " + `${req.body.config_team1}` + " vs " + `${req.body.config_team2}` + " are now live!"
+      });
+      eventEmitter.emit('force_resfresh');
     }
-    res.render('success', {
-      success_message: "HUDs for " + `${req.body.config_team1}` + " vs " + `${req.body.config_team2}` + " are now live!"
-    });
+
   });
 
 });
