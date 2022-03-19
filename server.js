@@ -1,5 +1,5 @@
 const express = require("express");
-
+const ioHook = require('iohook');
 const WebSocket = require("ws");
 const wss = new WebSocket.Server({
   port: 6969
@@ -25,6 +25,7 @@ app.set('view engine', 'ejs');
 app.set('views', 'views');
 app.use(express.static('public'));
 
+console.clear();
 const db_host = prompt(`IP address of the database host: `);
 
 
@@ -682,8 +683,58 @@ eventEmitter.on('force_resfresh', myEventHandler);
     //console.log("client message: " + client_message);
   }
 
-  var stdin = process.stdin;
+//var stdin = process.stdin;
 
+ioHook.on("keypress", event => {
+//console.log(event);
+if (event.rawcode == 67) {
+  ws.send("c");
+}
+else if (event.rawcode == 192) {
+  ws.send("select_pos9");
+}
+else if (event.rawcode == 49) {
+  ws.send("select_pos0");
+}
+else if (event.rawcode == 50) {
+  ws.send("select_pos1");
+}
+else if (event.rawcode == 51) {
+  ws.send("select_pos2");
+}
+else if (event.rawcode == 52) {
+  ws.send("select_pos3");
+}
+else if (event.rawcode == 53) {
+  ws.send("select_pos4");
+}
+else if (event.rawcode == 54) {
+  ws.send("select_pos5");
+}
+else if (event.rawcode == 55) {
+  ws.send("select_pos6");
+}
+else if (event.rawcode == 56) {
+  ws.send("select_pos7");
+}
+else if (event.rawcode == 57) {
+  ws.send("select_pos8");
+}
+else if (event.rawcode == 82 && event.altKey == true) { //alt + r
+  ws.send("reload_view");
+}
+else if (event.rawcode == 72 && event.altKey == true) { //alt + h
+  ws.send("force_hide");
+}
+else if (event.rawcode == 83 && event.altKey == true) { //alt + s
+  ws.send("force_show");
+}
+});
+ioHook.start();
+
+});
+
+/*
 // without this, we would only get streams once enter is pressed
 stdin.setRawMode( true );
 
@@ -771,4 +822,4 @@ function toUnicode(theString) {
     unicodeString += theUnicode;
   }
   return unicodeString;
-}
+}*/
