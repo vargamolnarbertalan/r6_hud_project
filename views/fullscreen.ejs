@@ -18,37 +18,57 @@
  <div id="playerfullname">player fullname</div>
  <img id="flag"></img>
 </div>
-<div class="ingame_insert0">
+<div id="container0" style="width: 1920px; height: 1080px; overflow: hidden">
+  <iframe id="spec_pos0" frameBorder="0" style="position: relative" src=""></iframe>
+</div>
+
+<div id="container1" style="width: 1920px; height: 1080px; overflow: hidden">
+  <iframe id="spec_pos1" frameBorder="0" style="position: relative" src=""></iframe>
+</div>
+
+<div id="container2" style="width: 1920px; height: 1080px; overflow: hidden">
+  <iframe id="spec_pos2" frameBorder="0" style="position: relative" src=""></iframe>
+</div>
+
+<div id="container3" style="width: 1920px; height: 1080px; overflow: hidden">
+  <iframe id="spec_pos3" frameBorder="0" style="position: relative" src=""></iframe>
+</div>
+
+<div id="container4" style="width: 1920px; height: 1080px; overflow: hidden">
+  <iframe id="spec_pos4" frameBorder="0" style="position: relative" src=""></iframe>
+</div>
 
   <img id="spec_pos0_pic" src=""></img>
-  <iframe id="spec_pos0" src=""></iframe>
   <img id="spec_pos1_pic" src=""></img>
-  <iframe id="spec_pos1" src=""></iframe>
   <img id="spec_pos2_pic" src=""></img>
-  <iframe id="spec_pos2" src=""></iframe>
   <img id="spec_pos3_pic" src=""></img>
-  <iframe id="spec_pos3" src=""></iframe>
   <img id="spec_pos4_pic" src=""></img>
-  <iframe id="spec_pos4" src=""></iframe>
 
-</div>
+  <div id="container5" style="width: 1920px; height: 1080px; overflow: hidden">
+    <iframe id="spec_pos5" frameBorder="0" style="position: relative" src=""></iframe>
+  </div>
 
+  <div id="container6" style="width: 1920px; height: 1080px; overflow: hidden">
+    <iframe id="spec_pos6" frameBorder="0" style="position: relative" src=""></iframe>
+  </div>
 
-<div class="ingame_insert1">
+  <div id="container7" style="width: 1920px; height: 1080px; overflow: hidden">
+    <iframe id="spec_pos7" frameBorder="0" style="position: relative" src=""></iframe>
+  </div>
 
+  <div id="container8" style="width: 1920px; height: 1080px; overflow: hidden">
+    <iframe id="spec_pos8" frameBorder="0" style="position: relative" src=""></iframe>
+  </div>
 
-  <iframe id="spec_pos5" src=""></iframe>
-  <img id="spec_pos5_pic" src=""></img>
-  <iframe id="spec_pos6" src=""></iframe>
-  <img id="spec_pos6_pic" src=""></img>
-  <iframe id="spec_pos7" src=""></iframe>
-  <img id="spec_pos7_pic" src=""></img>
-  <iframe id="spec_pos8" src=""></iframe>
-  <img id="spec_pos8_pic" src=""></img>
-  <iframe id="spec_pos9" src=""></iframe>
-  <img id="spec_pos9_pic" src=""></img>
+  <div id="container9" style="width: 1920px; height: 1080px; overflow: hidden">
+    <iframe id="spec_pos9" frameBorder="0" style="position: relative" src=""></iframe>
+  </div>
 
-</div>
+    <img id="spec_pos5_pic" src=""></img>
+    <img id="spec_pos6_pic" src=""></img>
+    <img id="spec_pos7_pic" src=""></img>
+    <img id="spec_pos8_pic" src=""></img>
+    <img id="spec_pos9_pic" src=""></img>
 
 </body>
 
@@ -111,6 +131,16 @@ $(document).ready(function(){
         $('#spec_pos7').css('opacity','0');
         $('#spec_pos8').css('opacity','0');
         $('#spec_pos9').css('opacity','0');
+        $('#spec_pos0_pic').css('opacity','1');
+        $('#spec_pos1_pic').css('opacity','0');
+        $('#spec_pos2_pic').css('opacity','0');
+        $('#spec_pos3_pic').css('opacity','0');
+        $('#spec_pos4_pic').css('opacity','0');
+        $('#spec_pos5_pic').css('opacity','0');
+        $('#spec_pos6_pic').css('opacity','0');
+        $('#spec_pos7_pic').css('opacity','0');
+        $('#spec_pos8_pic').css('opacity','0');
+        $('#spec_pos9_pic').css('opacity','0');
         $('#teamlogo').prop('src', teamlogo[0]);
         $('#flag').prop('src', flag[0]);
         $('#playernick').text(playernick[0]);
@@ -129,6 +159,16 @@ $(document).ready(function(){
         $('#spec_pos7').css('opacity','0');
         $('#spec_pos8').css('opacity','0');
         $('#spec_pos9').css('opacity','0');
+        $('#spec_pos0_pic').css('opacity','0');
+        $('#spec_pos1_pic').css('opacity','1');
+        $('#spec_pos2_pic').css('opacity','0');
+        $('#spec_pos3_pic').css('opacity','0');
+        $('#spec_pos4_pic').css('opacity','0');
+        $('#spec_pos5_pic').css('opacity','0');
+        $('#spec_pos6_pic').css('opacity','0');
+        $('#spec_pos7_pic').css('opacity','0');
+        $('#spec_pos8_pic').css('opacity','0');
+        $('#spec_pos9_pic').css('opacity','0');
         $('#teamlogo').prop('src', teamlogo[1]);
         $('#flag').prop('src', flag[1]);
         $('#playernick').text(playernick[1]);
@@ -147,6 +187,16 @@ $(document).ready(function(){
         $('#spec_pos7').css('opacity','0');
         $('#spec_pos8').css('opacity','0');
         $('#spec_pos9').css('opacity','0');
+        $('#spec_pos0_pic').css('opacity','0');
+        $('#spec_pos1_pic').css('opacity','0');
+        $('#spec_pos2_pic').css('opacity','1');
+        $('#spec_pos3_pic').css('opacity','0');
+        $('#spec_pos4_pic').css('opacity','0');
+        $('#spec_pos5_pic').css('opacity','0');
+        $('#spec_pos6_pic').css('opacity','0');
+        $('#spec_pos7_pic').css('opacity','0');
+        $('#spec_pos8_pic').css('opacity','0');
+        $('#spec_pos9_pic').css('opacity','0');
         $('#teamlogo').prop('src', teamlogo[2]);
         $('#flag').prop('src', flag[2]);
         $('#playernick').text(playernick[2]);
@@ -165,6 +215,16 @@ $(document).ready(function(){
         $('#spec_pos7').css('opacity','0');
         $('#spec_pos8').css('opacity','0');
         $('#spec_pos9').css('opacity','0');
+        $('#spec_pos0_pic').css('opacity','0');
+        $('#spec_pos1_pic').css('opacity','0');
+        $('#spec_pos2_pic').css('opacity','0');
+        $('#spec_pos3_pic').css('opacity','1');
+        $('#spec_pos4_pic').css('opacity','0');
+        $('#spec_pos5_pic').css('opacity','0');
+        $('#spec_pos6_pic').css('opacity','0');
+        $('#spec_pos7_pic').css('opacity','0');
+        $('#spec_pos8_pic').css('opacity','0');
+        $('#spec_pos9_pic').css('opacity','0');
         $('#teamlogo').prop('src', teamlogo[3]);
         $('#flag').prop('src', flag[3]);
         $('#playernick').text(playernick[3]);
@@ -183,6 +243,16 @@ $(document).ready(function(){
         $('#spec_pos7').css('opacity','0');
         $('#spec_pos8').css('opacity','0');
         $('#spec_pos9').css('opacity','0');
+        $('#spec_pos0_pic').css('opacity','0');
+        $('#spec_pos1_pic').css('opacity','0');
+        $('#spec_pos2_pic').css('opacity','0');
+        $('#spec_pos3_pic').css('opacity','0');
+        $('#spec_pos4_pic').css('opacity','1');
+        $('#spec_pos5_pic').css('opacity','0');
+        $('#spec_pos6_pic').css('opacity','0');
+        $('#spec_pos7_pic').css('opacity','0');
+        $('#spec_pos8_pic').css('opacity','0');
+        $('#spec_pos9_pic').css('opacity','0');
         $('#teamlogo').prop('src', teamlogo[4]);
         $('#flag').prop('src', flag[4]);
         $('#playernick').text(playernick[4]);
@@ -201,6 +271,16 @@ $(document).ready(function(){
         $('#spec_pos7').css('opacity','0');
         $('#spec_pos8').css('opacity','0');
         $('#spec_pos9').css('opacity','0');
+        $('#spec_pos0_pic').css('opacity','0');
+        $('#spec_pos1_pic').css('opacity','0');
+        $('#spec_pos2_pic').css('opacity','0');
+        $('#spec_pos3_pic').css('opacity','0');
+        $('#spec_pos4_pic').css('opacity','0');
+        $('#spec_pos5_pic').css('opacity','1');
+        $('#spec_pos6_pic').css('opacity','0');
+        $('#spec_pos7_pic').css('opacity','0');
+        $('#spec_pos8_pic').css('opacity','0');
+        $('#spec_pos9_pic').css('opacity','0');
         $('#teamlogo').prop('src', teamlogo[5]);
         $('#flag').prop('src', flag[5]);
         $('#playernick').text(playernick[5]);
@@ -219,6 +299,16 @@ $(document).ready(function(){
         $('#spec_pos7').css('opacity','0');
         $('#spec_pos8').css('opacity','0');
         $('#spec_pos9').css('opacity','0');
+        $('#spec_pos0_pic').css('opacity','0');
+        $('#spec_pos1_pic').css('opacity','0');
+        $('#spec_pos2_pic').css('opacity','0');
+        $('#spec_pos3_pic').css('opacity','0');
+        $('#spec_pos4_pic').css('opacity','0');
+        $('#spec_pos5_pic').css('opacity','0');
+        $('#spec_pos6_pic').css('opacity','1');
+        $('#spec_pos7_pic').css('opacity','0');
+        $('#spec_pos8_pic').css('opacity','0');
+        $('#spec_pos9_pic').css('opacity','0');
         $('#teamlogo').prop('src', teamlogo[6]);
         $('#flag').prop('src', flag[6]);
         $('#playernick').text(playernick[6]);
@@ -237,6 +327,16 @@ $(document).ready(function(){
         $('#spec_pos7').css('opacity','1');
         $('#spec_pos8').css('opacity','0');
         $('#spec_pos9').css('opacity','0');
+        $('#spec_pos0_pic').css('opacity','0');
+        $('#spec_pos1_pic').css('opacity','0');
+        $('#spec_pos2_pic').css('opacity','0');
+        $('#spec_pos3_pic').css('opacity','0');
+        $('#spec_pos4_pic').css('opacity','0');
+        $('#spec_pos5_pic').css('opacity','0');
+        $('#spec_pos6_pic').css('opacity','0');
+        $('#spec_pos7_pic').css('opacity','1');
+        $('#spec_pos8_pic').css('opacity','0');
+        $('#spec_pos9_pic').css('opacity','0');
         $('#teamlogo').prop('src', teamlogo[7]);
         $('#flag').prop('src', flag[7]);
         $('#playernick').text(playernick[7]);
@@ -255,6 +355,16 @@ $(document).ready(function(){
         $('#spec_pos7').css('opacity','0');
         $('#spec_pos8').css('opacity','1');
         $('#spec_pos9').css('opacity','0');
+        $('#spec_pos0_pic').css('opacity','0');
+        $('#spec_pos1_pic').css('opacity','0');
+        $('#spec_pos2_pic').css('opacity','0');
+        $('#spec_pos3_pic').css('opacity','0');
+        $('#spec_pos4_pic').css('opacity','0');
+        $('#spec_pos5_pic').css('opacity','0');
+        $('#spec_pos6_pic').css('opacity','0');
+        $('#spec_pos7_pic').css('opacity','0');
+        $('#spec_pos8_pic').css('opacity','1');
+        $('#spec_pos9_pic').css('opacity','0');
         $('#teamlogo').prop('src', teamlogo[8]);
         $('#flag').prop('src', flag[8]);
         $('#playernick').text(playernick[8]);
@@ -273,6 +383,16 @@ $(document).ready(function(){
         $('#spec_pos7').css('opacity','0');
         $('#spec_pos8').css('opacity','0');
         $('#spec_pos9').css('opacity','1');
+        $('#spec_pos0_pic').css('opacity','0');
+        $('#spec_pos1_pic').css('opacity','0');
+        $('#spec_pos2_pic').css('opacity','0');
+        $('#spec_pos3_pic').css('opacity','0');
+        $('#spec_pos4_pic').css('opacity','0');
+        $('#spec_pos5_pic').css('opacity','0');
+        $('#spec_pos6_pic').css('opacity','0');
+        $('#spec_pos7_pic').css('opacity','0');
+        $('#spec_pos8_pic').css('opacity','0');
+        $('#spec_pos9_pic').css('opacity','1');
         $('#teamlogo').prop('src', teamlogo[9]);
         $('#flag').prop('src', flag[9]);
         $('#playernick').text(playernick[9]);

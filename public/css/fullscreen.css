@@ -8,66 +8,49 @@ body{
 }
 
 iframe{
-  object-fit: cover;
-  height: 102%;
-  width: 102%;
-  text-align: center;
-  position: fixed;
-  vertical-align: center;
-  top: -1%;
-  left: -1%;
-  padding: 0px;
-  margin: 0px;
-  overflow: hidden;
+  z-index: 2;
+  height: 100%;
+  width: 100%;
+}
+
+img{
   z-index: 1;
 }
+  #container0, #container1, #container2, #container3, #container4,
+  #container5, #container6, #container7, #container8, #container9{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    padding: 0px;
+    margin: 0px;
+  }
 
-.ingame_insert0 img{
-  object-fit: cover;
-  width: 1920px;
-  height: 1080px;
-  padding: 0px;
-  margin: 0px;
-  z-index: 0;
-}
-.ingame_insert1 img{
-  object-fit: cover;
-  width: 1920px;
-  height: 1080px;
-  padding: 0px;
-  margin: 0px;
-  z-index: 0;
-}
+  #spec_pos0, #spec_pos1, #spec_pos2, #spec_pos3, #spec_pos4,
+  #spec_pos5, #spec_pos6, #spec_pos7, #spec_pos8, #spec_pos9{
+    object-fit: cover;
+    text-align: center;
+    vertical-align: center;
+    overflow: hidden;
+    margin: 0px;
+    padding: 0px;
+  }
 
-.ingame_insert0 {
-  text-align: center;
-  vertical-align: center;
-  overflow: hidden;
-  background-color: black;
-  position: fixed;
-  left: 0px;
-  top: 0px;
-  width: 1920px;
-  height: 1080px;
-  padding: 0px;
-  margin: 0px;
-  z-index: -1;
-}
+  #spec_pos0_pic,#spec_pos1_pic,#spec_pos2_pic,#spec_pos3_pic,#spec_pos4_pic,
+  #spec_pos5_pic,#spec_pos6_pic,#spec_pos7_pic,#spec_pos8_pic,#spec_pos9_pic{
+    background-color: rgb(0, 0, 0);
+    object-fit: cover;
+    text-align: center;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    vertical-align: center;
+    width: 1920px;
+    height: 1080px;
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
+  }
 
-.ingame_insert1 {
-  text-align: center;
-  vertical-align: center;
-  overflow: hidden;
-  background-color: black;
-  position: fixed;
-  left: 0px;
-  top: 0px;
-  width: 1920px;
-  height: 1080px;
-  padding: 0px;
-  margin: 0px;
-  z-index: -1;
-}
 
 #infobox {
 background-color: rgba(0, 0, 0, 0.702);
