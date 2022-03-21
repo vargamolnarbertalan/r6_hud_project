@@ -12,36 +12,60 @@
 
 <body>
 
+  <div class="ingame_insert0" style="background-image: url('https://i.imgur.com/gF0JMvq.png'); z-index: 100;position:fixed;top:0px;bottom:0px;width:1920px;height:1080px"></div>
+  <div class="ingame_insert1" style="background-image: url('https://i.imgur.com/LBXrJtn.png'); z-index: 100;position:fixed;top:0px;bottom:0px;width:1920px;height:1080px"></div>
 
-<div class="ingame_insert0">
+  <div id="container0" style="width: 191px; height: 144px; overflow: hidden">
+    <iframe id="spec_pos0" frameBorder="0" style="position: relative; left: -33%" src=""></iframe>
+  </div>
 
-  <img id="spec_pos0_pic" src=""></img>
-  <iframe id="spec_pos0" src=""></iframe>
-  <img id="spec_pos1_pic" src=""></img>
-  <iframe id="spec_pos1" src=""></iframe>
-  <img id="spec_pos2_pic" src=""></img>
-  <iframe id="spec_pos2" src=""></iframe>
-  <img id="spec_pos3_pic" src=""></img>
-  <iframe id="spec_pos3" src=""></iframe>
-  <img id="spec_pos4_pic" src=""></img>
-  <iframe id="spec_pos4" src=""></iframe>
+  <div id="container1" style="width: 191px; height: 144px; overflow: hidden">
+    <iframe id="spec_pos1" frameBorder="0" style="position: relative; left: -33%" src=""></iframe>
+  </div>
 
-</div>
+  <div id="container2" style="width: 191px; height: 144px; overflow: hidden">
+    <iframe id="spec_pos2" frameBorder="0" style="position: relative; left: -33%" src=""></iframe>
+  </div>
 
+  <div id="container3" style="width: 191px; height: 144px; overflow: hidden">
+    <iframe id="spec_pos3" frameBorder="0" style="position: relative; left: -33%" src=""></iframe>
+  </div>
 
-<div class="ingame_insert1">
+  <div id="container4" style="width: 191px; height: 144px; overflow: hidden">
+    <iframe id="spec_pos4" frameBorder="0" style="position: relative; left: -33%" src=""></iframe>
+  </div>
 
+    <img id="spec_pos0_pic" src=""></img>
+    <img id="spec_pos1_pic" src=""></img>
+    <img id="spec_pos2_pic" src=""></img>
+    <img id="spec_pos3_pic" src=""></img>
+    <img id="spec_pos4_pic" src=""></img>
 
-  <iframe id="spec_pos5" src=""></iframe>
-  <img id="spec_pos5_pic" src=""></img>
-  <iframe id="spec_pos6" src=""></iframe>
-  <img id="spec_pos6_pic" src=""></img>
-  <iframe id="spec_pos7" src=""></iframe>
-  <img id="spec_pos7_pic" src=""></img>
-  <iframe id="spec_pos8" src=""></iframe>
-  <img id="spec_pos8_pic" src=""></img>
-  <iframe id="spec_pos9" src=""></iframe>
-  <img id="spec_pos9_pic" src=""></img>
+    <div id="container5" style="width: 191px; height: 144px; overflow: hidden">
+      <iframe id="spec_pos5" frameBorder="0" style="position: relative; left: -33%" src=""></iframe>
+    </div>
+
+    <div id="container6" style="width: 191px; height: 144px; overflow: hidden">
+      <iframe id="spec_pos6" frameBorder="0" style="position: relative; left: -33%" src=""></iframe>
+    </div>
+
+    <div id="container7" style="width: 191px; height: 144px; overflow: hidden">
+      <iframe id="spec_pos7" frameBorder="0" style="position: relative; left: -33%" src=""></iframe>
+    </div>
+
+    <div id="container8" style="width: 191px; height: 144px; overflow: hidden">
+      <iframe id="spec_pos8" frameBorder="0" style="position: relative; left: -33%" src=""></iframe>
+    </div>
+
+    <div id="container9" style="width: 191px; height: 144px; overflow: hidden">
+      <iframe id="spec_pos9" frameBorder="0" style="position: relative; left: -33%" src=""></iframe>
+    </div>
+
+      <img id="spec_pos5_pic" src=""></img>
+      <img id="spec_pos6_pic" src=""></img>
+      <img id="spec_pos7_pic" src=""></img>
+      <img id="spec_pos8_pic" src=""></img>
+      <img id="spec_pos9_pic" src=""></img>
 
 </div>
 
@@ -103,6 +127,16 @@ $(document).ready(function(){
         $('#spec_pos7').css('opacity','0');
         $('#spec_pos8').css('opacity','0');
         $('#spec_pos9').css('opacity','0');
+        $('#spec_pos0_pic').css('opacity','1');
+        $('#spec_pos1_pic').css('opacity','0');
+        $('#spec_pos2_pic').css('opacity','0');
+        $('#spec_pos3_pic').css('opacity','0');
+        $('#spec_pos4_pic').css('opacity','0');
+        $('#spec_pos5_pic').css('opacity','0');
+        $('#spec_pos6_pic').css('opacity','0');
+        $('#spec_pos7_pic').css('opacity','0');
+        $('#spec_pos8_pic').css('opacity','0');
+        $('#spec_pos9_pic').css('opacity','0');
       }
       else if (server_message == "select_pos1") {
         $('.ingame_insert1').css('opacity','0');
@@ -117,6 +151,16 @@ $(document).ready(function(){
         $('#spec_pos7').css('opacity','0');
         $('#spec_pos8').css('opacity','0');
         $('#spec_pos9').css('opacity','0');
+        $('#spec_pos0_pic').css('opacity','0');
+        $('#spec_pos1_pic').css('opacity','1');
+        $('#spec_pos2_pic').css('opacity','0');
+        $('#spec_pos3_pic').css('opacity','0');
+        $('#spec_pos4_pic').css('opacity','0');
+        $('#spec_pos5_pic').css('opacity','0');
+        $('#spec_pos6_pic').css('opacity','0');
+        $('#spec_pos7_pic').css('opacity','0');
+        $('#spec_pos8_pic').css('opacity','0');
+        $('#spec_pos9_pic').css('opacity','0');
       }
       else if (server_message == "select_pos2") {
         $('.ingame_insert1').css('opacity','0');
@@ -131,6 +175,16 @@ $(document).ready(function(){
         $('#spec_pos7').css('opacity','0');
         $('#spec_pos8').css('opacity','0');
         $('#spec_pos9').css('opacity','0');
+        $('#spec_pos0_pic').css('opacity','0');
+        $('#spec_pos1_pic').css('opacity','0');
+        $('#spec_pos2_pic').css('opacity','1');
+        $('#spec_pos3_pic').css('opacity','0');
+        $('#spec_pos4_pic').css('opacity','0');
+        $('#spec_pos5_pic').css('opacity','0');
+        $('#spec_pos6_pic').css('opacity','0');
+        $('#spec_pos7_pic').css('opacity','0');
+        $('#spec_pos8_pic').css('opacity','0');
+        $('#spec_pos9_pic').css('opacity','0');
       }
       else if (server_message == "select_pos3") {
         $('.ingame_insert1').css('opacity','0');
@@ -145,6 +199,16 @@ $(document).ready(function(){
         $('#spec_pos7').css('opacity','0');
         $('#spec_pos8').css('opacity','0');
         $('#spec_pos9').css('opacity','0');
+        $('#spec_pos0_pic').css('opacity','0');
+        $('#spec_pos1_pic').css('opacity','0');
+        $('#spec_pos2_pic').css('opacity','0');
+        $('#spec_pos3_pic').css('opacity','1');
+        $('#spec_pos4_pic').css('opacity','0');
+        $('#spec_pos5_pic').css('opacity','0');
+        $('#spec_pos6_pic').css('opacity','0');
+        $('#spec_pos7_pic').css('opacity','0');
+        $('#spec_pos8_pic').css('opacity','0');
+        $('#spec_pos9_pic').css('opacity','0');
       }
       else if (server_message == "select_pos4") {
         $('.ingame_insert1').css('opacity','0');
@@ -159,6 +223,16 @@ $(document).ready(function(){
         $('#spec_pos7').css('opacity','0');
         $('#spec_pos8').css('opacity','0');
         $('#spec_pos9').css('opacity','0');
+        $('#spec_pos0_pic').css('opacity','0');
+        $('#spec_pos1_pic').css('opacity','0');
+        $('#spec_pos2_pic').css('opacity','0');
+        $('#spec_pos3_pic').css('opacity','0');
+        $('#spec_pos4_pic').css('opacity','1');
+        $('#spec_pos5_pic').css('opacity','0');
+        $('#spec_pos6_pic').css('opacity','0');
+        $('#spec_pos7_pic').css('opacity','0');
+        $('#spec_pos8_pic').css('opacity','0');
+        $('#spec_pos9_pic').css('opacity','0');
       }
       else if (server_message == "select_pos5") {
         $('.ingame_insert1').css('opacity','1');
@@ -173,6 +247,16 @@ $(document).ready(function(){
         $('#spec_pos7').css('opacity','0');
         $('#spec_pos8').css('opacity','0');
         $('#spec_pos9').css('opacity','0');
+        $('#spec_pos0_pic').css('opacity','0');
+        $('#spec_pos1_pic').css('opacity','0');
+        $('#spec_pos2_pic').css('opacity','0');
+        $('#spec_pos3_pic').css('opacity','0');
+        $('#spec_pos4_pic').css('opacity','0');
+        $('#spec_pos5_pic').css('opacity','1');
+        $('#spec_pos6_pic').css('opacity','0');
+        $('#spec_pos7_pic').css('opacity','0');
+        $('#spec_pos8_pic').css('opacity','0');
+        $('#spec_pos9_pic').css('opacity','0');
       }
       else if (server_message == "select_pos6") {
         $('.ingame_insert1').css('opacity','1');
@@ -187,6 +271,16 @@ $(document).ready(function(){
         $('#spec_pos7').css('opacity','0');
         $('#spec_pos8').css('opacity','0');
         $('#spec_pos9').css('opacity','0');
+        $('#spec_pos0_pic').css('opacity','0');
+        $('#spec_pos1_pic').css('opacity','0');
+        $('#spec_pos2_pic').css('opacity','0');
+        $('#spec_pos3_pic').css('opacity','0');
+        $('#spec_pos4_pic').css('opacity','0');
+        $('#spec_pos5_pic').css('opacity','0');
+        $('#spec_pos6_pic').css('opacity','1');
+        $('#spec_pos7_pic').css('opacity','0');
+        $('#spec_pos8_pic').css('opacity','0');
+        $('#spec_pos9_pic').css('opacity','0');
       }
       else if (server_message == "select_pos7") {
         $('.ingame_insert1').css('opacity','1');
@@ -201,6 +295,16 @@ $(document).ready(function(){
         $('#spec_pos7').css('opacity','1');
         $('#spec_pos8').css('opacity','0');
         $('#spec_pos9').css('opacity','0');
+        $('#spec_pos0_pic').css('opacity','0');
+        $('#spec_pos1_pic').css('opacity','0');
+        $('#spec_pos2_pic').css('opacity','0');
+        $('#spec_pos3_pic').css('opacity','0');
+        $('#spec_pos4_pic').css('opacity','0');
+        $('#spec_pos5_pic').css('opacity','0');
+        $('#spec_pos6_pic').css('opacity','0');
+        $('#spec_pos7_pic').css('opacity','1');
+        $('#spec_pos8_pic').css('opacity','0');
+        $('#spec_pos9_pic').css('opacity','0');
       }
       else if (server_message == "select_pos8") {
         $('.ingame_insert1').css('opacity','1');
@@ -215,6 +319,16 @@ $(document).ready(function(){
         $('#spec_pos7').css('opacity','0');
         $('#spec_pos8').css('opacity','1');
         $('#spec_pos9').css('opacity','0');
+        $('#spec_pos0_pic').css('opacity','0');
+        $('#spec_pos1_pic').css('opacity','0');
+        $('#spec_pos2_pic').css('opacity','0');
+        $('#spec_pos3_pic').css('opacity','0');
+        $('#spec_pos4_pic').css('opacity','0');
+        $('#spec_pos5_pic').css('opacity','0');
+        $('#spec_pos6_pic').css('opacity','0');
+        $('#spec_pos7_pic').css('opacity','0');
+        $('#spec_pos8_pic').css('opacity','1');
+        $('#spec_pos9_pic').css('opacity','0');
       }
       else if (server_message == "select_pos9") {
         $('.ingame_insert1').css('opacity','1');
@@ -229,6 +343,16 @@ $(document).ready(function(){
         $('#spec_pos7').css('opacity','0');
         $('#spec_pos8').css('opacity','0');
         $('#spec_pos9').css('opacity','1');
+        $('#spec_pos0_pic').css('opacity','0');
+        $('#spec_pos1_pic').css('opacity','0');
+        $('#spec_pos2_pic').css('opacity','0');
+        $('#spec_pos3_pic').css('opacity','0');
+        $('#spec_pos4_pic').css('opacity','0');
+        $('#spec_pos5_pic').css('opacity','0');
+        $('#spec_pos6_pic').css('opacity','0');
+        $('#spec_pos7_pic').css('opacity','0');
+        $('#spec_pos8_pic').css('opacity','0');
+        $('#spec_pos9_pic').css('opacity','1');
       }
 
     }

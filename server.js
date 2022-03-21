@@ -30,12 +30,12 @@ var db_host;
 //db_host = prompt(`IP address of the database host: `);
 db_host = 'remotemysql.com';
 
-const db = mysql.createConnection({
+const db = mysql.createPool({
   host: db_host,
   user: "CrKkJEqRbg",
   password: "qhF3Q9uOia",
   database: "CrKkJEqRbg",
-  connectionLimit : 100,
+  connectionLimit : 1000,
   multipleStatements: true
 });
 
@@ -47,7 +47,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-db.connect((err) => {
+db.getConnection((err) => {
   if (err) {
     console.log("\x1b[31m%s\x1b[0m","Couldn't connect to database.");
     console.log("Error message: " + err.message);
@@ -675,6 +675,7 @@ wss.on("connection", ws => {
 }
 
 eventEmitter.on('force_resfresh', myEventHandler);
+eventEmitter.setMaxListeners(1000);
 
   ws.on("close", ws => {
     //console.log("Client disconnected.");
