@@ -1,1 +1,1 @@
-node server.js
+node --no-warnings server.js

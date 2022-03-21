@@ -92,6 +92,31 @@ $(document).ready(function(){
         playerfullname[i] = data[i].fullname;
         flag[i] = data[i].nationality;
         console.log(playernick[i] + " " + playerfullname[i] + " " + flag[i])
+        $('.ingame_insert1').css('opacity','0');
+        $('.ingame_insert0').css('opacity','1');
+        $('#spec_pos0').css('opacity','1');
+        $('#spec_pos1').css('opacity','0');
+        $('#spec_pos2').css('opacity','0');
+        $('#spec_pos3').css('opacity','0');
+        $('#spec_pos4').css('opacity','0');
+        $('#spec_pos5').css('opacity','0');
+        $('#spec_pos6').css('opacity','0');
+        $('#spec_pos7').css('opacity','0');
+        $('#spec_pos8').css('opacity','0');
+        $('#spec_pos9').css('opacity','0');
+        $('#spec_pos0_pic').css('opacity','1');
+        $('#spec_pos1_pic').css('opacity','0');
+        $('#spec_pos2_pic').css('opacity','0');
+        $('#spec_pos3_pic').css('opacity','0');
+        $('#spec_pos4_pic').css('opacity','0');
+        $('#spec_pos5_pic').css('opacity','0');
+        $('#spec_pos6_pic').css('opacity','0');
+        $('#spec_pos7_pic').css('opacity','0');
+        $('#spec_pos8_pic').css('opacity','0');
+        $('#spec_pos9_pic').css('opacity','0');        
+        $('#flag').prop('src', flag[0]);
+        $('#playernick').text(playernick[0]);
+        $('#playerfullname').text(playerfullname[0]);
       }
     }
   });
@@ -102,12 +127,14 @@ $(document).ready(function(){
     success: function(data) {
       for (var i = 0; i < data.length; i++) {
         teamlogo[i] = data[i].logo;
+        $('#teamlogo').prop('src', teamlogo[0]);
       }
     }
   });
 
+
+
   const ws = new WebSocket("ws://localhost:6969");
-  var insert_hidden = false;
 
   ws.addEventListener("open", () =>{
     console.log("Connected!");
@@ -169,7 +196,7 @@ $(document).ready(function(){
         $('#spec_pos7_pic').css('opacity','0');
         $('#spec_pos8_pic').css('opacity','0');
         $('#spec_pos9_pic').css('opacity','0');
-        $('#teamlogo').prop('src', teamlogo[1]);
+        $('#teamlogo').prop('src', teamlogo[0]);
         $('#flag').prop('src', flag[1]);
         $('#playernick').text(playernick[1]);
         $('#playerfullname').text(playerfullname[1]);
@@ -197,7 +224,7 @@ $(document).ready(function(){
         $('#spec_pos7_pic').css('opacity','0');
         $('#spec_pos8_pic').css('opacity','0');
         $('#spec_pos9_pic').css('opacity','0');
-        $('#teamlogo').prop('src', teamlogo[2]);
+        $('#teamlogo').prop('src', teamlogo[0]);
         $('#flag').prop('src', flag[2]);
         $('#playernick').text(playernick[2]);
         $('#playerfullname').text(playerfullname[2]);
@@ -225,7 +252,7 @@ $(document).ready(function(){
         $('#spec_pos7_pic').css('opacity','0');
         $('#spec_pos8_pic').css('opacity','0');
         $('#spec_pos9_pic').css('opacity','0');
-        $('#teamlogo').prop('src', teamlogo[3]);
+        $('#teamlogo').prop('src', teamlogo[0]);
         $('#flag').prop('src', flag[3]);
         $('#playernick').text(playernick[3]);
         $('#playerfullname').text(playerfullname[3]);
@@ -253,7 +280,7 @@ $(document).ready(function(){
         $('#spec_pos7_pic').css('opacity','0');
         $('#spec_pos8_pic').css('opacity','0');
         $('#spec_pos9_pic').css('opacity','0');
-        $('#teamlogo').prop('src', teamlogo[4]);
+        $('#teamlogo').prop('src', teamlogo[0]);
         $('#flag').prop('src', flag[4]);
         $('#playernick').text(playernick[4]);
         $('#playerfullname').text(playerfullname[4]);
@@ -281,7 +308,7 @@ $(document).ready(function(){
         $('#spec_pos7_pic').css('opacity','0');
         $('#spec_pos8_pic').css('opacity','0');
         $('#spec_pos9_pic').css('opacity','0');
-        $('#teamlogo').prop('src', teamlogo[5]);
+        $('#teamlogo').prop('src', teamlogo[1]);
         $('#flag').prop('src', flag[5]);
         $('#playernick').text(playernick[5]);
         $('#playerfullname').text(playerfullname[5]);
@@ -309,7 +336,7 @@ $(document).ready(function(){
         $('#spec_pos7_pic').css('opacity','0');
         $('#spec_pos8_pic').css('opacity','0');
         $('#spec_pos9_pic').css('opacity','0');
-        $('#teamlogo').prop('src', teamlogo[6]);
+        $('#teamlogo').prop('src', teamlogo[1]);
         $('#flag').prop('src', flag[6]);
         $('#playernick').text(playernick[6]);
         $('#playerfullname').text(playerfullname[6]);
@@ -337,7 +364,7 @@ $(document).ready(function(){
         $('#spec_pos7_pic').css('opacity','1');
         $('#spec_pos8_pic').css('opacity','0');
         $('#spec_pos9_pic').css('opacity','0');
-        $('#teamlogo').prop('src', teamlogo[7]);
+        $('#teamlogo').prop('src', teamlogo[1]);
         $('#flag').prop('src', flag[7]);
         $('#playernick').text(playernick[7]);
         $('#playerfullname').text(playerfullname[7]);
@@ -365,7 +392,7 @@ $(document).ready(function(){
         $('#spec_pos7_pic').css('opacity','0');
         $('#spec_pos8_pic').css('opacity','1');
         $('#spec_pos9_pic').css('opacity','0');
-        $('#teamlogo').prop('src', teamlogo[8]);
+        $('#teamlogo').prop('src', teamlogo[1]);
         $('#flag').prop('src', flag[8]);
         $('#playernick').text(playernick[8]);
         $('#playerfullname').text(playerfullname[8]);
@@ -393,7 +420,7 @@ $(document).ready(function(){
         $('#spec_pos7_pic').css('opacity','0');
         $('#spec_pos8_pic').css('opacity','0');
         $('#spec_pos9_pic').css('opacity','1');
-        $('#teamlogo').prop('src', teamlogo[9]);
+        $('#teamlogo').prop('src', teamlogo[1]);
         $('#flag').prop('src', flag[9]);
         $('#playernick').text(playernick[9]);
         $('#playerfullname').text(playerfullname[9]);
