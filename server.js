@@ -14,16 +14,20 @@ const ip = require("ip");
 
 var events = require('events');
 var eventEmitter = new events.EventEmitter();
+eventEmitter.setMaxListeners(0);
+process.setMaxListeners(0);
+
 
 const morgan = require('morgan'); // get és post logging
 
 const prompt = require('prompt-sync')();
 
 const app = express();
-
+app.setMaxListeners(0);
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 app.use(express.static('public'));
+
 
 console.clear();
 var db_host;
@@ -35,7 +39,7 @@ const db = mysql.createPool({
   user: "CrKkJEqRbg",
   password: "qhF3Q9uOia",
   database: "CrKkJEqRbg",
-  connectionLimit : 1000,
+  connectionLimit : 6,
   multipleStatements: true
 });
 
@@ -46,29 +50,31 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 app.use(bodyParser.json());
-
+app.listen(http_port);
+console.log("--- Access config pages via the links below ---");
+console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/admin");
+console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/match_control");
+console.log("--- Access views via the links below ---");
+console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/ingame");
+console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/fullscreen");
+console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/ladder");
+console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/pickscreen");
+console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/team_left");
+console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/team_right");
+/*
 db.getConnection((err) => {
   if (err) {
     console.log("\x1b[31m%s\x1b[0m","Couldn't connect to database.");
     console.log("Error message: " + err.message);
     console.log("--- Close the app and try again ---");
   } else {
-    app.listen(http_port);
+
     console.log("\x1b[32m%s\x1b[0m","Database connected.");
-    console.log("--- Access config pages via the links below ---");
-    console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/admin");
-    console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/match_control");
-    console.log("--- Access views via the links below ---");
-    console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/ingame");
-    console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/fullscreen");
-    console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/ladder");
-    console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/pickscreen");
-    console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/team_left");
-    console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/team_right");
+
 
   }
 });
-
+*/
 
 
 app.get('/admin', (req, res) => {
@@ -634,7 +640,7 @@ app.post('/fill/ingame', (req, res) => {
     `;
     db.query(sql, (err, dbres) => {
       if (err) {
-        console.log(err.message);
+        //console.log(err.message);
         res.send(err.message);
         res.send();
         //throw err;
@@ -675,7 +681,6 @@ wss.on("connection", ws => {
 }
 
 eventEmitter.on('force_resfresh', myEventHandler);
-eventEmitter.setMaxListeners(1000);
 
   ws.on("close", ws => {
     //console.log("Client disconnected.");
