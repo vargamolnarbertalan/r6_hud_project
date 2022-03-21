@@ -26,14 +26,16 @@ app.set('views', 'views');
 app.use(express.static('public'));
 
 console.clear();
-const db_host = prompt(`IP address of the database host: `);
-
+var db_host;
+//db_host = prompt(`IP address of the database host: `);
+db_host = 'remotemysql.com';
 
 const db = mysql.createConnection({
   host: db_host,
-  user: "root",
-  password: "",
-  database: "r6_hud_db",
+  user: "CrKkJEqRbg",
+  password: "qhF3Q9uOia",
+  database: "CrKkJEqRbg",
+  connectionLimit : 100,
   multipleStatements: true
 });
 
@@ -262,7 +264,7 @@ app.post('/add/player', (req, res) => {
 app.post('/edit/player', (req, res) => {
   var sql = `
   UPDATE players
-  SET nickname = '${req.body.playeredit_player_list}',
+  SET nickname = '${req.body.edit_nickname}',
   fullname = '${req.body.edit_fullname}',
   nationality = '${req.body.edit_nationality}',
   team_id = '${req.body.playeredit_team_list}',
@@ -272,7 +274,7 @@ app.post('/edit/player', (req, res) => {
   WHERE nickname = '${req.body.playeredit_player_list}';
 
   UPDATE live_players
-  SET nickname = '${req.body.playeredit_player_list}',
+  SET nickname = '${req.body.edit_nickname}',
   fullname = '${req.body.edit_fullname}',
   nationality = '${req.body.edit_nationality}',
   view_link = '${req.body.edit_view_link}',
@@ -292,7 +294,7 @@ app.post('/edit/player', (req, res) => {
       //console.log("Response:");
       //console.log(dbres);
       res.render('success', {
-        success_message: `${req.body.playeredit_player_list}` + " successfully edited!"
+        success_message: `${req.body.edit_nick}` + " successfully edited!"
       });
       eventEmitter.emit('force_resfresh');
     }
