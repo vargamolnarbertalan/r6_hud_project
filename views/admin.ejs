@@ -55,7 +55,7 @@
   <form method="post" action="/add/player">
     <input name="add_nickname" type="text" placeholder="nickname" required>
     <input name="add_fullaname" type="text" placeholder="fullname" required>
-    <input name="add_nationality" type="text" placeholder="country code" required>
+    <input name="add_nationality" type="text" placeholder="flag.png" required>
     <select id="playeradd_team_list" name="playeradd_team_list">
       <option value=""></option>
       <% teams.forEach(function( eachTeam){ %>
@@ -78,7 +78,7 @@
     </select>
     <input name="edit_nickname" id="edit_nickname" type="text" placeholder="nickname" required>
     <input name="edit_fullname" id="edit_fullname" type="text" placeholder="fullname" required>
-    <input name="edit_nationality" id="edit_nationality" type="text" placeholder="country code" required>
+    <input name="edit_nationality" id="edit_nationality" type="text" placeholder="flag.png" required>
     <select id="playeredit_team_list" name="playeredit_team_list">
       <option value=""></option>
       <% teams.forEach(function( eachTeam){ %>

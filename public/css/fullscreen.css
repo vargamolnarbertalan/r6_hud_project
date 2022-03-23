@@ -73,7 +73,7 @@ z-index: 10;
 }
 
 #playernick {
-  font-size: 60px;
+  font-size: 54px;
   font-family: "Chakra Petch";
   color: rgb(255, 255, 255);
   font-weight: bold;
@@ -85,6 +85,7 @@ z-index: 10;
   left: 171.094px;
   top: 922px;
   z-index: 100;
+  letter-spacing: -2px;
 }
 
 #playerfullname {

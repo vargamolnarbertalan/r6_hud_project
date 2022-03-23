@@ -26,3 +26,5 @@ This node.js app allows you to integrate playercams into your R6S broadcast, inc
 - When you successfully edit/delete a player or team, the live views will be refreshed and updated accordingly automatically, immediately.
 - It's best to start the hud app first and then whichever production program you're using, otherwise you might have to manually reset browser inputs inside production app after starting the hud server.
 - The app supposed to work both with R6 fullscreen/borderless, vulkan and DX, starting the game with or without admin permissions shouldn't matter, but as always new R6 patches can have a negative impact on this app so if you experience that, please run DirectX version of R6 in borderless mode, without admin rights.
+- Max DISPLAY length for nickname: 13 capital M (you can enter longer nicks than 13 characters)
+- Max DISPLAY length for fullname: 22 capital M (you can enter longer names than 22 characters)
