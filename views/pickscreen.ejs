@@ -78,9 +78,13 @@ $(document).ready(function(){
     url: "/fill/ingame",
     type: "POST",
     success: function(data) {
-      for (var i = 0; i < data.length; i++) {
-        $('#spec_pos' + i + '').prop('src', data[i].view_link + '&cleanoutput&transparent?autoplay=on' );
-        $('#spec_pos' + i + '_pic').prop('src', data[i].avatar);
+      for (var i = 0; i < 5; i++) {
+        $('#spec_pos' + i + '').prop('src', data[4-i].view_link + '&cleanoutput&transparent?autoplay=on' );
+        $('#spec_pos' + i + '_pic').prop('src', data[4-i].avatar);
+      }
+      for (var i = 5; i < 10; i++) {
+        $('#spec_pos' + i + '').prop('src', data[14-i].view_link + '&cleanoutput&transparent?autoplay=on' );
+        $('#spec_pos' + i + '_pic').prop('src', data[14-i].avatar);
       }
     }
   });
