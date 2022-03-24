@@ -39,11 +39,11 @@ const db = mysql.createPool({
   user: "CrKkJEqRbg",
   password: "qhF3Q9uOia",
   database: "CrKkJEqRbg",
-  connectionLimit : 6,
+  connectionLimit : 9,
   multipleStatements: true
 });
 
-//app.use(morgan('dev')); // get és post logging
+app.use(morgan('dev')); // get és post logging
 //app.use(express.static('public'));
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({
@@ -300,7 +300,7 @@ app.post('/edit/player', (req, res) => {
       //console.log("Response:");
       //console.log(dbres);
       res.render('success', {
-        success_message: `${req.body.edit_nick}` + " successfully edited!"
+        success_message: `${req.body.edit_nickname}` + " successfully edited!"
       });
       eventEmitter.emit('force_resfresh');
     }
