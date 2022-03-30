@@ -90,7 +90,7 @@ $(document).ready(function(){
     type: "POST",
     success: function(data) {
       for (var i = 0; i < data.length; i++) {
-        $('#spec_pos' + i + '').prop('src', data[i].view_link + '&cleanoutput&transparent?autoplay=on' );
+        $('#spec_pos' + i + '').prop('src', data[i].view_link + '&transparent&cover&cleanoutput?autoplay=on' );
         $('#spec_pos' + i + '_pic').prop('src', data[i].avatar);
         $('#nick' + i + '').text(data[i].nickname);
       }

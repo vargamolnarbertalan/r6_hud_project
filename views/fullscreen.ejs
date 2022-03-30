@@ -86,7 +86,7 @@ $(document).ready(function(){
     type: "POST",
     success: function(data) {
       for (var i = 0; i < data.length; i++) {
-        $('#spec_pos' + i + '').prop('src', data[i].view_link + '&cleanoutput&transparent?autoplay=on' );
+        $('#spec_pos' + i + '').prop('src', data[i].view_link + '&transparent&cover&cleanoutput?autoplay=on' );
         $('#spec_pos' + i + '_pic').prop('src', data[i].avatar);
         playernick[i] = data[i].nickname;
         playerfullname[i] = data[i].fullname;
@@ -113,7 +113,7 @@ $(document).ready(function(){
         $('#spec_pos6_pic').css('opacity','0');
         $('#spec_pos7_pic').css('opacity','0');
         $('#spec_pos8_pic').css('opacity','0');
-        $('#spec_pos9_pic').css('opacity','0');        
+        $('#spec_pos9_pic').css('opacity','0');
         $('#flag').prop('src', flag[0]);
         $('#playernick').text(playernick[0]);
         $('#playerfullname').text(playerfullname[0]);
