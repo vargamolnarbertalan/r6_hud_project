@@ -43,7 +43,7 @@ const db = mysql.createPool({
   multipleStatements: true
 });
 
-app.use(morgan('dev')); // get és post logging
+//app.use(morgan('dev')); // get és post logging
 //app.use(express.static('public'));
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({
