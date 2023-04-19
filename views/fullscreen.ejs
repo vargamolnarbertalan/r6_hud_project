@@ -91,8 +91,9 @@ $(document).ready(function(){
         playernick[i] = data[i].nickname;
         playerfullname[i] = data[i].fullname;
         flag[i] = data[i].nationality;
-        console.log(playernick[i] + " " + playerfullname[i] + " " + flag[i])
-        $('.ingame_insert1').css('opacity','0');
+        console.log(playernick[i] + " " + playerfullname[i] + " " + flag[i]);
+      }
+      $('.ingame_insert1').css('opacity','0');
         $('.ingame_insert0').css('opacity','1');
         $('#spec_pos0').css('opacity','1');
         $('#spec_pos1').css('opacity','0');
@@ -117,7 +118,6 @@ $(document).ready(function(){
         $('#flag').prop('src', flag[0]);
         $('#playernick').text(playernick[0]);
         $('#playerfullname').text(playerfullname[0]);
-      }
     }
   });
 
@@ -127,12 +127,11 @@ $(document).ready(function(){
     success: function(data) {
       for (var i = 0; i < data.length; i++) {
         teamlogo[i] = data[i].logo;
-        $('#teamlogo').prop('src', teamlogo[0]);
+        $('#teamlogo').prop('src', teamlogo[0]);       
+
       }
     }
   });
-
-
 
   const ws = new WebSocket("ws://localhost:6969");
 

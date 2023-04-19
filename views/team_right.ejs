@@ -63,10 +63,8 @@ $(document).ready(function(){
     url: "/fill/fs_team",
     type: "POST",
     success: function(data) {
-
         $('#teamlogo').prop('src', data[1].logo);
         $('#teamname').text(data[1].teamname);
-
     }
   });
 

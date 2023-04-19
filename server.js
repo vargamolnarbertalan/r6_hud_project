@@ -11,12 +11,12 @@ const bodyParser = require('body-parser');
 const mysql = require("mysql");
 const http_port = 8083;
 const ip = require("ip");
+const dotenv = require('dotenv').config();
 
 var events = require('events');
 var eventEmitter = new events.EventEmitter();
 eventEmitter.setMaxListeners(0);
 process.setMaxListeners(0);
-
 
 const morgan = require('morgan'); // get és post logging
 
@@ -28,17 +28,13 @@ app.set('view engine', 'ejs');
 app.set('views', 'views');
 app.use(express.static('public'));
 
-
 console.clear();
-var db_host;
-//db_host = prompt(`IP address of the database host: `);
-db_host = 'localhost';
 
 const db = mysql.createPool({
-  host: db_host,
-  user: "root",
-  password: "",
-  database: "r6_hud",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
   connectionLimit : 9,
   multipleStatements: true
 });
@@ -51,30 +47,28 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 app.listen(http_port);
-console.log("--- Access config pages via the links below ---");
-console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/admin");
-console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/match_control");
-console.log("--- Access views via the links below ---");
-console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/ingame");
-console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/fullscreen");
-console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/ladder");
-console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/pickscreen");
-console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/team_left");
-console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/team_right");
-/*
+
 db.getConnection((err) => {
   if (err) {
     console.log("\x1b[31m%s\x1b[0m","Couldn't connect to database.");
     console.log("Error message: " + err.message);
     console.log("--- Close the app and try again ---");
   } else {
-
     console.log("\x1b[32m%s\x1b[0m","Database connected.");
-
-
+    console.log("--- Access config pages via the links below ---");
+    console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/admin");
+    console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/match_control");
+    console.log("--- Access views via the links below ---");
+    console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/ingame");
+    console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/fullscreen");
+    console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/ladder");
+    console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/pickscreen");
+    console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/team_left");
+    console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/team_right");
   }
 });
-*/
+
+
 
 
 app.get('/admin', (req, res) => {
@@ -691,14 +685,13 @@ eventEmitter.on('force_resfresh', myEventHandler);
     //console.log("client message: " + client_message);
   }
 
-//var stdin = process.stdin;
 
 ioHook.on("keypress", event => {
 //console.log(event);
 if (event.rawcode == 67) {
   ws.send("c");
 }
-else if (event.rawcode == 192) {
+else if (event.rawcode == 192 || event.rawcode == 48) { // english kb 0's code is 48, hun kb ö's code is 192
   ws.send("select_pos9");
 }
 else if (event.rawcode == 49) {
@@ -739,95 +732,4 @@ else if (event.rawcode == 83 && event.altKey == true) { //alt + s
 }
 });
 ioHook.start();
-
 });
-
-/*
-// without this, we would only get streams once enter is pressed
-stdin.setRawMode( true );
-
-// resume stdin in the parent process (node app won't quit all by itself
-// unless an error or process.exit() happens)
-stdin.resume();
-
-// i don't want binary, do you?
-stdin.setEncoding( 'utf8' );
-
-// on any data into stdin
-stdin.on( 'data', function( key ){
-  //console.log(key + " pressed");
-  // console.log(toUnicode(key));
-
-  if ( key.toLowerCase() == 'ö' ) {
-    //console.log("select_pos9");
-    ws.send("select_pos9");
-  }
-  else if (key == '1') {
-    //console.log("select_pos0");
-    ws.send("select_pos0");
-  }
-  else if (key == '2') {
-    //console.log("select_pos1");
-    ws.send("select_pos1");
-  }
-  else if (key == '3') {
-    //console.log("select_pos2");
-    ws.send("select_pos2");
-  }
-  else if (key == '4') {
-    //console.log("select_pos3");
-    ws.send("select_pos3");
-  }
-  else if (key == '5') {
-    //console.log("select_pos4");
-    ws.send("select_pos4");
-  }
-  else if (key == '6') {
-    //console.log("select_pos5");
-    ws.send("select_pos5");
-  }
-  else if (key == '7') {
-    //console.log("select_pos6");
-    ws.send("select_pos6");
-  }
-  else if (key == '8') {
-    //console.log("select_pos7");
-    ws.send("select_pos7");
-  }
-  else if (key == '9') {
-    //console.log("select_pos8");
-    ws.send("select_pos8");
-  }
-  else if (key == '\u001B\u005B\u0032\u0031\u007E') { // f10
-    //console.log("reload_view");
-    ws.send("reload_view");
-  }
-  else if (key == '\u001B\u005B\u0032\u0033\u007E') { // f11
-    //console.log("force_hide");
-    ws.send("force_hide");
-  }
-  else if (key == '\u001B\u005B\u0032\u0034\u007E') { // f12
-    //console.log("force_show");
-    ws.send("force_show");
-  }
-  else if (key.toLowerCase() == 'c') { // f12
-    //console.log("toggle c");
-    ws.send("c");
-  }
-
-});
-
-});
-
-function toUnicode(theString) {
-  var unicodeString = '';
-  for (var i=0; i < theString.length; i++) {
-    var theUnicode = theString.charCodeAt(i).toString(16).toUpperCase();
-    while (theUnicode.length < 4) {
-      theUnicode = '0' + theUnicode;
-    }
-    theUnicode = '\\u' + theUnicode;
-    unicodeString += theUnicode;
-  }
-  return unicodeString;
-}*/
