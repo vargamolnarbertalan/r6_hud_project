@@ -11,7 +11,7 @@ This node.js app allows you to integrate playercams into your R6S broadcast, inc
 - Install Node.js v13.14.0 by running 'node-v13.14.0-x64.msi'.
 
 # Using the application
-- This app should be used on the observer PC where from you can forward only the insert-overlay as a transparent signal (for example via NDI) or mix together with game feed and forward that (for example via RTMP). If you can't use transparent signal, put a plain green color under the browsersources and keyout the green on recieving end or crop/mask the non-transparent feed.
+- This app should be used on the observer PC from where you can forward only the insert-overlay as a transparent signal (for example via NDI) or mix together with game feed and forward that (for example via RTMP). If you can't use transparent signal, put a plain green color under the browsersources and keyout the green on recieving end or crop/mask the non-transparent feed.
 - Start the app by running 'run.bat'. In the console enter the database provider's public IPv4 address. If the database server is running on your machine, you should enter localhost here. If you have the database set up correctly, the app (nodejs server) will start and you will recieve links to access both config and view pages.
 
 # Hotkeys
