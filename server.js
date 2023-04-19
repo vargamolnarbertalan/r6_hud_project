@@ -32,13 +32,13 @@ app.use(express.static('public'));
 console.clear();
 var db_host;
 //db_host = prompt(`IP address of the database host: `);
-db_host = 'remotemysql.com';
+db_host = 'localhost';
 
 const db = mysql.createPool({
   host: db_host,
-  user: "CrKkJEqRbg",
-  password: "qhF3Q9uOia",
-  database: "CrKkJEqRbg",
+  user: "root",
+  password: "",
+  database: "r6_hud",
   connectionLimit : 9,
   multipleStatements: true
 });
