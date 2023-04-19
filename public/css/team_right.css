@@ -1,15 +1,6 @@
 @font-face {
   font-family: "Chakra Petch";
-  src: url('font/ChakraPetch-Regular.ttf');
-  src: url('font/ChakraPetch-Bold.ttf');
-  src: url('font/ChakraPetch-Medium.ttf');
-  src: url('font/ChakraPetch-Italic.ttf');
-  src: url('font/ChakraPetch-BoldItalic.ttf');
-  src: url('font/ChakraPetch-Light.ttf');
-  src: url('font/ChakraPetch-LightItalic.ttf');
-  src: url('font/ChakraPetch-MediumItalic.ttf');
-  src: url('font/ChakraPetch-SemiBold.ttf');
-  src: url('font/ChakraPetch-SemiBoldItalic.ttf');
+  src: url(/font/ChakraPetch-Bold.ttf);
 }
 body{
     height: 1080px;
@@ -240,7 +231,6 @@ body{
   font-size: 24px;
   font-family: "Chakra Petch";
   color: rgb(255, 255, 255);
-  font-weight: bold;
   text-transform: uppercase;
   text-align: center;
   position: absolute;
