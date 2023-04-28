@@ -704,7 +704,7 @@ ioHook.on("keypress", event => {
 if (event.rawcode == 67) {
   ws.send("c");
 }
-else if (event.rawcode == 192 || event.rawcode == 48) { // english kb 0's code is 48, hun kb ö's code is 192
+else if (event.rawcode == 192 || event.rawcode == 48) { // 48 for ENG keyboard | 192 for HUN keyboard
   ws.send("select_pos9");
 }
 else if (event.rawcode == 49) {
