@@ -4,6 +4,10 @@ const WebSocket = require("ws");
 const wss = new WebSocket.Server({
   port: 6969
 });
+wss.on('error', function(error) {
+  console.error('WebSocket server error:', error);
+  process.exit(1);
+});
 const keypress = require('keypress');
 const keycode = require('keycode');
 
@@ -47,6 +51,13 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 app.listen(http_port);
+app.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.warn(`Port ${http_port} is already in use`);
+  } else {
+    console.error(err);
+  }
+});
 
 db.getConnection((err) => {
   if (err) {
@@ -178,7 +189,7 @@ app.post('/edit/team', (req, res) => {
       res.render('success', {
         success_message: `${req.body.edit_teamname}` + " successfully edited!"
       });
-      eventEmitter.emit('force_resfresh');
+      eventEmitter.emit('force_refresh');
     }
 
   });
@@ -214,7 +225,7 @@ app.post('/delete/team', (req, res) => {
       res.render('success', {
         success_message: `${req.body.delete_team_list}` + " successfully deleted!"
       });
-      eventEmitter.emit('force_resfresh');
+      eventEmitter.emit('force_refresh');
     }
 
   });
@@ -296,7 +307,7 @@ app.post('/edit/player', (req, res) => {
       res.render('success', {
         success_message: `${req.body.edit_nickname}` + " successfully edited!"
       });
-      eventEmitter.emit('force_resfresh');
+      eventEmitter.emit('force_refresh');
     }
 
   });
@@ -330,7 +341,7 @@ app.post('/delete/player', (req, res) => {
       res.render('success', {
         success_message: `${req.body.delete_player_list}` + " successfully deleted!"
       });
-      eventEmitter.emit('force_resfresh');
+      eventEmitter.emit('force_refresh');
     }
 
   });
@@ -509,7 +520,7 @@ app.post('/match/config', (req, res) => {
       res.render('success', {
         success_message: "HUDs for " + `${req.body.config_team1}` + " vs " + `${req.body.config_team2}` + " are now live!"
       });
-      eventEmitter.emit('force_resfresh');
+      eventEmitter.emit('force_refresh');
     }
 
   });
@@ -666,15 +677,17 @@ app.post('/fill/fs_team', (req, res) => {
 
   });
 
+
+
 wss.on("connection", ws => {
   //console.log("New client connected.");
 
   var myEventHandler = function () {
-  //console.log('Emitted force_resfresh!');
+  //console.log('Emitted force_refresh!');
   ws.send("reload_view");
 }
 
-eventEmitter.on('force_resfresh', myEventHandler);
+eventEmitter.on('force_refresh', myEventHandler);
 
   ws.on("close", ws => {
     //console.log("Client disconnected.");
