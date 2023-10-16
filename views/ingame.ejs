@@ -117,11 +117,11 @@ $(document).ready(function(){
     ws.onmessage = function(e){
       var server_message = e.data;
       console.log(server_message);
-      if (server_message == "c" && insert_hidden) {
+      if (server_message == "c") {
         $('body').css('opacity','1');
         insert_hidden = false;
       }
-      else if (server_message == "c" && !insert_hidden) {
+      else if (server_message == "x") {
         $('body').css('opacity','0');
         insert_hidden = true;
       }
