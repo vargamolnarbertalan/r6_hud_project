@@ -34,6 +34,7 @@ app.use(express.static('public'));
 
 console.clear();
 
+console.log("dbhost: " + process.env.DB_HOST)
 const db = mysql.createPool({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,

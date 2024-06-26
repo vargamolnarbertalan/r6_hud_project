@@ -41,16 +41,16 @@ CREATE TABLE `live_players` (
 --
 
 INSERT INTO `live_players` (`spec_pos`, `nickname`, `fullname`, `nationality`, `view_link`, `avatar`) VALUES
-(0, 'Lino', 'Tolnai Dominik', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Flag_of_Hungary.svg/1920px-Flag_of_Hungary.svg.png', 'https://vdo.ninja/?view=GicQMDm&label=Lino', 'https://i.imgur.com/bNCLPYB.png'),
-(1, 'rEEExiStEN', 'Czikai Máté Gábor', 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flag_of_Romania.svg/2560px-Flag_of_Romania.svg.png', 'https://vdo.ninja/?view=HTLnXkf&label=reexisteen', 'https://i.imgur.com/jPAm4tF.png'),
-(2, 'Rep', 'Rimai Attila', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Flag_of_Hungary.svg/1920px-Flag_of_Hungary.svg.png', 'https://vdo.ninja/?view=8cRinB2&label=Rep', 'https://i.imgur.com/YOuHz4Z.png'),
-(3, 'StriKe', 'Szabó Roland', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Flag_of_Hungary.svg/1920px-Flag_of_Hungary.svg.png', 'https://vdo.ninja/?view=ekFmvY7&label=StriKe', 'https://i.imgur.com/EdrW5km.png'),
-(4, 'w1oza', 'Vincze Zsombor', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Flag_of_Hungary.svg/1920px-Flag_of_Hungary.svg.png', 'https://vdo.ninja/?view=dVbdTyL&label=w1oza', 'https://i.imgur.com/EQB58PX.png'),
-(5, 'Gorii', 'Czibere Szabolcs', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Flag_of_Hungary.svg/1920px-Flag_of_Hungary.svg.png', 'https://vdo.ninja/?view=iYm4WR3&label=Gorii', 'https://i.imgur.com/TeIu86s.png'),
-(6, 'Hedsut', 'Budai Szabolcs', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Flag_of_Hungary.svg/1920px-Flag_of_Hungary.svg.png', 'https://vdo.ninja/?view=G8gezFL&label=Hedsut', 'https://i.imgur.com/BMJlVU6.png'),
-(7, 'Herkii', 'Németh Roland', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Flag_of_Hungary.svg/1920px-Flag_of_Hungary.svg.png', 'https://vdo.ninja/?view=HpASAGL&label=Herkii', 'https://i.imgur.com/QNedrEe.png'),
-(8, 'TRIFT', 'Lonovics Ábel', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Flag_of_Hungary.svg/1920px-Flag_of_Hungary.svg.png', 'https://vdo.ninja/?view=LZHBgwA&label=TRIFT', 'https://i.imgur.com/WZ1Hbmy.png'),
-(9, 'zhoxk', 'Keller Márk', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Flag_of_Hungary.svg/1920px-Flag_of_Hungary.svg.png', 'https://vdo.ninja/?view=6b2akU8&label=zhoxk', 'https://i.imgur.com/1D2qYmX.png');
+(0, 'mrtNNN', 'Regán Martin László', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Flag_of_Hungary.svg/1920px-Flag_of_Hungary.svg.png', 'https://vdo.ninja/?view=wEesNkX&transparent&cover&cleanoutput&autoplay=on&mutespeaker&label=mrtNNN', 'https://i.imgur.com/vqyqYyB.png'),
+(1, 'mrtNNN', 'Regán Martin László', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Flag_of_Hungary.svg/1920px-Flag_of_Hungary.svg.png', 'https://vdo.ninja/?view=wEesNkX&transparent&cover&cleanoutput&autoplay=on&mutespeaker&label=mrtNNN', 'https://i.imgur.com/vqyqYyB.png'),
+(2, 'mrtNNN', 'Regán Martin László', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Flag_of_Hungary.svg/1920px-Flag_of_Hungary.svg.png', 'https://vdo.ninja/?view=wEesNkX&transparent&cover&cleanoutput&autoplay=on&mutespeaker&label=mrtNNN', 'https://i.imgur.com/vqyqYyB.png'),
+(3, 'mrtNNN', 'Regán Martin László', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Flag_of_Hungary.svg/1920px-Flag_of_Hungary.svg.png', 'https://vdo.ninja/?view=wEesNkX&transparent&cover&cleanoutput&autoplay=on&mutespeaker&label=mrtNNN', 'https://i.imgur.com/vqyqYyB.png'),
+(4, 'mrtNNN', 'Regán Martin László', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Flag_of_Hungary.svg/1920px-Flag_of_Hungary.svg.png', 'https://vdo.ninja/?view=wEesNkX&transparent&cover&cleanoutput&autoplay=on&mutespeaker&label=mrtNNN', 'https://i.imgur.com/vqyqYyB.png'),
+(5, 'zhoxk', 'Keller Márk', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Flag_of_Hungary.svg/1920px-Flag_of_Hungary.svg.png', 'https://vdo.ninja/?view=ifxEKpZ&transparent&cover&cleanoutput&autoplay=on&mutespeaker&label=zhoxk', 'https://i.imgur.com/vqyqYyB.png'),
+(6, 'zhoxk', 'Keller Márk', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Flag_of_Hungary.svg/1920px-Flag_of_Hungary.svg.png', 'https://vdo.ninja/?view=ifxEKpZ&transparent&cover&cleanoutput&autoplay=on&mutespeaker&label=zhoxk', 'https://i.imgur.com/vqyqYyB.png'),
+(7, 'zhoxk', 'Keller Márk', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Flag_of_Hungary.svg/1920px-Flag_of_Hungary.svg.png', 'https://vdo.ninja/?view=ifxEKpZ&transparent&cover&cleanoutput&autoplay=on&mutespeaker&label=zhoxk', 'https://i.imgur.com/vqyqYyB.png'),
+(8, 'zhoxk', 'Keller Márk', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Flag_of_Hungary.svg/1920px-Flag_of_Hungary.svg.png', 'https://vdo.ninja/?view=ifxEKpZ&transparent&cover&cleanoutput&autoplay=on&mutespeaker&label=zhoxk', 'https://i.imgur.com/vqyqYyB.png'),
+(9, 'zhoxk', 'Keller Márk', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Flag_of_Hungary.svg/1920px-Flag_of_Hungary.svg.png', 'https://vdo.ninja/?view=ifxEKpZ&transparent&cover&cleanoutput&autoplay=on&mutespeaker&label=zhoxk', 'https://i.imgur.com/vqyqYyB.png');
 
 -- --------------------------------------------------------
 
@@ -70,8 +70,8 @@ CREATE TABLE `live_teams` (
 --
 
 INSERT INTO `live_teams` (`team_pos`, `teamname`, `shorthandle`, `logo`) VALUES
-(0, 'KmK', 'KmK', 'https://i.imgur.com/MvbLl57.png'),
-(1, 'WiLD MultiGaming', 'WiLD', 'https://i.imgur.com/UjaO7M4.png');
+(0, 'Spirit Gaming', 'SG', 'https://i.imgur.com/ckpg52E.png'),
+(1, 'WiLD MultiGaming', 'WiLD', 'https://i.imgur.com/x5KdFxp.png');
 
 -- --------------------------------------------------------
 
