@@ -12,7 +12,7 @@ const keypress = require('keypress');
 const keycode = require('keycode');
 
 const bodyParser = require('body-parser');
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const http_port = 8083;
 const ip = require("ip");
 const dotenv = require('dotenv').config();
@@ -36,12 +36,17 @@ console.clear();
 
 const db = mysql.createPool({
   host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  connectionLimit : 9,
-  multipleStatements: true
-});
+  connectionLimit: 9,
+  multipleStatements: true,
+  dateStrings: true,
+  authPlugins: {
+      mysql_clear_password: () => () => Buffer.from(process.env.DB_PASSWORD + '\0')
+  }
+})
 
 //app.use(morgan('dev')); // get és post logging
 //app.use(express.static('public'));

@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `live_players` (
-  `spec_pos` int(1) NOT NULL,
+  `spec_pos` int(1) NOT NULL PRIMARY KEY,
   `nickname` varchar(100) DEFAULT NULL,
   `fullname` varchar(200) DEFAULT NULL,
   `nationality` varchar(300) DEFAULT NULL,
@@ -59,7 +59,7 @@ INSERT INTO `live_players` (`spec_pos`, `nickname`, `fullname`, `nationality`, `
 --
 
 CREATE TABLE `live_teams` (
-  `team_pos` int(1) NOT NULL,
+  `team_pos` int(1) NOT NULL PRIMARY KEY,
   `teamname` varchar(100) DEFAULT NULL,
   `shorthandle` varchar(10) DEFAULT NULL,
   `logo` varchar(300) DEFAULT NULL
@@ -80,7 +80,7 @@ INSERT INTO `live_teams` (`team_pos`, `teamname`, `shorthandle`, `logo`) VALUES
 --
 
 CREATE TABLE `players` (
-  `nickname` varchar(60) NOT NULL,
+  `nickname` varchar(60) NOT NULL PRIMARY KEY,
   `fullname` varchar(100) DEFAULT NULL,
   `nationality` varchar(300) DEFAULT NULL,
   `team_id` varchar(10) DEFAULT NULL,
@@ -122,7 +122,7 @@ INSERT INTO `players` (`nickname`, `fullname`, `nationality`, `team_id`, `con_li
 --
 
 CREATE TABLE `teams` (
-  `shorthandle` varchar(10) NOT NULL,
+  `shorthandle` varchar(10) NOT NULL PRIMARY KEY,
   `teamname` varchar(100) DEFAULT NULL,
   `logo` varchar(300) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
