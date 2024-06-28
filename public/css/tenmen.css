@@ -1,0 +1,175 @@
+@font-face {
+  font-family: "Chakra Petch";
+  src: url(/font/ChakraPetch-Bold.ttf);
+}
+body{
+    height: 1080px;
+    width: 1920px;
+    overflow: hidden;
+    padding: 0px;
+    margin: 0px;
+    background-color: rgba(0, 0, 0, 0);
+    font-family: "Chakra Petch";
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    text-transform: uppercase;
+}
+iframe{
+  z-index: 2;
+  position: relative;
+  object-fit: cover;
+  text-align: center;
+  vertical-align: center;
+  overflow: hidden;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  height: 100%;
+}
+
+img{
+  z-index: 1;
+
+}
+
+#container0, #container5, #spec_pos0_pic, #spec_pos5_pic{
+  left: 55px;
+}
+
+#container1, #container6, #spec_pos1_pic, #spec_pos6_pic{
+  left: 427px;
+}
+
+#container2, #container7, #spec_pos2_pic, #spec_pos7_pic{
+  left: 800px;
+}
+
+#container3, #container8, #spec_pos3_pic, #spec_pos8_pic{
+  left: 1172px;
+}
+
+#container4, #container9, #spec_pos4_pic, #spec_pos9_pic{
+  left: 1545px;
+}
+
+#container0,#container1,#container2,#container3,#container4,#spec_pos0_pic,#spec_pos1_pic,#spec_pos2_pic,#spec_pos3_pic,#spec_pos4_pic{
+  top: 158px;
+}
+
+#container5,#container6,#container7,#container8,#container9,#spec_pos5_pic,#spec_pos6_pic,#spec_pos7_pic,#spec_pos8_pic,#spec_pos9_pic{
+  top: 602px;
+}
+
+.player_pic{
+  background-color: rgb(0, 0, 0);
+  object-fit: cover;
+  text-align: center;
+  width: 321px;
+  height: 332px;
+  overflow: hidden;
+  position: absolute;
+  padding: 0px;
+  margin: 0px;
+}
+
+.cont {
+  width: 321px;
+  height: 332px;
+  overflow: hidden;
+  position: absolute;
+  padding: 0px;
+  margin: 0px;
+}
+
+#overlay{
+  background-image: url('https://i.imgur.com/o05Hbpv.png');
+  position: fixed;
+  width: 1920px;
+  height: 1080px;
+  z-index: 19;
+  top: 0px;
+  left: 0px;
+}
+
+.nicktop{
+  font-size: 22px;
+  position: absolute;
+  z-index: 20;
+  transform: translate(-50%,-50%);
+  top: 463px;
+  white-space: nowrap;
+  letter-spacing: -1px;
+}
+
+.nickbot{
+  font-size: 22px;
+  position: absolute;
+  z-index: 20;
+  transform: translate(-50%,-50%);
+  top: 907px;
+  white-space: nowrap;
+  letter-spacing: -1px;
+}
+
+#nick0, #nick5 {
+  left: 215px;
+}
+#nick1, #nick6 {
+  left: 588px;
+}
+#nick2, #nick7 {
+  left: 960px;
+}
+#nick3, #nick8 {
+  left: 1332px;
+}
+#nick4, #nick9 {
+  left: 1705px;
+}
+
+.teamname{
+  position: fixed;
+  font-size: 40px;
+}
+
+.teamlogo{
+  position: fixed;
+  width: 88px;
+  height: 88px;
+}
+
+#teamname0{
+  left: 168px;
+  top: 48px;
+  text-align: left;
+}
+
+#teamlogo0{
+  left: 55px;
+  top: 30px;
+}
+
+#teamname1{
+  text-align: right;
+  right: 168px;
+  bottom: 48px;
+}
+
+#teamlogo1{
+  right: 55px;
+  bottom: 30px;
+}
+
+#background-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: -1;
+  transform: translate(-50%, -50%);
+  background: no-repeat;
+  background-size: cover;
+}

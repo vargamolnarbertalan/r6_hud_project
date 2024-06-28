@@ -78,6 +78,7 @@ db.getConnection((err) => {
     console.log("--- Access views via the links below ---");
     console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/ingame");
     console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/fullscreen");
+    console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/tenmen");
     console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/ladder");
     console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/pickscreen");
     console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/team_left");
@@ -638,6 +639,12 @@ app.get('/team_right', (req, res) => {
       res.render('ladder');
 
     });
+
+  app.get('/tenmen', (req, res) => {
+
+    res.render('tenmen');
+
+  });
 
   app.get('/pickscreen', (req, res) => {
 
