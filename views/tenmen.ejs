@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>R6 HUD TENMEN</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="/css/tenmen.css">
+  <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+</head>
+
+<body>
+
+  <div id="overlay"></div>
+  <div id="nick0" class="nicktop">PLAYER0</div>
+  <div id="nick1" class="nicktop">PLAYER1</div>
+  <div id="nick2" class="nicktop">PLAYER2</div>
+  <div id="nick3" class="nicktop">PLAYER3</div>
+  <div id="nick4" class="nicktop">PLAYER4</div>
+  <div id="nick5" class="nickbot">PLAYER5</div>
+  <div id="nick6" class="nickbot">PLAYER6</div>
+  <div id="nick7" class="nickbot">PLAYER7</div>
+  <div id="nick8" class="nickbot">PLAYER8</div>
+  <div id="nick9" class="nickbot">PLAYER9</div>
+
+  <div class="cont" id="container0">
+    <iframe id="spec_pos0" frameBorder="0" src=""></iframe>
+  </div>
+
+  <div class="cont" id="container1">
+    <iframe id="spec_pos1" frameBorder="0" src=""></iframe>
+  </div>
+
+  <div class="cont" id="container2">
+    <iframe id="spec_pos2" frameBorder="0" src=""></iframe>
+  </div>
+
+  <div class="cont" id="container3">
+    <iframe id="spec_pos3" frameBorder="0" src=""></iframe>
+  </div>
+
+  <div class="cont" id="container4">
+    <iframe id="spec_pos4" frameBorder="0" src=""></iframe>
+  </div>
+
+  <img class="player_pic" id="spec_pos0_pic" src=""></img>
+  <img class="player_pic" id="spec_pos1_pic" src=""></img>
+  <img class="player_pic" id="spec_pos2_pic" src=""></img>
+  <img class="player_pic" id="spec_pos3_pic" src=""></img>
+  <img class="player_pic" id="spec_pos4_pic" src=""></img>
+
+  <div class="cont" id="container5">
+    <iframe id="spec_pos5" frameBorder="0" src=""></iframe>
+  </div>
+
+  <div class="cont" id="container6">
+    <iframe id="spec_pos6" frameBorder="0" src=""></iframe>
+  </div>
+
+  <div class="cont" id="container7">
+    <iframe id="spec_pos7" frameBorder="0" src=""></iframe>
+  </div>
+
+  <div class="cont" id="container8">
+    <iframe id="spec_pos8" frameBorder="0" src=""></iframe>
+  </div>
+
+  <div class="cont" id="container9">
+    <iframe id="spec_pos9" frameBorder="0" src=""></iframe>
+  </div>
+
+  <img class="player_pic" id="spec_pos5_pic" src=""></img>
+  <img class="player_pic" id="spec_pos6_pic" src=""></img>
+  <img class="player_pic" id="spec_pos7_pic" src=""></img>
+  <img class="player_pic" id="spec_pos8_pic" src=""></img>
+  <img class="player_pic" id="spec_pos9_pic" src=""></img>
+
+  <div class="teamname" id="teamname0">BLUE TEAM NAME</div>
+  <img class="teamlogo" id="teamlogo0" src="">
+
+  <div class="teamname" id="teamname1">ORANGE TEAM NAME</div>
+  <img class="teamlogo" id="teamlogo1" src="">
+
+
+  <video autoplay muted loop playsinline id="background-video">
+    <source src="/vid/loop.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+
+</body>
+
+<script>
+  $(document).ready(function() {
+
+    $.ajax({
+      url: "/fill/ingame",
+      type: "POST",
+      success: function(data) {
+        for (var i = 0; i < data.length; i++) {
+          $('#spec_pos' + i + '').prop('src', data[i].view_link);
+          $('#spec_pos' + i + '_pic').prop('src', data[i].avatar);
+          $('#nick' + i + '').text(data[i].nickname);
+        }
+      }
+    });
+
+    $.ajax({
+      url: "/fill/fs_team",
+      type: "POST",
+      success: function(data) {
+        for (var i = 0; i < data.length; i++) {
+          $(`#teamlogo${i}`).prop('src', data[i].logo);
+          $(`#teamname${i}`).text(data[i].teamname);
+        }
+      }
+    });
+
+    const ws = new WebSocket("ws://localhost:6969");
+
+    ws.addEventListener("open", () => {
+      console.log("Connected!");
+
+      ws.onmessage = function(e) {
+        var server_message = e.data;
+        console.log(server_message);
+        if (server_message == "reload_view") {
+          location.reload();
+        }
+      }
+    });
+
+  });
+</script>
+
+</html>
