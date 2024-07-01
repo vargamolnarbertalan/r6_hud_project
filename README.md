@@ -19,7 +19,8 @@ This node.js app allows you to integrate playercams into your R6S broadcast, inc
 
 # Hotkeys
 - Select spectate positions (effects ingame and fullscreen views): 1,2,3,4,5,6,7,8,9,ö on Hungarian keyboard, 0 on English (US) keyboard.
-- Hide or show ingame overlay (effects ingame view): c
+- Show ingame overlay (effects ingame view): X
+- Hide ingame overlay (effects ingame view): C
 - Force refresh (effects all views): ALT + R
 - Force hide (effects ingame view): ALT + H
 - Force show (effects ingame view): ALT + S
