@@ -395,7 +395,6 @@ app.post('/get/players', (req, res) => {
 });
 
 app.post('/match/config', (req, res) => {
-
   var sql = `
   UPDATE live_teams, teams
   SET
@@ -415,100 +414,110 @@ app.post('/match/config', (req, res) => {
 
       UPDATE live_players, players
      SET
+     live_players.rotate='${req.body.rotate0}',
        live_players.nickname=players.nickname,
        live_players.fullname=players.fullname,
        live_players.nationality=players.nationality,
-       live_players.view_link=players.view_link,
+       live_players.view_link=CONCAT(players.view_link, '&rotatewindow=${req.body.rotate0}'),
        live_players.avatar=players.avatar
      WHERE
        spec_pos = 0 AND players.nickname = '${req.body.config_player0}';
 
        UPDATE live_players, players
       SET
+      live_players.rotate='${req.body.rotate1}',
         live_players.nickname=players.nickname,
         live_players.fullname=players.fullname,
         live_players.nationality=players.nationality,
-        live_players.view_link=players.view_link,
+        live_players.view_link=CONCAT(players.view_link, '&rotatewindow=${req.body.rotate1}'),
         live_players.avatar=players.avatar
       WHERE
         spec_pos = 1 AND players.nickname = '${req.body.config_player1}';
 
         UPDATE live_players, players
        SET
+       live_players.rotate='${req.body.rotate2}',
          live_players.nickname=players.nickname,
          live_players.fullname=players.fullname,
          live_players.nationality=players.nationality,
-         live_players.view_link=players.view_link,
+         live_players.view_link=CONCAT(players.view_link, '&rotatewindow=${req.body.rotate2}'),
          live_players.avatar=players.avatar
        WHERE
          spec_pos = 2 AND players.nickname = '${req.body.config_player2}';
 
          UPDATE live_players, players
         SET
+        live_players.rotate='${req.body.rotate3}',
           live_players.nickname=players.nickname,
           live_players.fullname=players.fullname,
           live_players.nationality=players.nationality,
-          live_players.view_link=players.view_link,
+          live_players.view_link=CONCAT(players.view_link, '&rotatewindow=${req.body.rotate3}'),
           live_players.avatar=players.avatar
         WHERE
           spec_pos = 3 AND players.nickname = '${req.body.config_player3}';
 
           UPDATE live_players, players
          SET
+         live_players.rotate='${req.body.rotate4}',
            live_players.nickname=players.nickname,
            live_players.fullname=players.fullname,
            live_players.nationality=players.nationality,
-           live_players.view_link=players.view_link,
+           live_players.view_link=CONCAT(players.view_link, '&rotatewindow=${req.body.rotate4}'),
            live_players.avatar=players.avatar
          WHERE
            spec_pos = 4 AND players.nickname = '${req.body.config_player4}';
 
            UPDATE live_players, players
           SET
+          live_players.rotate='${req.body.rotate5}',
             live_players.nickname=players.nickname,
             live_players.fullname=players.fullname,
             live_players.nationality=players.nationality,
-            live_players.view_link=players.view_link,
+            live_players.view_link=CONCAT(players.view_link, '&rotatewindow=${req.body.rotate5}'),
             live_players.avatar=players.avatar
           WHERE
             spec_pos = 5 AND players.nickname = '${req.body.config_player5}';
 
             UPDATE live_players, players
            SET
+           live_players.rotate='${req.body.rotate6}',
              live_players.nickname=players.nickname,
              live_players.fullname=players.fullname,
              live_players.nationality=players.nationality,
-             live_players.view_link=players.view_link,
+             live_players.view_link=CONCAT(players.view_link, '&rotatewindow=${req.body.rotate6}'),
              live_players.avatar=players.avatar
            WHERE
              spec_pos = 6 AND players.nickname = '${req.body.config_player6}';
 
              UPDATE live_players, players
             SET
+            live_players.rotate='${req.body.rotate7}',
               live_players.nickname=players.nickname,
               live_players.fullname=players.fullname,
               live_players.nationality=players.nationality,
-              live_players.view_link=players.view_link,
+              live_players.view_link=CONCAT(players.view_link, '&rotatewindow=${req.body.rotate7}'),
               live_players.avatar=players.avatar
             WHERE
               spec_pos = 7 AND players.nickname = '${req.body.config_player7}';
 
               UPDATE live_players, players
              SET
+             live_players.rotate='${req.body.rotate8}',
                live_players.nickname=players.nickname,
                live_players.fullname=players.fullname,
                live_players.nationality=players.nationality,
-               live_players.view_link=players.view_link,
+               live_players.view_link=CONCAT(players.view_link, '&rotatewindow=${req.body.rotate8}'),
                live_players.avatar=players.avatar
              WHERE
                spec_pos = 8 AND players.nickname = '${req.body.config_player8}';
 
                UPDATE live_players, players
               SET
+              live_players.rotate='${req.body.rotate9}',
                 live_players.nickname=players.nickname,
                 live_players.fullname=players.fullname,
                 live_players.nationality=players.nationality,
-                live_players.view_link=players.view_link,
+                live_players.view_link=CONCAT(players.view_link, '&rotatewindow=${req.body.rotate9}'),
                 live_players.avatar=players.avatar
               WHERE
                 spec_pos = 9 AND players.nickname = '${req.body.config_player9}';
