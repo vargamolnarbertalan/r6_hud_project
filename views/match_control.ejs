@@ -75,30 +75,30 @@
       <option value="nan">Select a team...</option>
     </select>
     <br>
-    <select id="rotate0" name="rotate0" class="playerselect1"><option value="0">0 degrees rotation</option><option value="90">90 degrees rotation</option><option value="180">180 degrees rotation</option><option value="270">270 degrees rotation</option></select>
+    <select id="rotate0" name="rotate0" class="rotateselect1"><option value="0">0 degrees rotation</option><option value="90">90 degrees rotation</option><option value="180">180 degrees rotation</option><option value="270">270 degrees rotation</option></select>
     <select id="config_player0" name="config_player0" class="playerselect1" placeholder="Select a player..."></select>
     <select id="config_player5" name="config_player5" class="playerselect2" placeholder="Select a player..."></select>
-    <select id="rotate5" name="rotate5" class="playerselect2"><option value="0">0 degrees rotation</option><option value="90">90 degrees rotation</option><option value="180">180 degrees rotation</option><option value="270">270 degrees rotation</option></select>
+    <select id="rotate5" name="rotate5" class="rotateselect2"><option value="0">0 degrees rotation</option><option value="90">90 degrees rotation</option><option value="180">180 degrees rotation</option><option value="270">270 degrees rotation</option></select>
     <br>
-    <select id="rotate1" name="rotate1" class="playerselect1"><option value="0">0 degrees rotation</option><option value="90">90 degrees rotation</option><option value="180">180 degrees rotation</option><option value="270">270 degrees rotation</option></select>
+    <select id="rotate1" name="rotate1" class="rotateselect1"><option value="0">0 degrees rotation</option><option value="90">90 degrees rotation</option><option value="180">180 degrees rotation</option><option value="270">270 degrees rotation</option></select>
     <select id="config_player1" name="config_player1" class="playerselect1" placeholder="Select a player..."></select>
     <select id="config_player6" name="config_player6" class="playerselect2" placeholder="Select a player..."></select>
-    <select id="rotate6" name="rotate6" class="playerselect2"><option value="0">0 degrees rotation</option><option value="90">90 degrees rotation</option><option value="180">180 degrees rotation</option><option value="270">270 degrees rotation</option></select>
+    <select id="rotate6" name="rotate6" class="rotateselect2"><option value="0">0 degrees rotation</option><option value="90">90 degrees rotation</option><option value="180">180 degrees rotation</option><option value="270">270 degrees rotation</option></select>
     <br>
-    <select id="rotate2" name="rotate2" class="playerselect1"><option value="0">0 degrees rotation</option><option value="90">90 degrees rotation</option><option value="180">180 degrees rotation</option><option value="270">270 degrees rotation</option></select>
+    <select id="rotate2" name="rotate2" class="rotateselect1"><option value="0">0 degrees rotation</option><option value="90">90 degrees rotation</option><option value="180">180 degrees rotation</option><option value="270">270 degrees rotation</option></select>
     <select id="config_player2" name="config_player2" class="playerselect1" placeholder="Select a player..."></select>
     <select id="config_player7" name="config_player7" class="playerselect2" placeholder="Select a player..."></select>
-    <select id="rotate7" name="rotate7" class="playerselect2"><option value="0">0 degrees rotation</option><option value="90">90 degrees rotation</option><option value="180">180 degrees rotation</option><option value="270">270 degrees rotation</option></select>
+    <select id="rotate7" name="rotate7" class="rotateselect2"><option value="0">0 degrees rotation</option><option value="90">90 degrees rotation</option><option value="180">180 degrees rotation</option><option value="270">270 degrees rotation</option></select>
     <br>
-    <select id="rotate3" name="rotate3" class="playerselect1"><option value="0">0 degrees rotation</option><option value="90">90 degrees rotation</option><option value="180">180 degrees rotation</option><option value="270">270 degrees rotation</option></select>
+    <select id="rotate3" name="rotate3" class="rotateselect1"><option value="0">0 degrees rotation</option><option value="90">90 degrees rotation</option><option value="180">180 degrees rotation</option><option value="270">270 degrees rotation</option></select>
     <select id="config_player3" name="config_player3" class="playerselect1" placeholder="Select a player..."></select>
     <select id="config_player8" name="config_player8" class="playerselect2" placeholder="Select a player..."></select>
-    <select id="rotate8" name="rotate8" class="playerselect2"><option value="0">0 degrees rotation</option><option value="90">90 degrees rotation</option><option value="180">180 degrees rotation</option><option value="270">270 degrees rotation</option></select>
+    <select id="rotate8" name="rotate8" class="rotateselect2"><option value="0">0 degrees rotation</option><option value="90">90 degrees rotation</option><option value="180">180 degrees rotation</option><option value="270">270 degrees rotation</option></select>
     <br>
-    <select id="rotate4" name="rotate4" class="playerselect1"><option value="0">0 degrees rotation</option><option value="90">90 degrees rotation</option><option value="180">180 degrees rotation</option><option value="270">270 degrees rotation</option></select>
+    <select id="rotate4" name="rotate4" class="rotateselect1"><option value="0">0 degrees rotation</option><option value="90">90 degrees rotation</option><option value="180">180 degrees rotation</option><option value="270">270 degrees rotation</option></select>
     <select id="config_player4" name="config_player4" class="playerselect1" placeholder="Select a player..."></select>
     <select id="config_player9" name="config_player9" class="playerselect2" placeholder="Select a player..."></select>
-    <select id="rotate9" name="rotate9" class="playerselect2"><option value="0">0 degrees rotation</option><option value="90">90 degrees rotation</option><option value="180">180 degrees rotation</option><option value="270">270 degrees rotation</option></select>
+    <select id="rotate9" name="rotate9" class="rotateselect2"><option value="0">0 degrees rotation</option><option value="90">90 degrees rotation</option><option value="180">180 degrees rotation</option><option value="270">270 degrees rotation</option></select>
     <br>
     <button id="submit_button" type="submit">UPDATE HUD</button>
   </form>
@@ -212,6 +212,10 @@
     $('#config_team0').on('change', function() {
       $('#submit_button').prop("disabled", false);
 
+      for (var i = 0; i < 5; i++) {
+            $('#rotate' + i + '').val(0)
+          }
+
       if ($('#config_team0').val() == "nan" || $('#config_team1').val() == "nan") {
         $('#submit_button').prop("disabled", true);
       }
@@ -238,6 +242,11 @@
 
     $('#config_team1').on('change', function() {
       $('#submit_button').prop("disabled", false);
+
+      for (var i = 5; i < 10; i++) {
+            $('#rotate' + i + '').val(0)
+          }
+
       if ($('#config_team0').val() == "nan" || $('#config_team1').val() == "nan") {
         $('#submit_button').prop("disabled", true);
       }

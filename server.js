@@ -395,6 +395,39 @@ app.post('/get/players', (req, res) => {
 });
 
 app.post('/match/config', (req, res) => {
+  var rotations = ["","","","","","","","","",""];
+
+  if(req.body.rotate0 != 0){
+    rotations[0] = `&rotatewindow=${req.body.rotate0}`
+  }
+  if(req.body.rotate1 != 0){
+    rotations[1] = `&rotatewindow=${req.body.rotate1}`
+  }
+  if(req.body.rotate2 != 0){
+    rotations[2] = `&rotatewindow=${req.body.rotate2}`
+  }
+  if(req.body.rotate3 != 0){
+    rotations[3] = `&rotatewindow=${req.body.rotate3}`
+  }
+  if(req.body.rotate4 != 0){
+    rotations[4] = `&rotatewindow=${req.body.rotate4}`
+  }
+  if(req.body.rotate5 != 0){
+    rotations[5] = `&rotatewindow=${req.body.rotate5}`
+  }
+  if(req.body.rotate6 != 0){
+    rotations[6] = `&rotatewindow=${req.body.rotate6}`
+  }
+  if(req.body.rotate7 != 0){
+    rotations[7] = `&rotatewindow=${req.body.rotate7}`
+  }
+  if(req.body.rotate8 != 0){
+    rotations[8] = `&rotatewindow=${req.body.rotate8}`
+  }
+  if(req.body.rotate9 != 0){
+    rotations[9] = `&rotatewindow=${req.body.rotate9}`
+  }
+
   var sql = `
   UPDATE live_teams, teams
   SET
@@ -418,7 +451,7 @@ app.post('/match/config', (req, res) => {
        live_players.nickname=players.nickname,
        live_players.fullname=players.fullname,
        live_players.nationality=players.nationality,
-       live_players.view_link=CONCAT(players.view_link, '&rotatewindow=${req.body.rotate0}'),
+       live_players.view_link=CONCAT(players.view_link, '${rotations[0]}'),
        live_players.avatar=players.avatar
      WHERE
        spec_pos = 0 AND players.nickname = '${req.body.config_player0}';
@@ -429,7 +462,7 @@ app.post('/match/config', (req, res) => {
         live_players.nickname=players.nickname,
         live_players.fullname=players.fullname,
         live_players.nationality=players.nationality,
-        live_players.view_link=CONCAT(players.view_link, '&rotatewindow=${req.body.rotate1}'),
+        live_players.view_link=CONCAT(players.view_link, '${rotations[1]}'),
         live_players.avatar=players.avatar
       WHERE
         spec_pos = 1 AND players.nickname = '${req.body.config_player1}';
@@ -440,7 +473,7 @@ app.post('/match/config', (req, res) => {
          live_players.nickname=players.nickname,
          live_players.fullname=players.fullname,
          live_players.nationality=players.nationality,
-         live_players.view_link=CONCAT(players.view_link, '&rotatewindow=${req.body.rotate2}'),
+         live_players.view_link=CONCAT(players.view_link, '${rotations[2]}'),
          live_players.avatar=players.avatar
        WHERE
          spec_pos = 2 AND players.nickname = '${req.body.config_player2}';
@@ -451,7 +484,7 @@ app.post('/match/config', (req, res) => {
           live_players.nickname=players.nickname,
           live_players.fullname=players.fullname,
           live_players.nationality=players.nationality,
-          live_players.view_link=CONCAT(players.view_link, '&rotatewindow=${req.body.rotate3}'),
+          live_players.view_link=CONCAT(players.view_link, '${rotations[3]}'),
           live_players.avatar=players.avatar
         WHERE
           spec_pos = 3 AND players.nickname = '${req.body.config_player3}';
@@ -462,7 +495,7 @@ app.post('/match/config', (req, res) => {
            live_players.nickname=players.nickname,
            live_players.fullname=players.fullname,
            live_players.nationality=players.nationality,
-           live_players.view_link=CONCAT(players.view_link, '&rotatewindow=${req.body.rotate4}'),
+           live_players.view_link=CONCAT(players.view_link, '${rotations[4]}'),
            live_players.avatar=players.avatar
          WHERE
            spec_pos = 4 AND players.nickname = '${req.body.config_player4}';
@@ -473,7 +506,7 @@ app.post('/match/config', (req, res) => {
             live_players.nickname=players.nickname,
             live_players.fullname=players.fullname,
             live_players.nationality=players.nationality,
-            live_players.view_link=CONCAT(players.view_link, '&rotatewindow=${req.body.rotate5}'),
+            live_players.view_link=CONCAT(players.view_link, '${rotations[5]}'),
             live_players.avatar=players.avatar
           WHERE
             spec_pos = 5 AND players.nickname = '${req.body.config_player5}';
@@ -484,7 +517,7 @@ app.post('/match/config', (req, res) => {
              live_players.nickname=players.nickname,
              live_players.fullname=players.fullname,
              live_players.nationality=players.nationality,
-             live_players.view_link=CONCAT(players.view_link, '&rotatewindow=${req.body.rotate6}'),
+             live_players.view_link=CONCAT(players.view_link, '${rotations[6]}'),
              live_players.avatar=players.avatar
            WHERE
              spec_pos = 6 AND players.nickname = '${req.body.config_player6}';
@@ -495,7 +528,7 @@ app.post('/match/config', (req, res) => {
               live_players.nickname=players.nickname,
               live_players.fullname=players.fullname,
               live_players.nationality=players.nationality,
-              live_players.view_link=CONCAT(players.view_link, '&rotatewindow=${req.body.rotate7}'),
+              live_players.view_link=CONCAT(players.view_link, '${rotations[7]}'),
               live_players.avatar=players.avatar
             WHERE
               spec_pos = 7 AND players.nickname = '${req.body.config_player7}';
@@ -506,7 +539,7 @@ app.post('/match/config', (req, res) => {
                live_players.nickname=players.nickname,
                live_players.fullname=players.fullname,
                live_players.nationality=players.nationality,
-               live_players.view_link=CONCAT(players.view_link, '&rotatewindow=${req.body.rotate8}'),
+               live_players.view_link=CONCAT(players.view_link, '${rotations[8]}'),
                live_players.avatar=players.avatar
              WHERE
                spec_pos = 8 AND players.nickname = '${req.body.config_player8}';
@@ -517,7 +550,7 @@ app.post('/match/config', (req, res) => {
                 live_players.nickname=players.nickname,
                 live_players.fullname=players.fullname,
                 live_players.nationality=players.nationality,
-                live_players.view_link=CONCAT(players.view_link, '&rotatewindow=${req.body.rotate9}'),
+                live_players.view_link=CONCAT(players.view_link, '${rotations[9]}'),
                 live_players.avatar=players.avatar
               WHERE
                 spec_pos = 9 AND players.nickname = '${req.body.config_player9}';
