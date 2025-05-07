@@ -1,5 +1,6 @@
 const express = require("express");
 const ioHook = require('iohook');
+const dotenv = require('dotenv').config();
 const WebSocket = require("ws");
 const wss = new WebSocket.Server({
   port: 6969
@@ -8,23 +9,17 @@ wss.on('error', function(error) {
   console.error('WebSocket server error:', error);
   process.exit(1);
 });
-const keypress = require('keypress');
-const keycode = require('keycode');
 
 const bodyParser = require('body-parser');
 const mysql = require("mysql2");
 const http_port = 8083;
-const ip = require("ip");
-const dotenv = require('dotenv').config();
+const videoParams = process.env.VIDEO_PARAMS;
 
 var events = require('events');
 var eventEmitter = new events.EventEmitter();
 eventEmitter.setMaxListeners(0);
 process.setMaxListeners(0);
 
-const morgan = require('morgan'); // get és post logging
-
-const prompt = require('prompt-sync')();
 
 const app = express();
 app.setMaxListeners(0);
@@ -451,7 +446,7 @@ app.post('/match/config', (req, res) => {
        live_players.nickname=players.nickname,
        live_players.fullname=players.fullname,
        live_players.nationality=players.nationality,
-       live_players.view_link=CONCAT(players.view_link, '${rotations[0]}'),
+       live_players.view_link=CONCAT(players.view_link, '${videoParams}${rotations[0]}'),
        live_players.avatar=players.avatar
      WHERE
        spec_pos = 0 AND players.nickname = '${req.body.config_player0}';
@@ -462,7 +457,7 @@ app.post('/match/config', (req, res) => {
         live_players.nickname=players.nickname,
         live_players.fullname=players.fullname,
         live_players.nationality=players.nationality,
-        live_players.view_link=CONCAT(players.view_link, '${rotations[1]}'),
+        live_players.view_link=CONCAT(players.view_link, '${videoParams}${rotations[1]}'),
         live_players.avatar=players.avatar
       WHERE
         spec_pos = 1 AND players.nickname = '${req.body.config_player1}';
@@ -473,7 +468,7 @@ app.post('/match/config', (req, res) => {
          live_players.nickname=players.nickname,
          live_players.fullname=players.fullname,
          live_players.nationality=players.nationality,
-         live_players.view_link=CONCAT(players.view_link, '${rotations[2]}'),
+         live_players.view_link=CONCAT(players.view_link, '${videoParams}${rotations[2]}'),
          live_players.avatar=players.avatar
        WHERE
          spec_pos = 2 AND players.nickname = '${req.body.config_player2}';
@@ -484,7 +479,7 @@ app.post('/match/config', (req, res) => {
           live_players.nickname=players.nickname,
           live_players.fullname=players.fullname,
           live_players.nationality=players.nationality,
-          live_players.view_link=CONCAT(players.view_link, '${rotations[3]}'),
+          live_players.view_link=CONCAT(players.view_link, '${videoParams}${rotations[3]}'),
           live_players.avatar=players.avatar
         WHERE
           spec_pos = 3 AND players.nickname = '${req.body.config_player3}';
@@ -495,7 +490,7 @@ app.post('/match/config', (req, res) => {
            live_players.nickname=players.nickname,
            live_players.fullname=players.fullname,
            live_players.nationality=players.nationality,
-           live_players.view_link=CONCAT(players.view_link, '${rotations[4]}'),
+           live_players.view_link=CONCAT(players.view_link, '${videoParams}${rotations[4]}'),
            live_players.avatar=players.avatar
          WHERE
            spec_pos = 4 AND players.nickname = '${req.body.config_player4}';
@@ -506,7 +501,7 @@ app.post('/match/config', (req, res) => {
             live_players.nickname=players.nickname,
             live_players.fullname=players.fullname,
             live_players.nationality=players.nationality,
-            live_players.view_link=CONCAT(players.view_link, '${rotations[5]}'),
+            live_players.view_link=CONCAT(players.view_link, '${videoParams}${rotations[5]}'),
             live_players.avatar=players.avatar
           WHERE
             spec_pos = 5 AND players.nickname = '${req.body.config_player5}';
@@ -517,7 +512,7 @@ app.post('/match/config', (req, res) => {
              live_players.nickname=players.nickname,
              live_players.fullname=players.fullname,
              live_players.nationality=players.nationality,
-             live_players.view_link=CONCAT(players.view_link, '${rotations[6]}'),
+             live_players.view_link=CONCAT(players.view_link, '${videoParams}${rotations[6]}'),
              live_players.avatar=players.avatar
            WHERE
              spec_pos = 6 AND players.nickname = '${req.body.config_player6}';
@@ -528,7 +523,7 @@ app.post('/match/config', (req, res) => {
               live_players.nickname=players.nickname,
               live_players.fullname=players.fullname,
               live_players.nationality=players.nationality,
-              live_players.view_link=CONCAT(players.view_link, '${rotations[7]}'),
+              live_players.view_link=CONCAT(players.view_link, '${videoParams}${rotations[7]}'),
               live_players.avatar=players.avatar
             WHERE
               spec_pos = 7 AND players.nickname = '${req.body.config_player7}';
@@ -539,7 +534,7 @@ app.post('/match/config', (req, res) => {
                live_players.nickname=players.nickname,
                live_players.fullname=players.fullname,
                live_players.nationality=players.nationality,
-               live_players.view_link=CONCAT(players.view_link, '${rotations[8]}'),
+               live_players.view_link=CONCAT(players.view_link, '${videoParams}${rotations[8]}'),
                live_players.avatar=players.avatar
              WHERE
                spec_pos = 8 AND players.nickname = '${req.body.config_player8}';
@@ -550,7 +545,7 @@ app.post('/match/config', (req, res) => {
                 live_players.nickname=players.nickname,
                 live_players.fullname=players.fullname,
                 live_players.nationality=players.nationality,
-                live_players.view_link=CONCAT(players.view_link, '${rotations[9]}'),
+                live_players.view_link=CONCAT(players.view_link, '${videoParams}${rotations[9]}'),
                 live_players.avatar=players.avatar
               WHERE
                 spec_pos = 9 AND players.nickname = '${req.body.config_player9}';
