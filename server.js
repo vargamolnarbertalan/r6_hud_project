@@ -132,13 +132,9 @@ app.post('/add/team', (req, res) => {
       teamname,
       shorthandle,
       logo
-    ) VALUES (
-      '${req.body.add_teamname}',
-      '${req.body.add_shorthandle}',
-      '${req.body.add_logo}'
-    );
+    ) VALUES (?, ?, ?);
   `;
-  db.query(sql, (err, dbres) => {
+  db.query(sql, [req.body.add_teamname, req.body.add_shorthandle, req.body.add_logo], (err, dbres) => {
     if (err) {
       console.log(err.message);
       res.render('error', {
@@ -161,23 +157,27 @@ app.post('/edit/team', (req, res) => {
 
   var sql = `
   UPDATE teams
-  SET teamname = '${req.body.edit_teamname}',
-  shorthandle = '${req.body.edit_shorthandle}',
-  logo = '${req.body.edit_logo}'
-  WHERE shorthandle = '${req.body.edit_team_list}';
+  SET teamname = ?,
+  shorthandle = ?,
+  logo = ?
+  WHERE shorthandle = ?;
 
   UPDATE players
-  SET team_id = '${req.body.edit_shorthandle}'
-  WHERE team_id = '${req.body.edit_team_list}';
+  SET team_id = ?
+  WHERE team_id = ?;
 
   UPDATE live_teams
-  SET teamname = '${req.body.edit_teamname}',
-  shorthandle = '${req.body.edit_shorthandle}',
-  logo = '${req.body.edit_logo}'
-  WHERE shorthandle = '${req.body.edit_team_list}';
+  SET teamname = ?,
+  shorthandle = ?,
+  logo = ?
+  WHERE shorthandle = ?;
 
   `;
-  db.query(sql, (err, dbres) => {
+  db.query(sql, [
+    req.body.edit_teamname, req.body.edit_shorthandle, req.body.edit_logo, req.body.edit_team_list,
+    req.body.edit_shorthandle, req.body.edit_team_list,
+    req.body.edit_teamname, req.body.edit_shorthandle, req.body.edit_logo, req.body.edit_team_list
+  ], (err, dbres) => {
     if (err) {
       console.log(err.message);
       res.render('error', {
@@ -200,20 +200,20 @@ app.post('/edit/team', (req, res) => {
 
 app.post('/delete/team', (req, res) => {
   var sql = `
-  DELETE FROM teams WHERE shorthandle = '${req.body.delete_team_list}';
+  DELETE FROM teams WHERE shorthandle = ?;
 
   UPDATE players
   SET team_id = 'NULL'
-  WHERE team_id = '${req.body.delete_team_list}';
+  WHERE team_id = ?;
 
   UPDATE live_teams
   SET teamname = 'NULL',
   shorthandle = 'NULL',
   logo = 'NULL'
-  WHERE shorthandle = '${req.body.delete_team_list}';
+  WHERE shorthandle = ?;
 
   `;
-  db.query(sql, (err, dbres) => {
+  db.query(sql, [req.body.delete_team_list, req.body.delete_team_list, req.body.delete_team_list], (err, dbres) => {
     if (err) {
       console.log(err.message);
       res.render('error', {
@@ -244,17 +244,17 @@ app.post('/add/player', (req, res) => {
       con_link,
       view_link,
       avatar
-    ) VALUES (
-      '${req.body.add_nickname}',
-      '${req.body.add_fullaname}',
-      '${req.body.add_nationality}',
-      '${req.body.playeradd_team_list}',
-      '${req.body.add_con_link}',
-      '${req.body.add_view_link}',
-      '${req.body.add_avatar}'
-    );
+    ) VALUES (?, ?, ?, ?, ?, ?, ?);
   `;
-  db.query(sql, (err, dbres) => {
+  db.query(sql, [
+    req.body.add_nickname,
+    req.body.add_fullaname,
+    req.body.add_nationality,
+    req.body.playeradd_team_list,
+    req.body.add_con_link,
+    req.body.add_view_link,
+    req.body.add_avatar
+  ], (err, dbres) => {
     if (err) {
       console.log(err.message);
       res.render('error', {
@@ -277,25 +277,30 @@ app.post('/add/player', (req, res) => {
 app.post('/edit/player', (req, res) => {
   var sql = `
   UPDATE players
-  SET nickname = '${req.body.edit_nickname}',
-  fullname = '${req.body.edit_fullname}',
-  nationality = '${req.body.edit_nationality}',
-  team_id = '${req.body.playeredit_team_list}',
-  con_link = '${req.body.edit_con_link}',
-  view_link = '${req.body.edit_view_link}',
-  avatar = '${req.body.edit_avatar}'
-  WHERE nickname = '${req.body.playeredit_player_list}';
+  SET nickname = ?,
+  fullname = ?,
+  nationality = ?,
+  team_id = ?,
+  con_link = ?,
+  view_link = ?,
+  avatar = ?
+  WHERE nickname = ?;
 
   UPDATE live_players
-  SET nickname = '${req.body.edit_nickname}',
-  fullname = '${req.body.edit_fullname}',
-  nationality = '${req.body.edit_nationality}',
-  view_link = '${req.body.edit_view_link}',
-  avatar = '${req.body.edit_avatar}'
-  WHERE nickname = '${req.body.playeredit_player_list}';
+  SET nickname = ?,
+  fullname = ?,
+  nationality = ?,
+  view_link = ?,
+  avatar = ?
+  WHERE nickname = ?;
 
   `;
-  db.query(sql, (err, dbres) => {
+  db.query(sql, [
+    req.body.edit_nickname, req.body.edit_fullname, req.body.edit_nationality, req.body.playeredit_team_list,
+    req.body.edit_con_link, req.body.edit_view_link, req.body.edit_avatar, req.body.playeredit_player_list,
+    req.body.edit_nickname, req.body.edit_fullname, req.body.edit_nationality, 
+    req.body.edit_view_link, req.body.edit_avatar, req.body.playeredit_player_list
+  ], (err, dbres) => {
     if (err) {
       console.log(err.message);
       res.render('error', {
@@ -318,7 +323,7 @@ app.post('/edit/player', (req, res) => {
 
 app.post('/delete/player', (req, res) => {
   var sql = `
-  DELETE FROM players WHERE nickname = '${req.body.delete_player_list}';
+  DELETE FROM players WHERE nickname = ?;
 
   UPDATE live_players
   SET nickname = 'NULL',
@@ -326,10 +331,10 @@ app.post('/delete/player', (req, res) => {
   nationality = 'NULL',
   view_link = 'NULL',
   avatar = 'NULL'
-  WHERE nickname = '${req.body.delete_player_list}';
+  WHERE nickname = ?;
 
   `;
-  db.query(sql, (err, dbres) => {
+  db.query(sql, [req.body.delete_player_list, req.body.delete_player_list], (err, dbres) => {
     if (err) {
       console.log(err.message);
       res.render('error', {
@@ -371,10 +376,10 @@ app.post('/get/teams', (req, res) => {
 app.post('/get/players', (req, res) => {
   var sql = `
     SELECT * FROM teams INNER JOIN players ON teams.shorthandle = players.team_id
-    WHERE teams.teamname = '${req.body.team}'
+    WHERE teams.teamname = ?
     ORDER BY players.nickname ASC;
   `;
-  db.query(sql, (err, dbres) => {
+  db.query(sql, [req.body.team], (err, dbres) => {
     if (err) {
       console.log(err.message);
       res.send(err.message);
@@ -430,7 +435,7 @@ app.post('/match/config', (req, res) => {
     live_teams.shorthandle=teams.shorthandle,
     live_teams.logo=teams.logo
   WHERE
-    team_pos = 0 AND teams.teamname = '${req.body.config_team1}';
+    team_pos = 0 AND teams.teamname = ?;
 
     UPDATE live_teams, teams
     SET
@@ -438,119 +443,148 @@ app.post('/match/config', (req, res) => {
       live_teams.shorthandle=teams.shorthandle,
       live_teams.logo=teams.logo
     WHERE
-      team_pos = 1 AND teams.teamname = '${req.body.config_team2}';
+      team_pos = 1 AND teams.teamname = ?;
 
       UPDATE live_players, players
      SET
-     live_players.rotate='${req.body.rotate0}',
+     live_players.rotate=?,
        live_players.nickname=players.nickname,
        live_players.fullname=players.fullname,
        live_players.nationality=players.nationality,
-       live_players.view_link=CONCAT(players.view_link, '${videoParams}${rotations[0]}'),
+       live_players.view_link=CONCAT(players.view_link, ?),
        live_players.avatar=players.avatar
      WHERE
-       spec_pos = 0 AND players.nickname = '${req.body.config_player0}';
+       spec_pos = 0 AND players.nickname = ?;
 
        UPDATE live_players, players
       SET
-      live_players.rotate='${req.body.rotate1}',
+      live_players.rotate=?,
         live_players.nickname=players.nickname,
         live_players.fullname=players.fullname,
         live_players.nationality=players.nationality,
-        live_players.view_link=CONCAT(players.view_link, '${videoParams}${rotations[1]}'),
+        live_players.view_link=CONCAT(players.view_link, ?),
         live_players.avatar=players.avatar
       WHERE
-        spec_pos = 1 AND players.nickname = '${req.body.config_player1}';
+        spec_pos = 1 AND players.nickname = ?;
 
         UPDATE live_players, players
        SET
-       live_players.rotate='${req.body.rotate2}',
+       live_players.rotate=?,
          live_players.nickname=players.nickname,
          live_players.fullname=players.fullname,
          live_players.nationality=players.nationality,
-         live_players.view_link=CONCAT(players.view_link, '${videoParams}${rotations[2]}'),
+         live_players.view_link=CONCAT(players.view_link, ?),
          live_players.avatar=players.avatar
        WHERE
-         spec_pos = 2 AND players.nickname = '${req.body.config_player2}';
+         spec_pos = 2 AND players.nickname = ?;
 
          UPDATE live_players, players
         SET
-        live_players.rotate='${req.body.rotate3}',
+        live_players.rotate=?,
           live_players.nickname=players.nickname,
           live_players.fullname=players.fullname,
           live_players.nationality=players.nationality,
-          live_players.view_link=CONCAT(players.view_link, '${videoParams}${rotations[3]}'),
+          live_players.view_link=CONCAT(players.view_link, ?),
           live_players.avatar=players.avatar
         WHERE
-          spec_pos = 3 AND players.nickname = '${req.body.config_player3}';
+          spec_pos = 3 AND players.nickname = ?;
 
           UPDATE live_players, players
          SET
-         live_players.rotate='${req.body.rotate4}',
+         live_players.rotate=?,
            live_players.nickname=players.nickname,
            live_players.fullname=players.fullname,
            live_players.nationality=players.nationality,
-           live_players.view_link=CONCAT(players.view_link, '${videoParams}${rotations[4]}'),
+           live_players.view_link=CONCAT(players.view_link, ?),
            live_players.avatar=players.avatar
          WHERE
-           spec_pos = 4 AND players.nickname = '${req.body.config_player4}';
+           spec_pos = 4 AND players.nickname = ?;
 
            UPDATE live_players, players
           SET
-          live_players.rotate='${req.body.rotate5}',
+          live_players.rotate=?,
             live_players.nickname=players.nickname,
             live_players.fullname=players.fullname,
             live_players.nationality=players.nationality,
-            live_players.view_link=CONCAT(players.view_link, '${videoParams}${rotations[5]}'),
+            live_players.view_link=CONCAT(players.view_link, ?),
             live_players.avatar=players.avatar
           WHERE
-            spec_pos = 5 AND players.nickname = '${req.body.config_player5}';
+            spec_pos = 5 AND players.nickname = ?;
 
             UPDATE live_players, players
            SET
-           live_players.rotate='${req.body.rotate6}',
+           live_players.rotate=?,
              live_players.nickname=players.nickname,
              live_players.fullname=players.fullname,
              live_players.nationality=players.nationality,
-             live_players.view_link=CONCAT(players.view_link, '${videoParams}${rotations[6]}'),
+             live_players.view_link=CONCAT(players.view_link, ?),
              live_players.avatar=players.avatar
            WHERE
-             spec_pos = 6 AND players.nickname = '${req.body.config_player6}';
+             spec_pos = 6 AND players.nickname = ?;
 
              UPDATE live_players, players
             SET
-            live_players.rotate='${req.body.rotate7}',
+            live_players.rotate=?,
               live_players.nickname=players.nickname,
               live_players.fullname=players.fullname,
               live_players.nationality=players.nationality,
-              live_players.view_link=CONCAT(players.view_link, '${videoParams}${rotations[7]}'),
+              live_players.view_link=CONCAT(players.view_link, ?),
               live_players.avatar=players.avatar
             WHERE
-              spec_pos = 7 AND players.nickname = '${req.body.config_player7}';
+              spec_pos = 7 AND players.nickname = ?;
 
               UPDATE live_players, players
              SET
-             live_players.rotate='${req.body.rotate8}',
+             live_players.rotate=?,
                live_players.nickname=players.nickname,
                live_players.fullname=players.fullname,
                live_players.nationality=players.nationality,
-               live_players.view_link=CONCAT(players.view_link, '${videoParams}${rotations[8]}'),
+               live_players.view_link=CONCAT(players.view_link, ?),
                live_players.avatar=players.avatar
              WHERE
-               spec_pos = 8 AND players.nickname = '${req.body.config_player8}';
+               spec_pos = 8 AND players.nickname = ?;
 
                UPDATE live_players, players
               SET
-              live_players.rotate='${req.body.rotate9}',
+              live_players.rotate=?,
                 live_players.nickname=players.nickname,
                 live_players.fullname=players.fullname,
                 live_players.nationality=players.nationality,
-                live_players.view_link=CONCAT(players.view_link, '${videoParams}${rotations[9]}'),
+                live_players.view_link=CONCAT(players.view_link, ?),
                 live_players.avatar=players.avatar
               WHERE
-                spec_pos = 9 AND players.nickname = '${req.body.config_player9}';
+                spec_pos = 9 AND players.nickname = ?;
   `;
-  db.query(sql, (err, dbres) => {
+  
+  // Build parameters array for all 12 queries
+  var params = [
+    // Team 1
+    req.body.config_team1,
+    // Team 2
+    req.body.config_team2,
+    // Player 0
+    req.body.rotate0, videoParams + rotations[0], req.body.config_player0,
+    // Player 1
+    req.body.rotate1, videoParams + rotations[1], req.body.config_player1,
+    // Player 2
+    req.body.rotate2, videoParams + rotations[2], req.body.config_player2,
+    // Player 3
+    req.body.rotate3, videoParams + rotations[3], req.body.config_player3,
+    // Player 4
+    req.body.rotate4, videoParams + rotations[4], req.body.config_player4,
+    // Player 5
+    req.body.rotate5, videoParams + rotations[5], req.body.config_player5,
+    // Player 6
+    req.body.rotate6, videoParams + rotations[6], req.body.config_player6,
+    // Player 7
+    req.body.rotate7, videoParams + rotations[7], req.body.config_player7,
+    // Player 8
+    req.body.rotate8, videoParams + rotations[8], req.body.config_player8,
+    // Player 9
+    req.body.rotate9, videoParams + rotations[9], req.body.config_player9
+  ];
+  
+  db.query(sql, params, (err, dbres) => {
     if (err) {
       console.log(err.message);
       res.render('error', {
@@ -610,9 +644,9 @@ app.post('/get/live_players', (req, res) => {
 app.post('/get/edit_player_data', (req, res) => {
   var sql = `
     SELECT * FROM players
-    WHERE nickname = '${req.body.player}';
+    WHERE nickname = ?;
   `;
-  db.query(sql, (err, dbres) => {
+  db.query(sql, [req.body.player], (err, dbres) => {
     if (err) {
       console.log(err.message);
       res.send(err.message);
@@ -630,9 +664,9 @@ app.post('/get/edit_player_data', (req, res) => {
 app.post('/get/edit_team_data', (req, res) => {
   var sql = `
     SELECT * FROM teams
-    WHERE shorthandle = '${req.body.team}';
+    WHERE shorthandle = ?;
   `;
-  db.query(sql, (err, dbres) => {
+  db.query(sql, [req.body.team], (err, dbres) => {
     if (err) {
       console.log(err.message);
       res.send(err.message);

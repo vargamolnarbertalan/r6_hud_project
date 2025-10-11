@@ -12,58 +12,28 @@
 
 <body>
 
-  <div class="ingame_insert0" style="background-image: url('https://i.imgur.com/Jpqguzt.png'); z-index: 100;position:fixed;top:0px;bottom:0px;width:1920px;height:1080px;left:0px;"></div>
-  <div class="ingame_insert1" style="background-image: url('https://i.imgur.com/jsAPC2t.png'); z-index: 100;position:fixed;top:0px;bottom:0px;width:1920px;height:1080px;left:0px;"></div>
-
-  <div id="container0" style="width: 276px; height: 181px; overflow: hidden">
-    <iframe id="spec_pos0" frameBorder="0" style="position: relative" src=""></iframe>
+  <!-- Team 1 (Blue) - Players 0-4 -->
+  <div id="team-border-0" class="team-border team-border-blue">
+    <% for(let i = 0; i < 5; i++) { %>
+      <div id="container<%= i %>" class="player-container">
+        <iframe id="spec_pos<%= i %>" class="player-iframe" frameBorder="0" src=""></iframe>
+      </div>
+    <% } %>
   </div>
 
-  <div id="container1" style="width: 276px; height: 181px; overflow: hidden">
-    <iframe id="spec_pos1" frameBorder="0" style="position: relative" src=""></iframe>
+  <!-- Team 2 (Orange) - Players 5-9 -->
+  <div id="team-border-1" class="team-border team-border-orange">
+    <% for(let i = 5; i < 10; i++) { %>
+      <div id="container<%= i %>" class="player-container">
+        <iframe id="spec_pos<%= i %>" class="player-iframe" frameBorder="0" src=""></iframe>
+      </div>
+    <% } %>
   </div>
 
-  <div id="container2" style="width: 276px; height: 181px; overflow: hidden">
-    <iframe id="spec_pos2" frameBorder="0" style="position: relative" src=""></iframe>
-  </div>
-  <div id="container3" style="width: 276px; height: 181px; overflow: hidden">
-    <iframe id="spec_pos3" frameBorder="0" style="position: relative" src=""></iframe>
-  </div>
-
-  <div id="container4" style="width: 276px; height: 181px; overflow: hidden">
-    <iframe id="spec_pos4" frameBorder="0" style="position: relative" src=""></iframe>
-  </div>
-
-    <img id="spec_pos0_pic" src=""></img>
-    <img id="spec_pos1_pic" src=""></img>
-    <img id="spec_pos2_pic" src=""></img>
-    <img id="spec_pos3_pic" src=""></img>
-    <img id="spec_pos4_pic" src=""></img>
-
-    <div id="container5" style="width: 276px; height: 181px; overflow: hidden">
-      <iframe id="spec_pos5" frameBorder="0" style="position: relative" src=""></iframe>
-    </div>
-    <div id="container6" style="width: 276px; height: 181px; overflow: hidden">
-      <iframe id="spec_pos6" frameBorder="0" style="position: relative;" src=""></iframe>
-    </div>
-
-    <div id="container7" style="width: 276px; height: 181px; overflow: hidden">
-      <iframe id="spec_pos7" frameBorder="0" style="position: relative" src=""></iframe>
-    </div>
-    <div id="container8" style="width: 276px; height: 181px; overflow: hidden">
-      <iframe id="spec_pos8" frameBorder="0" style="position: relative" src=""></iframe>
-    </div>
-    <div id="container9" style="width: 276px; height: 181px; overflow: hidden">
-      <iframe id="spec_pos9" frameBorder="0" style="position: relative" src=""></iframe>
-    </div>
-
-      <img id="spec_pos5_pic" src=""></img>
-      <img id="spec_pos6_pic" src=""></img>
-      <img id="spec_pos7_pic" src=""></img>
-      <img id="spec_pos8_pic" src=""></img>
-      <img id="spec_pos9_pic" src=""></img>
-
-</div>
+  <!-- Avatar images (fallback for disconnected streams) -->
+  <% for(let i = 0; i < 10; i++) { %>
+    <img id="spec_pos<%= i %>_pic" class="player-avatar" src="" alt="Player <%= i %> avatar">
+  <% } %>
 
 </body>
 
@@ -71,311 +41,78 @@
 
 $(document).ready(function(){
 
+  // Team configuration: which team border to show for each position
+  const teamConfig = {
+    0: 'blue', 1: 'blue', 2: 'blue', 3: 'blue', 4: 'blue',
+    5: 'orange', 6: 'orange', 7: 'orange', 8: 'orange', 9: 'orange'
+  };
+
+  // Load player data and setup initial state
   $.ajax({
     url: "/fill/ingame",
     type: "POST",
     success: function(data) {
       for (var i = 0; i < data.length; i++) {
-        $('#spec_pos' + i + '').prop('src', data[i].view_link + '&transparent&cover&cleanoutput?autoplay=on' );
+        $('#spec_pos' + i).prop('src', data[i].view_link + '&transparent&cover&cleanoutput?autoplay=on');
         $('#spec_pos' + i + '_pic').prop('src', data[i].avatar);
-        $('.ingame_insert1').css('opacity','0');
-        $('.ingame_insert0').css('opacity','1');
-        $('#spec_pos0').css('opacity','1');
-        $('#spec_pos1').css('opacity','0');
-        $('#spec_pos2').css('opacity','0');
-        $('#spec_pos3').css('opacity','0');
-        $('#spec_pos4').css('opacity','0');
-        $('#spec_pos5').css('opacity','0');
-        $('#spec_pos6').css('opacity','0');
-        $('#spec_pos7').css('opacity','0');
-        $('#spec_pos8').css('opacity','0');
-        $('#spec_pos9').css('opacity','0');
-        $('#spec_pos0_pic').css('opacity','1');
-        $('#spec_pos1_pic').css('opacity','0');
-        $('#spec_pos2_pic').css('opacity','0');
-        $('#spec_pos3_pic').css('opacity','0');
-        $('#spec_pos4_pic').css('opacity','0');
-        $('#spec_pos5_pic').css('opacity','0');
-        $('#spec_pos6_pic').css('opacity','0');
-        $('#spec_pos7_pic').css('opacity','0');
-        $('#spec_pos8_pic').css('opacity','0');
-        $('#spec_pos9_pic').css('opacity','0');
       }
+      // Initialize with position 0 visible
+      selectPosition(0);
     }
   });
 
   const ws = new WebSocket("ws://localhost:6969");
-  var insert_hidden = false;
 
-  ws.addEventListener("open", () =>{
+  ws.addEventListener("open", () => {
     console.log("Connected!");
 
     ws.onmessage = function(e){
       var server_message = e.data;
       console.log(server_message);
+      
       if (server_message == "c") {
         $('body').css('opacity','1');
-        insert_hidden = false;
       }
       else if (server_message == "x") {
         $('body').css('opacity','0');
-        insert_hidden = true;
       }
       else if (server_message == "force_hide") {
         $('body').css('opacity','0');
-        insert_hidden = true;
       }
       else if (server_message == "force_show") {
         $('body').css('opacity','1');
-        insert_hidden = false;
       }
       else if (server_message == "reload_view") {
         location.reload();
       }
-      else if (server_message == "select_pos0") {
-        $('.ingame_insert1').css('opacity','0');
-        $('.ingame_insert0').css('opacity','1');
-        $('#spec_pos0').css('opacity','1');
-        $('#spec_pos1').css('opacity','0');
-        $('#spec_pos2').css('opacity','0');
-        $('#spec_pos3').css('opacity','0');
-        $('#spec_pos4').css('opacity','0');
-        $('#spec_pos5').css('opacity','0');
-        $('#spec_pos6').css('opacity','0');
-        $('#spec_pos7').css('opacity','0');
-        $('#spec_pos8').css('opacity','0');
-        $('#spec_pos9').css('opacity','0');
-        $('#spec_pos0_pic').css('opacity','1');
-        $('#spec_pos1_pic').css('opacity','0');
-        $('#spec_pos2_pic').css('opacity','0');
-        $('#spec_pos3_pic').css('opacity','0');
-        $('#spec_pos4_pic').css('opacity','0');
-        $('#spec_pos5_pic').css('opacity','0');
-        $('#spec_pos6_pic').css('opacity','0');
-        $('#spec_pos7_pic').css('opacity','0');
-        $('#spec_pos8_pic').css('opacity','0');
-        $('#spec_pos9_pic').css('opacity','0');
+      // Handle position selection
+      else if (server_message.startsWith("select_pos")) {
+        const pos = parseInt(server_message.replace("select_pos", ""));
+        selectPosition(pos);
       }
-      else if (server_message == "select_pos1") {
-        $('.ingame_insert1').css('opacity','0');
-        $('.ingame_insert0').css('opacity','1');
-        $('#spec_pos0').css('opacity','0');
-        $('#spec_pos1').css('opacity','1');
-        $('#spec_pos2').css('opacity','0');
-        $('#spec_pos3').css('opacity','0');
-        $('#spec_pos4').css('opacity','0');
-        $('#spec_pos5').css('opacity','0');
-        $('#spec_pos6').css('opacity','0');
-        $('#spec_pos7').css('opacity','0');
-        $('#spec_pos8').css('opacity','0');
-        $('#spec_pos9').css('opacity','0');
-        $('#spec_pos0_pic').css('opacity','0');
-        $('#spec_pos1_pic').css('opacity','1');
-        $('#spec_pos2_pic').css('opacity','0');
-        $('#spec_pos3_pic').css('opacity','0');
-        $('#spec_pos4_pic').css('opacity','0');
-        $('#spec_pos5_pic').css('opacity','0');
-        $('#spec_pos6_pic').css('opacity','0');
-        $('#spec_pos7_pic').css('opacity','0');
-        $('#spec_pos8_pic').css('opacity','0');
-        $('#spec_pos9_pic').css('opacity','0');
-      }
-      else if (server_message == "select_pos2") {
-        $('.ingame_insert1').css('opacity','0');
-        $('.ingame_insert0').css('opacity','1');
-        $('#spec_pos0').css('opacity','0');
-        $('#spec_pos1').css('opacity','0');
-        $('#spec_pos2').css('opacity','1');
-        $('#spec_pos3').css('opacity','0');
-        $('#spec_pos4').css('opacity','0');
-        $('#spec_pos5').css('opacity','0');
-        $('#spec_pos6').css('opacity','0');
-        $('#spec_pos7').css('opacity','0');
-        $('#spec_pos8').css('opacity','0');
-        $('#spec_pos9').css('opacity','0');
-        $('#spec_pos0_pic').css('opacity','0');
-        $('#spec_pos1_pic').css('opacity','0');
-        $('#spec_pos2_pic').css('opacity','1');
-        $('#spec_pos3_pic').css('opacity','0');
-        $('#spec_pos4_pic').css('opacity','0');
-        $('#spec_pos5_pic').css('opacity','0');
-        $('#spec_pos6_pic').css('opacity','0');
-        $('#spec_pos7_pic').css('opacity','0');
-        $('#spec_pos8_pic').css('opacity','0');
-        $('#spec_pos9_pic').css('opacity','0');
-      }
-      else if (server_message == "select_pos3") {
-        $('.ingame_insert1').css('opacity','0');
-        $('.ingame_insert0').css('opacity','1');
-        $('#spec_pos0').css('opacity','0');
-        $('#spec_pos1').css('opacity','0');
-        $('#spec_pos2').css('opacity','0');
-        $('#spec_pos3').css('opacity','1');
-        $('#spec_pos4').css('opacity','0');
-        $('#spec_pos5').css('opacity','0');
-        $('#spec_pos6').css('opacity','0');
-        $('#spec_pos7').css('opacity','0');
-        $('#spec_pos8').css('opacity','0');
-        $('#spec_pos9').css('opacity','0');
-        $('#spec_pos0_pic').css('opacity','0');
-        $('#spec_pos1_pic').css('opacity','0');
-        $('#spec_pos2_pic').css('opacity','0');
-        $('#spec_pos3_pic').css('opacity','1');
-        $('#spec_pos4_pic').css('opacity','0');
-        $('#spec_pos5_pic').css('opacity','0');
-        $('#spec_pos6_pic').css('opacity','0');
-        $('#spec_pos7_pic').css('opacity','0');
-        $('#spec_pos8_pic').css('opacity','0');
-        $('#spec_pos9_pic').css('opacity','0');
-      }
-      else if (server_message == "select_pos4") {
-        $('.ingame_insert1').css('opacity','0');
-        $('.ingame_insert0').css('opacity','1');
-        $('#spec_pos0').css('opacity','0');
-        $('#spec_pos1').css('opacity','0');
-        $('#spec_pos2').css('opacity','0');
-        $('#spec_pos3').css('opacity','0');
-        $('#spec_pos4').css('opacity','1');
-        $('#spec_pos5').css('opacity','0');
-        $('#spec_pos6').css('opacity','0');
-        $('#spec_pos7').css('opacity','0');
-        $('#spec_pos8').css('opacity','0');
-        $('#spec_pos9').css('opacity','0');
-        $('#spec_pos0_pic').css('opacity','0');
-        $('#spec_pos1_pic').css('opacity','0');
-        $('#spec_pos2_pic').css('opacity','0');
-        $('#spec_pos3_pic').css('opacity','0');
-        $('#spec_pos4_pic').css('opacity','1');
-        $('#spec_pos5_pic').css('opacity','0');
-        $('#spec_pos6_pic').css('opacity','0');
-        $('#spec_pos7_pic').css('opacity','0');
-        $('#spec_pos8_pic').css('opacity','0');
-        $('#spec_pos9_pic').css('opacity','0');
-      }
-      else if (server_message == "select_pos5") {
-        $('.ingame_insert1').css('opacity','1');
-        $('.ingame_insert0').css('opacity','0');
-        $('#spec_pos0').css('opacity','0');
-        $('#spec_pos1').css('opacity','0');
-        $('#spec_pos2').css('opacity','0');
-        $('#spec_pos3').css('opacity','0');
-        $('#spec_pos4').css('opacity','0');
-        $('#spec_pos5').css('opacity','1');
-        $('#spec_pos6').css('opacity','0');
-        $('#spec_pos7').css('opacity','0');
-        $('#spec_pos8').css('opacity','0');
-        $('#spec_pos9').css('opacity','0');
-        $('#spec_pos0_pic').css('opacity','0');
-        $('#spec_pos1_pic').css('opacity','0');
-        $('#spec_pos2_pic').css('opacity','0');
-        $('#spec_pos3_pic').css('opacity','0');
-        $('#spec_pos4_pic').css('opacity','0');
-        $('#spec_pos5_pic').css('opacity','1');
-        $('#spec_pos6_pic').css('opacity','0');
-        $('#spec_pos7_pic').css('opacity','0');
-        $('#spec_pos8_pic').css('opacity','0');
-        $('#spec_pos9_pic').css('opacity','0');
-      }
-      else if (server_message == "select_pos6") {
-        $('.ingame_insert1').css('opacity','1');
-        $('.ingame_insert0').css('opacity','0');
-        $('#spec_pos0').css('opacity','0');
-        $('#spec_pos1').css('opacity','0');
-        $('#spec_pos2').css('opacity','0');
-        $('#spec_pos3').css('opacity','0');
-        $('#spec_pos4').css('opacity','0');
-        $('#spec_pos5').css('opacity','0');
-        $('#spec_pos6').css('opacity','1');
-        $('#spec_pos7').css('opacity','0');
-        $('#spec_pos8').css('opacity','0');
-        $('#spec_pos9').css('opacity','0');
-        $('#spec_pos0_pic').css('opacity','0');
-        $('#spec_pos1_pic').css('opacity','0');
-        $('#spec_pos2_pic').css('opacity','0');
-        $('#spec_pos3_pic').css('opacity','0');
-        $('#spec_pos4_pic').css('opacity','0');
-        $('#spec_pos5_pic').css('opacity','0');
-        $('#spec_pos6_pic').css('opacity','1');
-        $('#spec_pos7_pic').css('opacity','0');
-        $('#spec_pos8_pic').css('opacity','0');
-        $('#spec_pos9_pic').css('opacity','0');
-      }
-      else if (server_message == "select_pos7") {
-        $('.ingame_insert1').css('opacity','1');
-        $('.ingame_insert0').css('opacity','0');
-        $('#spec_pos0').css('opacity','0');
-        $('#spec_pos1').css('opacity','0');
-        $('#spec_pos2').css('opacity','0');
-        $('#spec_pos3').css('opacity','0');
-        $('#spec_pos4').css('opacity','0');
-        $('#spec_pos5').css('opacity','0');
-        $('#spec_pos6').css('opacity','0');
-        $('#spec_pos7').css('opacity','1');
-        $('#spec_pos8').css('opacity','0');
-        $('#spec_pos9').css('opacity','0');
-        $('#spec_pos0_pic').css('opacity','0');
-        $('#spec_pos1_pic').css('opacity','0');
-        $('#spec_pos2_pic').css('opacity','0');
-        $('#spec_pos3_pic').css('opacity','0');
-        $('#spec_pos4_pic').css('opacity','0');
-        $('#spec_pos5_pic').css('opacity','0');
-        $('#spec_pos6_pic').css('opacity','0');
-        $('#spec_pos7_pic').css('opacity','1');
-        $('#spec_pos8_pic').css('opacity','0');
-        $('#spec_pos9_pic').css('opacity','0');
-      }
-      else if (server_message == "select_pos8") {
-        $('.ingame_insert1').css('opacity','1');
-        $('.ingame_insert0').css('opacity','0');
-        $('#spec_pos0').css('opacity','0');
-        $('#spec_pos1').css('opacity','0');
-        $('#spec_pos2').css('opacity','0');
-        $('#spec_pos3').css('opacity','0');
-        $('#spec_pos4').css('opacity','0');
-        $('#spec_pos5').css('opacity','0');
-        $('#spec_pos6').css('opacity','0');
-        $('#spec_pos7').css('opacity','0');
-        $('#spec_pos8').css('opacity','1');
-        $('#spec_pos9').css('opacity','0');
-        $('#spec_pos0_pic').css('opacity','0');
-        $('#spec_pos1_pic').css('opacity','0');
-        $('#spec_pos2_pic').css('opacity','0');
-        $('#spec_pos3_pic').css('opacity','0');
-        $('#spec_pos4_pic').css('opacity','0');
-        $('#spec_pos5_pic').css('opacity','0');
-        $('#spec_pos6_pic').css('opacity','0');
-        $('#spec_pos7_pic').css('opacity','0');
-        $('#spec_pos8_pic').css('opacity','1');
-        $('#spec_pos9_pic').css('opacity','0');
-      }
-      else if (server_message == "select_pos9") {
-        $('.ingame_insert1').css('opacity','1');
-        $('.ingame_insert0').css('opacity','0');
-        $('#spec_pos0').css('opacity','0');
-        $('#spec_pos1').css('opacity','0');
-        $('#spec_pos2').css('opacity','0');
-        $('#spec_pos3').css('opacity','0');
-        $('#spec_pos4').css('opacity','0');
-        $('#spec_pos5').css('opacity','0');
-        $('#spec_pos6').css('opacity','0');
-        $('#spec_pos7').css('opacity','0');
-        $('#spec_pos8').css('opacity','0');
-        $('#spec_pos9').css('opacity','1');
-        $('#spec_pos0_pic').css('opacity','0');
-        $('#spec_pos1_pic').css('opacity','0');
-        $('#spec_pos2_pic').css('opacity','0');
-        $('#spec_pos3_pic').css('opacity','0');
-        $('#spec_pos4_pic').css('opacity','0');
-        $('#spec_pos5_pic').css('opacity','0');
-        $('#spec_pos6_pic').css('opacity','0');
-        $('#spec_pos7_pic').css('opacity','0');
-        $('#spec_pos8_pic').css('opacity','0');
-        $('#spec_pos9_pic').css('opacity','1');
-      }
-
     }
-
   });
+
+  // DRY function to select a position
+  function selectPosition(pos) {
+    // Hide all containers and avatars
+    $('.player-container').css('opacity', '0');
+    $('.player-avatar').css('opacity', '0');
+    
+    // Hide all team borders
+    $('.team-border').css('opacity', '0');
+    
+    // Show selected team border
+    if (teamConfig[pos] === 'blue') {
+      $('#team-border-0').css('opacity', '1');
+    } else {
+      $('#team-border-1').css('opacity', '1');
+    }
+    
+    // Show selected position
+    $('#container' + pos).css('opacity', '1');
+    $('#spec_pos' + pos + '_pic').css('opacity', '1');
+  }
 
 });
 
