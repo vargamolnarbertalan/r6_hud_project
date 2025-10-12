@@ -12,6 +12,8 @@ wss.on('error', function(error) {
 
 const bodyParser = require('body-parser');
 const mysql = require("mysql2");
+const fs = require('fs');
+const path = require('path');
 const http_port = 8083;
 const videoParams = process.env.VIDEO_PARAMS;
 
@@ -81,6 +83,85 @@ db.getConnection((err) => {
   }
 });
 
+/**
+ * Helper function to dynamically resolve player avatar path
+ * Looks for nickname.png, then nickname.jpg, falls back to backup.png
+ * @param {string} nickname - Player's nickname (case-sensitive)
+ * @returns {string} Path to the avatar image relative to /img/
+ */
+function getAvatarPath(nickname) {
+  const avatarsDir = path.join(__dirname, 'public', 'img', 'avatars');
+  const pngPath = path.join(avatarsDir, `${nickname}.png`);
+  const jpgPath = path.join(avatarsDir, `${nickname}.jpg`);
+  const backupPath = '/img/avatars/backup.png';
+  
+  // Check for .png first
+  if (fs.existsSync(pngPath)) {
+    return `/img/avatars/${nickname}.png`;
+  }
+  
+  // Check for .jpg
+  if (fs.existsSync(jpgPath)) {
+    return `/img/avatars/${nickname}.jpg`;
+  }
+  
+  // Fall back to backup.png
+  return backupPath;
+}
+
+/**
+ * Helper function to dynamically resolve team logo path
+ * Looks for shorthandle.png, then shorthandle.jpg, falls back to backup.png
+ * @param {string} shorthandle - Team's shorthandle (case-sensitive)
+ * @returns {string} Path to the logo image relative to /img/
+ */
+function getLogoPath(shorthandle) {
+  const logosDir = path.join(__dirname, 'public', 'img', 'logos');
+  const pngPath = path.join(logosDir, `${shorthandle}.png`);
+  const jpgPath = path.join(logosDir, `${shorthandle}.jpg`);
+  const backupPath = '/img/logos/backup.png';
+  
+  // Check for .png first
+  if (fs.existsSync(pngPath)) {
+    return `/img/logos/${shorthandle}.png`;
+  }
+  
+  // Check for .jpg
+  if (fs.existsSync(jpgPath)) {
+    return `/img/logos/${shorthandle}.jpg`;
+  }
+  
+  // Fall back to backup.png
+  return backupPath;
+}
+
+/**
+ * Helper function to dynamically resolve nationality flag path
+ * Looks for countrycode.png, then countrycode.jpg, falls back to backup.png
+ * @param {string} nationality - Country code or nationality identifier (case-sensitive)
+ * @returns {string} Path to the flag image relative to /img/
+ */
+function getFlagPath(nationality) {
+  const flagsDir = path.join(__dirname, 'public', 'img', 'flags');
+  // Remove .png or .jpg extension if present in the nationality field
+  const nationalityBase = nationality.replace(/\.(png|jpg)$/i, '');
+  const pngPath = path.join(flagsDir, `${nationalityBase}.png`);
+  const jpgPath = path.join(flagsDir, `${nationalityBase}.jpg`);
+  const backupPath = '/img/flags/backup.png';
+  
+  // Check for .png first
+  if (fs.existsSync(pngPath)) {
+    return `/img/flags/${nationalityBase}.png`;
+  }
+  
+  // Check for .jpg
+  if (fs.existsSync(jpgPath)) {
+    return `/img/flags/${nationalityBase}.jpg`;
+  }
+  
+  // Fall back to backup.png
+  return backupPath;
+}
 
 
 
@@ -368,7 +449,12 @@ app.post('/get/teams', (req, res) => {
     } else {
       ////console.log("Response:");
       ////console.log(dbres);
-      res.send(dbres);
+      // Override logo paths with dynamic file-based resolution
+      const teamsWithLogos = dbres.map(team => ({
+        ...team,
+        logo: getLogoPath(team.shorthandle)
+      }));
+      res.send(teamsWithLogos);
     }
   });
 });
@@ -388,7 +474,14 @@ app.post('/get/players', (req, res) => {
     } else {
       ////console.log("Response:");
       //console.log(dbres);
-      res.send(dbres);
+      // Override avatar and flag paths with dynamic file-based resolution
+      const playersWithAssets = dbres.map(player => ({
+        ...player,
+        avatar: getAvatarPath(player.nickname),
+        nationality: getFlagPath(player.nationality),
+        logo: getLogoPath(player.team_id)
+      }));
+      res.send(playersWithAssets);
     }
   });
 
@@ -618,7 +711,12 @@ app.post('/get/live_teams', (req, res) => {
     } else {
       ////console.log("Response:");
       ////console.log(dbres);
-      res.send(dbres);
+      // Override logo paths with dynamic file-based resolution
+      const teamsWithLogos = dbres.map(team => ({
+        ...team,
+        logo: getLogoPath(team.shorthandle)
+      }));
+      res.send(teamsWithLogos);
     }
   });
 });
@@ -636,7 +734,13 @@ app.post('/get/live_players', (req, res) => {
     } else {
       ////console.log("Response:");
       ////console.log(dbres);
-      res.send(dbres);
+      // Override avatar and flag paths with dynamic file-based resolution
+      const playersWithAssets = dbres.map(player => ({
+        ...player,
+        avatar: getAvatarPath(player.nickname),
+        nationality: getFlagPath(player.nationality)
+      }));
+      res.send(playersWithAssets);
     }
   });
 });
@@ -736,7 +840,13 @@ app.post('/fill/ingame', (req, res) => {
       } else {
         ////console.log("Response:");
         //console.log(dbres);
-        res.send(dbres);
+        // Override avatar and flag paths with dynamic file-based resolution
+        const playersWithAssets = dbres.map(player => ({
+          ...player,
+          avatar: getAvatarPath(player.nickname),
+          nationality: getFlagPath(player.nationality)
+        }));
+        res.send(playersWithAssets);
       }
     });
 
@@ -755,7 +865,12 @@ app.post('/fill/fs_team', (req, res) => {
       } else {
         ////console.log("Response:");
         //console.log(dbres);
-        res.send(dbres);
+        // Override logo paths with dynamic file-based resolution
+        const teamsWithLogos = dbres.map(team => ({
+          ...team,
+          logo: getLogoPath(team.shorthandle)
+        }));
+        res.send(teamsWithLogos);
       }
     });
 

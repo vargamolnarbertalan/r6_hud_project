@@ -19,7 +19,7 @@
   <form method="post" action="/add/team">
     <input name="add_teamname" type="text" placeholder="teamname" required>
     <input name="add_shorthandle" type="text" placeholder="shorthandle" required maxlength="4">
-    <input name="add_logo" type="text" placeholder="logo.png" required>
+    <input name="add_logo" type="text" placeholder="Logo: shorthandle.png or shorthandle.jpg (in public/img/logos/)" readonly style="background-color: #e9ecef; cursor: not-allowed;">
     <button type="submit">Create</button>
   </form>
 
@@ -33,7 +33,7 @@
     </select>
     <input name="edit_teamname" id="edit_teamname" type="text" placeholder="teamname" required>
     <input name="edit_shorthandle" id="edit_shorthandle" type="text" placeholder="shorthandle" required maxlength="4">
-    <input name="edit_logo" id="edit_logo" type="text" placeholder="logo.png" required>
+    <input name="edit_logo" id="edit_logo" type="text" placeholder="Logo: shorthandle.png or shorthandle.jpg (in public/img/logos/)" readonly style="background-color: #e9ecef; cursor: not-allowed;">
 
     <button type="submit">Edit</button>
   </form>
@@ -54,7 +54,7 @@
   <form method="post" action="/add/player">
     <input name="add_nickname" type="text" placeholder="nickname" required>
     <input name="add_fullaname" type="text" placeholder="fullname" required>
-    <input name="add_nationality" type="text" placeholder="flag.png" required>
+    <input name="add_nationality" type="text" placeholder="country code (e.g., hu, us, gb)" required>
     <select id="playeradd_team_list" name="playeradd_team_list">
       <option value=""></option>
       <% teams.forEach(function( eachTeam){ %>
@@ -63,7 +63,7 @@
     </select>
     <input name="add_con_link" type="text" placeholder="join_link" required>
     <input name="add_view_link" type="text" placeholder="view_link" required>
-    <input name="add_avatar" type="text" placeholder="player.png" required>
+    <input name="add_avatar" type="text" placeholder="Avatar: nickname.png or nickname.jpg (in public/img/avatars/)" readonly style="background-color: #e9ecef; cursor: not-allowed;">
     <button type="submit">Create</button>
   </form>
 
@@ -77,7 +77,7 @@
     </select>
     <input name="edit_nickname" id="edit_nickname" type="text" placeholder="nickname" required>
     <input name="edit_fullname" id="edit_fullname" type="text" placeholder="fullname" required>
-    <input name="edit_nationality" id="edit_nationality" type="text" placeholder="flag.png" required>
+    <input name="edit_nationality" id="edit_nationality" type="text" placeholder="country code (e.g., hu, us, gb)" required>
     <select id="playeredit_team_list" name="playeredit_team_list">
       <option value=""></option>
       <% teams.forEach(function( eachTeam){ %>
@@ -86,7 +86,7 @@
     </select>
     <input name="edit_con_link" id="edit_con_link" type="text" placeholder="join_link" required>
     <input name="edit_view_link" id="edit_view_link" type="text" placeholder="view_link" required>
-    <input name="edit_avatar" id="edit_avatar" type="text" placeholder="player.png" required>
+    <input name="edit_avatar" id="edit_avatar" type="text" placeholder="Avatar: nickname.png or nickname.jpg (in public/img/avatars/)" readonly style="background-color: #e9ecef; cursor: not-allowed;">
     <button type="submit">Edit</button>
   </form>
 
