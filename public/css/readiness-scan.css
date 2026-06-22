@@ -1,0 +1,177 @@
+.scan-page {
+  text-align: left;
+}
+
+.scan-summary {
+  border: 3px solid rgb(255, 0, 230);
+  border-radius: 16px;
+  background: rgba(29, 29, 29, 0.92);
+  padding: 20px 24px;
+  margin-bottom: 32px;
+}
+
+.scan-summary--ready {
+  border-color: #2ecc71;
+}
+
+.scan-summary--issues {
+  border-color: #e74c3c;
+}
+
+.scan-summary h2 {
+  margin: 0 0 8px;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+}
+
+.scan-summary p {
+  margin: 0;
+  color: rgb(200, 200, 200);
+}
+
+.scan-section {
+  margin-bottom: 36px;
+}
+
+.scan-section h2 {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+}
+
+.team-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 24px 0 10px;
+  padding: 10px 14px;
+  border-left: 4px solid rgb(255, 0, 230);
+  background: rgba(29, 29, 29, 0.85);
+}
+
+.team-heading--toggle {
+  margin-bottom: 0;
+}
+
+.team-heading__name {
+  font-size: 1.05rem;
+}
+
+.team-heading__meta {
+  color: rgb(160, 160, 160);
+  font-size: 0.9rem;
+}
+
+.scan-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(20, 20, 20, 0.88);
+  font-size: 0.92rem;
+}
+
+.scan-table th,
+.scan-table td {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 10px 12px;
+  vertical-align: middle;
+}
+
+.scan-table th {
+  background: rgba(255, 0, 230, 0.15);
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+}
+
+.scan-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.scan-table a {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  font-size: inherit;
+  color: rgb(120, 200, 255);
+  word-break: break-all;
+}
+
+.scan-table a:hover {
+  color: white;
+}
+
+.status-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-dot.ok {
+  background: #2ecc71;
+  box-shadow: 0 0 8px rgba(46, 204, 113, 0.7);
+}
+
+.status-dot.fail {
+  background: #e74c3c;
+  box-shadow: 0 0 8px rgba(231, 76, 60, 0.7);
+}
+
+.status-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.flag-thumb {
+  width: 28px;
+  height: 18px;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  vertical-align: middle;
+}
+
+.check-table .status-cell {
+  justify-content: flex-start;
+}
+
+.empty-team {
+  color: rgb(140, 140, 140);
+  font-style: italic;
+  padding: 8px 0 0 14px;
+}
+
+.unassigned-collapse {
+  margin-top: 24px;
+}
+
+.unassigned-collapse > summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.unassigned-collapse > summary::-webkit-details-marker {
+  display: none;
+}
+
+.team-heading--toggle::after {
+  content: '▸';
+  margin-left: auto;
+  color: rgb(255, 0, 230);
+  transition: transform 0.15s ease;
+}
+
+.unassigned-collapse[open] > summary.team-heading--toggle::after {
+  transform: rotate(90deg);
+}
+
+.unassigned-collapse[open] > .scan-table,
+.unassigned-collapse[open] > .empty-team {
+  margin-top: 10px;
+}
+
+.link-bad {
+  color: #ff8a80;
+}

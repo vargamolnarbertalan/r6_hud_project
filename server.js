@@ -80,6 +80,7 @@ db.getConnection((err) => {
     console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/pickscreen");
     console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/team_left");
     console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/team_right");
+    console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/readiness-scan");
   }
 });
 
@@ -125,6 +126,227 @@ function findAssetInDir(dir, webPrefix, name, backupFilename) {
   }
 
   return backupPath;
+}
+
+function hasAssetInDir(dir, name) {
+  if (!name || name === 'NULL') {
+    return false;
+  }
+
+  const nameLower = name.toLowerCase();
+  let files;
+  try {
+    files = fs.readdirSync(dir);
+  } catch {
+    return false;
+  }
+
+  return files.some((file) => {
+    const ext = path.extname(file).toLowerCase();
+    if (ext !== '.png' && ext !== '.jpg') {
+      return false;
+    }
+    return path.basename(file, ext).toLowerCase() === nameLower;
+  });
+}
+
+const ASSET_DIRS = {
+  avatars: path.join(__dirname, 'public', 'img', 'avatars'),
+  logos: path.join(__dirname, 'public', 'img', 'logos'),
+  flags: path.join(__dirname, 'public', 'img', 'flags'),
+};
+
+const REQUIRED_ENV_VARS = [
+  'DB_HOST',
+  'DB_PORT',
+  'DB_USER',
+  'DB_PASSWORD',
+  'DB_NAME',
+  'VIDEO_PARAMS',
+];
+
+function dbQuery(sql, params = []) {
+  return new Promise((resolve, reject) => {
+    db.query(sql, params, (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+
+function pingDatabase() {
+  return new Promise((resolve) => {
+    db.getConnection((err, connection) => {
+      if (err) {
+        resolve({ ok: false, detail: err.message });
+        return;
+      }
+      connection.release();
+      resolve({ ok: true, detail: 'Database connection successful' });
+    });
+  });
+}
+
+function mapPlayerForScan(player) {
+  const viewLink = player.view_link || '';
+  const joinLink = player.con_link || '';
+  const nationalityBase = (player.nationality || '').replace(/\.(png|jpg)$/i, '');
+
+  return {
+    nickname: player.nickname,
+    fullname: player.fullname,
+    con_link: joinLink,
+    view_link: viewLink,
+    flagPath: getFlagPath(player.nationality),
+    hasAvatar: hasAssetInDir(ASSET_DIRS.avatars, player.nickname),
+    hasFlag: hasAssetInDir(ASSET_DIRS.flags, nationalityBase),
+    viewLinkOk: viewLink.toLowerCase().includes('view'),
+    joinLinkOk: joinLink.toLowerCase().includes('push'),
+  };
+}
+
+function playerPassesScan(player) {
+  return player.hasAvatar && player.viewLinkOk && player.joinLinkOk;
+}
+
+function findDuplicateLinks(players, linkField) {
+  const byLink = new Map();
+
+  for (const player of players) {
+    const link = (player[linkField] || '').trim();
+    if (!link || link === 'NULL') {
+      continue;
+    }
+    if (!byLink.has(link)) {
+      byLink.set(link, []);
+    }
+    byLink.get(link).push(player.nickname);
+  }
+
+  return [...byLink.entries()]
+    .filter(([, nicknames]) => nicknames.length > 1)
+    .map(([link, nicknames]) => ({ link, nicknames }));
+}
+
+function formatDuplicateLinkDetail(duplicates, linkLabel) {
+  return duplicates
+    .map(({ nicknames }) => `${nicknames.join(', ')} (${linkLabel})`)
+    .join('; ');
+}
+
+async function buildReadinessScanData() {
+  const teams = await dbQuery('SELECT * FROM teams ORDER BY teamname ASC;');
+  const players = await dbQuery('SELECT * FROM players ORDER BY nickname ASC;');
+  const mappedPlayers = players.map(mapPlayerForScan);
+
+  const teamGroups = teams.map((team) => ({
+    shorthandle: team.shorthandle,
+    teamname: team.teamname,
+    hasLogo: hasAssetInDir(ASSET_DIRS.logos, team.shorthandle),
+    players: players
+      .filter((player) => player.team_id === team.shorthandle)
+      .map(mapPlayerForScan),
+  }));
+
+  const unassignedPlayers = players
+    .filter((player) => !player.team_id || player.team_id === 'NULL' || !teams.some((team) => team.shorthandle === player.team_id))
+    .map(mapPlayerForScan);
+
+  const unassignedNicknames = new Set(unassignedPlayers.map((player) => player.nickname));
+  const assignedPlayers = mappedPlayers.filter((player) => !unassignedNicknames.has(player.nickname));
+
+  const missingEnv = REQUIRED_ENV_VARS.filter((name) => !process.env[name]);
+  const dbStatus = await pingDatabase();
+
+  const badViewLinks = assignedPlayers.filter((player) => !player.viewLinkOk);
+  const badJoinLinks = assignedPlayers.filter((player) => !player.joinLinkOk);
+  const duplicateViewLinks = findDuplicateLinks(players, 'view_link');
+  const duplicateJoinLinks = findDuplicateLinks(players, 'con_link');
+  const linksAreUnique = duplicateViewLinks.length === 0 && duplicateJoinLinks.length === 0;
+
+  const loopVideoPath = path.join(__dirname, 'public', 'vid', 'loop.mp4');
+  const tenmenFramePath = path.join(__dirname, 'public', 'img', 'tenmenframe.png');
+
+  const checks = [
+    {
+      label: 'loop.mp4 video asset',
+      ok: fs.existsSync(loopVideoPath),
+      detail: fs.existsSync(loopVideoPath)
+        ? 'Found at public/vid/loop.mp4'
+        : 'Missing public/vid/loop.mp4',
+    },
+    {
+      label: 'tenmenframe.png asset',
+      ok: fs.existsSync(tenmenFramePath),
+      detail: fs.existsSync(tenmenFramePath)
+        ? 'Found at public/img/tenmenframe.png'
+        : 'Missing public/img/tenmenframe.png',
+    },
+    {
+      label: 'Required environment variables are set',
+      ok: missingEnv.length === 0,
+      detail: missingEnv.length === 0
+        ? 'DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME, VIDEO_PARAMS'
+        : `Missing: ${missingEnv.join(', ')}`,
+    },
+    {
+      label: 'Database connection',
+      ok: dbStatus.ok,
+      detail: dbStatus.detail,
+    },
+    {
+      label: 'All view links contain "view"',
+      ok: badViewLinks.length === 0,
+      detail: badViewLinks.length === 0
+        ? 'All assigned player view links look valid'
+        : `Invalid: ${badViewLinks.map((player) => player.nickname).join(', ')}`,
+    },
+    {
+      label: 'All join links contain "push"',
+      ok: badJoinLinks.length === 0,
+      detail: badJoinLinks.length === 0
+        ? 'All assigned player join links look valid'
+        : `Invalid: ${badJoinLinks.map((player) => player.nickname).join(', ')}`,
+    },
+    {
+      label: 'All view and join links are unique',
+      ok: linksAreUnique,
+      detail: linksAreUnique
+        ? 'No duplicate view or join links in the database'
+        : [
+            duplicateViewLinks.length
+              ? `View duplicates: ${formatDuplicateLinkDetail(duplicateViewLinks, 'view')}`
+              : '',
+            duplicateJoinLinks.length
+              ? `Join duplicates: ${formatDuplicateLinkDetail(duplicateJoinLinks, 'join')}`
+              : '',
+          ].filter(Boolean).join(' · '),
+    },
+  ];
+
+  const issueCount =
+    teamGroups.filter((team) => !team.hasLogo).length +
+    assignedPlayers.filter((player) => !player.hasAvatar).length +
+    checks.filter((check) => !check.ok).length;
+
+  const teamsPassing = teamGroups.filter((team) => team.hasLogo).length;
+  const playersPassing = assignedPlayers.filter(playerPassesScan).length;
+
+  return {
+    teamGroups,
+    unassignedPlayers,
+    checks,
+    issueCount,
+    teamsPassing,
+    teamsTotal: teams.length,
+    playersPassing,
+    playersTotal: assignedPlayers.length,
+    checksPassing: checks.filter((check) => check.ok).length,
+    checksTotal: checks.length,
+  };
 }
 
 /**
@@ -219,6 +441,18 @@ app.get('/admin', (req, res) => {
 
 app.get('/match_control', (req, res) => {
   res.render('match_control');
+});
+
+app.get('/readiness-scan', async (req, res) => {
+  try {
+    const scan = await buildReadinessScanData();
+    res.render('readiness_scan', scan);
+  } catch (err) {
+    console.log(err.message);
+    res.render('error', {
+      error_message: err.message,
+    });
+  }
 });
 
 app.post('/add/team', (req, res) => {

@@ -5,7 +5,7 @@
 
 body{
   overflow: auto;
-  background: url('https://i.imgur.com/AlCxDj0.png') no-repeat center center fixed;
+  background: url('/img/background.png') no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -34,7 +34,11 @@ br{
 }
 
 .linkek{
-margin: 50px auto;
+  margin: 50px auto;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 select, input, button{

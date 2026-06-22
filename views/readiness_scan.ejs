@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>R6 HUD READINESS SCAN</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="/css/general.css" rel="stylesheet" type="text/css">
+  <link href="/css/readiness-scan.css" rel="stylesheet" type="text/css">
+  <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+</head>
+
+<body class="scan-page">
+
+  <div id="container">
+
+    <h1>Readiness scan</h1>
+
+    <div class="scan-summary <%= issueCount === 0 ? 'scan-summary--ready' : 'scan-summary--issues' %>">
+      <h2><%= issueCount === 0 ? 'Ready for broadcast' : issueCount + ' issue(s) found' %></h2>
+      <p><%= teamsPassing %>/<%= teamsTotal %> teams passing · <%= playersPassing %>/<%= playersTotal %> players passing · <%= checksPassing %>/<%= checksTotal %> system checks passing</p>
+    </div>
+
+    <div class="scan-section">
+      <h2>Players &amp; assets</h2>
+
+      <% teamGroups.forEach(function(team) { %>
+        <div class="team-heading">
+          <span class="status-dot <%= team.hasLogo ? 'ok' : 'fail' %>" title="<%= team.hasLogo ? 'Logo found' : 'Logo missing (HUD will use fallback)' %>"></span>
+          <span class="team-heading__name"><%= team.teamname %></span>
+          <span class="team-heading__meta">(<%= team.shorthandle %>)</span>
+        </div>
+
+        <% if (team.players.length === 0) { %>
+          <p class="empty-team">No players assigned to this team.</p>
+        <% } else { %>
+          <table class="scan-table">
+            <thead>
+              <tr>
+                <th>Avatar</th>
+                <th>Nickname</th>
+                <th>Full name</th>
+                <th>Join link</th>
+                <th>View link</th>
+                <th>Flag</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% team.players.forEach(function(player) { %>
+                <tr>
+                  <td><span class="status-dot <%= player.hasAvatar ? 'ok' : 'fail' %>" title="<%= player.hasAvatar ? 'Avatar found' : 'Avatar missing (HUD will use fallback)' %>"></span></td>
+                  <td><%= player.nickname %></td>
+                  <td><%= player.fullname %></td>
+                  <td>
+                    <% if (player.con_link) { %>
+                      <a href="<%= player.con_link %>" target="_blank" rel="noopener" class="<%= player.joinLinkOk ? '' : 'link-bad' %>"><%= player.con_link %></a>
+                    <% } else { %>
+                      <span class="link-bad">—</span>
+                    <% } %>
+                  </td>
+                  <td>
+                    <% if (player.view_link) { %>
+                      <a href="<%= player.view_link %>" target="_blank" rel="noopener" class="<%= player.viewLinkOk ? '' : 'link-bad' %>"><%= player.view_link %></a>
+                    <% } else { %>
+                      <span class="link-bad">—</span>
+                    <% } %>
+                  </td>
+                  <td><img class="flag-thumb" src="<%= player.flagPath %>" alt="<%= player.nickname %> flag"></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        <% } %>
+      <% }) %>
+
+      <details class="unassigned-collapse">
+        <summary class="team-heading team-heading--toggle">
+          <span class="team-heading__name">Unassigned players</span>
+          <span class="team-heading__meta">(<%= unassignedPlayers.length %>) — click to expand</span>
+        </summary>
+
+        <% if (unassignedPlayers.length === 0) { %>
+          <p class="empty-team">All players are assigned to a team.</p>
+        <% } else { %>
+          <table class="scan-table">
+            <thead>
+              <tr>
+                <th>Avatar</th>
+                <th>Nickname</th>
+                <th>Full name</th>
+                <th>Join link</th>
+                <th>View link</th>
+                <th>Flag</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% unassignedPlayers.forEach(function(player) { %>
+                <tr>
+                  <td><span class="status-dot <%= player.hasAvatar ? 'ok' : 'fail' %>" title="<%= player.hasAvatar ? 'Avatar found' : 'Avatar missing (HUD will use fallback)' %>"></span></td>
+                  <td><%= player.nickname %></td>
+                  <td><%= player.fullname %></td>
+                  <td>
+                    <% if (player.con_link) { %>
+                      <a href="<%= player.con_link %>" target="_blank" rel="noopener" class="<%= player.joinLinkOk ? '' : 'link-bad' %>"><%= player.con_link %></a>
+                    <% } else { %>
+                      <span class="link-bad">—</span>
+                    <% } %>
+                  </td>
+                  <td>
+                    <% if (player.view_link) { %>
+                      <a href="<%= player.view_link %>" target="_blank" rel="noopener" class="<%= player.viewLinkOk ? '' : 'link-bad' %>"><%= player.view_link %></a>
+                    <% } else { %>
+                      <span class="link-bad">—</span>
+                    <% } %>
+                  </td>
+                  <td><img class="flag-thumb" src="<%= player.flagPath %>" alt="<%= player.nickname %> flag"></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        <% } %>
+      </details>
+    </div>
+
+    <div class="scan-section">
+      <h2>System checks</h2>
+      <table class="scan-table check-table">
+        <thead>
+          <tr>
+            <th>Status</th>
+            <th>Check</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% checks.forEach(function(check) { %>
+            <tr>
+              <td><span class="status-dot <%= check.ok ? 'ok' : 'fail' %>"></span></td>
+              <td><%= check.label %></td>
+              <td><%= check.detail %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <div class="linkek">
+    <a href="/admin">GO TO ADMIN</a>
+    <a href="/match_control">GO TO MATCH CONTROL</a>
+  </div>
+
+</body>
+
+</html>
