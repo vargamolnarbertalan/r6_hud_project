@@ -30,29 +30,31 @@ This Node.js application provides a sophisticated broadcast overlay system for R
 ### Database Schema
 Four main tables:
 
-1. **`teams`** - Master team registry
-   - `shorthandle` (PRIMARY KEY) - Team abbreviation
-   - `teamname` - Full team name
-   - `logo` - URL to team logo
+1. **`teams`** — Master team registry
+   - `shorthandle` (PRIMARY KEY) — Team abbreviation (also used for logo filename)
+   - `teamname` — Full team name
+   - Logos are **not** stored in DB; resolved from `public/img/logos/{shorthandle}.png|jpg`
 
-2. **`players`** - Master player registry
-   - `nickname` (PRIMARY KEY) - Player in-game name
-   - `fullname` - Real name
-   - `nationality` - Flag URL
-   - `team_id` - Links to teams.shorthandle
-   - `con_link` - VDO.ninja connection URL (for player to stream)
-   - `view_link` - VDO.ninja view URL (for broadcast to display)
-   - `avatar` - Player photo URL
+2. **`players`** — Master player registry
+   - `nickname` (PRIMARY KEY) — Player in-game name
+   - `fullname` — Real name
+   - `nationality` — Country code (e.g. `hu`, `us`); flag from `public/img/flags/`
+   - `team_id` — FK to `teams.shorthandle`
+   - `con_link` — VDO.ninja push URL (player publishes webcam)
+   - `view_link` — VDO.ninja view URL (broadcast displays stream)
+   - Avatars are **not** stored in DB; resolved from `public/img/avatars/{nickname}.png|jpg`
 
-3. **`live_teams`** - Currently active match teams (2 teams)
-   - `team_pos` (PRIMARY KEY) - 0 or 1 (Team A/B)
-   - Copies data from `teams` table
+3. **`live_teams`** — Active match teams (2 rows: `team_pos` 0 and 1)
+   - Copied from `teams` on match config
 
-4. **`live_players`** - Currently active match players (10 players)
-   - `spec_pos` (PRIMARY KEY) - 0-9 (spectator positions)
-   - `rotate` - Camera rotation (0/90/180/270 degrees)
-   - Copies data from `players` table
-   - `view_link` includes appended parameters for streaming
+4. **`live_players`** — Active match players (10 rows: `spec_pos` 0–9)
+   - `rotate` — Camera rotation appended to view URL
+   - Copied from `players` on match config; `view_link` gets `VIDEO_PARAMS` appended
+
+### Config pages
+- **`/admin`** — CRUD for teams and players
+- **`/match_control`** — Select teams, assign 10 players, go live
+- **`/readiness-scan`** — Pre-broadcast asset/link/env checklist (added 2025)
 
 ## Application Flow
 

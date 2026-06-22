@@ -2,6 +2,42 @@ const express = require("express");
 const ioHook = require('iohook');
 const dotenv = require('dotenv').config();
 const WebSocket = require("ws");
+const bodyParser = require('body-parser');
+const mysql = require("mysql2");
+const fs = require('fs');
+const path = require('path');
+
+/**
+ * R6 HUD server — architecture overview
+ *
+ * HTTP (Express, port 8083)
+ *   - EJS config pages: /admin, /match_control, /readiness-scan
+ *   - EJS broadcast views: /ingame, /fullscreen, /tenmen, etc.
+ *   - POST JSON APIs: /fill/ingame, /get/players, match CRUD, etc.
+ *   - Static files from public/ (avatars, logos, flags, css, vid)
+ *
+ * WebSocket (port 6969)
+ *   - Every open broadcast view connects here.
+ *   - Server pushes: reload_view, select_pos0–9, show/hide ingame overlay.
+ *
+ * iohook (global keyboard, Windows only)
+ *   - Listens for observer hotkeys even when R6 has focus.
+ *   - Maps key rawcodes → WebSocket messages (see README Hotkeys).
+ *   - Registered inside wss.on('connection'): each new view adds another
+ *     listener. All connected views receive the same messages.
+ *
+ * MySQL
+ *   - teams / players: master roster
+ *   - live_teams / live_players: active match (filled from /match/config)
+ *
+ * Static image resolution (not stored in DB)
+ *   - Avatars: public/img/avatars/{nickname}.png|jpg
+ *   - Logos:   public/img/logos/{shorthandle}.png|jpg
+ *   - Flags:   public/img/flags/{countrycode}.png|jpg (case-insensitive)
+ */
+const http_port = 8083;
+const videoParams = process.env.VIDEO_PARAMS;
+
 const wss = new WebSocket.Server({
   port: 6969
 });
@@ -9,13 +45,6 @@ wss.on('error', function(error) {
   console.error('WebSocket server error:', error);
   process.exit(1);
 });
-
-const bodyParser = require('body-parser');
-const mysql = require("mysql2");
-const fs = require('fs');
-const path = require('path');
-const http_port = 8083;
-const videoParams = process.env.VIDEO_PARAMS;
 
 var events = require('events');
 var eventEmitter = new events.EventEmitter();
@@ -27,7 +56,7 @@ const app = express();
 app.setMaxListeners(0);
 app.set('view engine', 'ejs');
 app.set('views', 'views');
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 console.clear();
 
@@ -46,9 +75,6 @@ const db = mysql.createPool({
   }
 })
 
-//app.use(morgan('dev')); // get és post logging
-//app.use(express.static('public'));
-app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({
   extended: false
 }));
@@ -72,6 +98,7 @@ db.getConnection((err) => {
     console.log("--- Access config pages via the links below ---");
     console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/admin");
     console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/match_control");
+    console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/readiness-scan");
     console.log("--- Access views via the links below ---");
     console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/ingame");
     console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/fullscreen");
@@ -80,7 +107,6 @@ db.getConnection((err) => {
     console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/pickscreen");
     console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/team_left");
     console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/team_right");
-    console.log("\x1b[33m%s\x1b[0m","localhost:" + http_port + "/readiness-scan");
   }
 });
 
@@ -1105,73 +1131,61 @@ app.post('/fill/fs_team', (req, res) => {
 
 
 
+let ioHookStarted = false;
+
 wss.on("connection", ws => {
-  //console.log("New client connected.");
-
+  // Broadcast reload when admin/match config changes (one handler per connection).
   var myEventHandler = function () {
-  //console.log('Emitted force_refresh!');
-  ws.send("reload_view");
-}
+    ws.send("reload_view");
+  };
 
-eventEmitter.on('force_refresh', myEventHandler);
+  eventEmitter.on('force_refresh', myEventHandler);
 
-  ws.on("close", ws => {
-    //console.log("Client disconnected.");
-  });
+  // Global hotkeys → WebSocket messages for this client.
+  var keypressHandler = function (event) {
+    if (event.rawcode == 67) {
+      ws.send("c");
+    } else if (event.rawcode == 88) {
+      ws.send("x");
+    } else if (event.rawcode == 192 || event.rawcode == 48) {
+      // 48 = US "0", 192 = HU "ö" — spec position 9
+      ws.send("select_pos9");
+    } else if (event.rawcode == 49) {
+      ws.send("select_pos0");
+    } else if (event.rawcode == 50) {
+      ws.send("select_pos1");
+    } else if (event.rawcode == 51) {
+      ws.send("select_pos2");
+    } else if (event.rawcode == 52) {
+      ws.send("select_pos3");
+    } else if (event.rawcode == 53) {
+      ws.send("select_pos4");
+    } else if (event.rawcode == 54) {
+      ws.send("select_pos5");
+    } else if (event.rawcode == 55) {
+      ws.send("select_pos6");
+    } else if (event.rawcode == 56) {
+      ws.send("select_pos7");
+    } else if (event.rawcode == 57) {
+      ws.send("select_pos8");
+    } else if (event.rawcode == 82 && event.altKey == true) {
+      ws.send("reload_view");
+    } else if (event.rawcode == 72 && event.altKey == true) {
+      ws.send("force_hide");
+    } else if (event.rawcode == 83 && event.altKey == true) {
+      ws.send("force_show");
+    }
+  };
 
-  ws.onmessage = function(e) {
-    var client_message = e.data;
-    //console.log("client message: " + client_message);
+  ioHook.on("keypress", keypressHandler);
+
+  if (!ioHookStarted) {
+    ioHook.start();
+    ioHookStarted = true;
   }
 
-
-ioHook.on("keypress", event => {
-//console.log(event);
-if (event.rawcode == 67) {
-  ws.send("c");
-}
-else if(event.rawcode == 88){
-  ws.send("x");
-}
-else if (event.rawcode == 192 || event.rawcode == 48) { // 48 for ENG keyboard | 192 for HUN keyboard
-  ws.send("select_pos9");
-}
-else if (event.rawcode == 49) {
-  ws.send("select_pos0");
-}
-else if (event.rawcode == 50) {
-  ws.send("select_pos1");
-}
-else if (event.rawcode == 51) {
-  ws.send("select_pos2");
-}
-else if (event.rawcode == 52) {
-  ws.send("select_pos3");
-}
-else if (event.rawcode == 53) {
-  ws.send("select_pos4");
-}
-else if (event.rawcode == 54) {
-  ws.send("select_pos5");
-}
-else if (event.rawcode == 55) {
-  ws.send("select_pos6");
-}
-else if (event.rawcode == 56) {
-  ws.send("select_pos7");
-}
-else if (event.rawcode == 57) {
-  ws.send("select_pos8");
-}
-else if (event.rawcode == 82 && event.altKey == true) { //alt + r
-  ws.send("reload_view");
-}
-else if (event.rawcode == 72 && event.altKey == true) { //alt + h
-  ws.send("force_hide");
-}
-else if (event.rawcode == 83 && event.altKey == true) { //alt + s
-  ws.send("force_show");
-}
-});
-ioHook.start();
+  ws.on("close", () => {
+    eventEmitter.removeListener('force_refresh', myEventHandler);
+    ioHook.removeListener("keypress", keypressHandler);
+  });
 });
