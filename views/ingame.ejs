@@ -28,6 +28,7 @@
     <div class="info_row">
       <img id="team_logo" class="team_logo" src="" alt="">
       <div id="player_name" class="PLAYERNAME"></div>
+      <img id="player_flag" class="player_flag" src="" alt="">
     </div>
   </div>
 
@@ -127,6 +128,9 @@ $(document).ready(function(){
     const teamIndex = team === 'blue' ? 0 : 1;
     if (teamLogos[teamIndex]) {
       $('#team_logo').prop('src', teamLogos[teamIndex]);
+    }
+    if (playerData[pos].nationality) {
+      $('#player_flag').prop('src', playerData[pos].nationality);
     }
   }
 
