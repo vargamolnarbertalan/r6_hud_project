@@ -19,7 +19,6 @@
   <form method="post" action="/add/team">
     <input name="add_teamname" type="text" placeholder="teamname" required>
     <input name="add_shorthandle" type="text" placeholder="shorthandle" required maxlength="4">
-    <input name="add_logo" type="text" placeholder="Logo: shorthandle.png or shorthandle.jpg (in public/img/logos/)" readonly style="background-color: #e9ecef; cursor: not-allowed;">
     <button type="submit">Create</button>
   </form>
 
@@ -33,7 +32,6 @@
     </select>
     <input name="edit_teamname" id="edit_teamname" type="text" placeholder="teamname" required>
     <input name="edit_shorthandle" id="edit_shorthandle" type="text" placeholder="shorthandle" required maxlength="4">
-    <input name="edit_logo" id="edit_logo" type="text" placeholder="Logo: shorthandle.png or shorthandle.jpg (in public/img/logos/)" readonly style="background-color: #e9ecef; cursor: not-allowed;">
 
     <button type="submit">Edit</button>
   </form>
@@ -63,7 +61,6 @@
     </select>
     <input name="add_con_link" type="text" placeholder="join_link" required>
     <input name="add_view_link" type="text" placeholder="view_link" required>
-    <input name="add_avatar" type="text" placeholder="Avatar: nickname.png or nickname.jpg (in public/img/avatars/)" readonly style="background-color: #e9ecef; cursor: not-allowed;">
     <button type="submit">Create</button>
   </form>
 
@@ -86,7 +83,6 @@
     </select>
     <input name="edit_con_link" id="edit_con_link" type="text" placeholder="join_link" required>
     <input name="edit_view_link" id="edit_view_link" type="text" placeholder="view_link" required>
-    <input name="edit_avatar" id="edit_avatar" type="text" placeholder="Avatar: nickname.png or nickname.jpg (in public/img/avatars/)" readonly style="background-color: #e9ecef; cursor: not-allowed;">
     <button type="submit">Edit</button>
   </form>
 
@@ -134,13 +130,6 @@ $(document).ready(function() {
         $('#playeredit_team_list').val(data[0].team_id);
         $('#edit_con_link').val(data[0].con_link);
         $('#edit_view_link').val(data[0].view_link);
-        $('#edit_avatar').val(data[0].avatar);
-        /*
-        $('#edit_nickname').text = data[0].nickname;
-        $('#edit_fullname').text = data[0].fullname;
-        $('#edit_nationality').text = data[0].nationality;
-        $('#playeredit_team_list').text = data[0].team_id;
-        $('#edit_avatar').text = data[0].avatar; */
       }
     });
   });
@@ -156,7 +145,6 @@ $(document).ready(function() {
       success: function(data) {
         $('#edit_teamname').val(data[0].teamname);
         $('#edit_shorthandle').val(data[0].shorthandle);
-        $('#edit_logo').val(data[0].logo);
       }
     });
   });

@@ -211,11 +211,10 @@ app.post('/add/team', (req, res) => {
   var sql = `
     INSERT INTO teams (
       teamname,
-      shorthandle,
-      logo
-    ) VALUES (?, ?, ?);
+      shorthandle
+    ) VALUES (?, ?);
   `;
-  db.query(sql, [req.body.add_teamname, req.body.add_shorthandle, req.body.add_logo], (err, dbres) => {
+  db.query(sql, [req.body.add_teamname, req.body.add_shorthandle], (err, dbres) => {
     if (err) {
       console.log(err.message);
       res.render('error', {
@@ -239,8 +238,7 @@ app.post('/edit/team', (req, res) => {
   var sql = `
   UPDATE teams
   SET teamname = ?,
-  shorthandle = ?,
-  logo = ?
+  shorthandle = ?
   WHERE shorthandle = ?;
 
   UPDATE players
@@ -249,15 +247,14 @@ app.post('/edit/team', (req, res) => {
 
   UPDATE live_teams
   SET teamname = ?,
-  shorthandle = ?,
-  logo = ?
+  shorthandle = ?
   WHERE shorthandle = ?;
 
   `;
   db.query(sql, [
-    req.body.edit_teamname, req.body.edit_shorthandle, req.body.edit_logo, req.body.edit_team_list,
+    req.body.edit_teamname, req.body.edit_shorthandle, req.body.edit_team_list,
     req.body.edit_shorthandle, req.body.edit_team_list,
-    req.body.edit_teamname, req.body.edit_shorthandle, req.body.edit_logo, req.body.edit_team_list
+    req.body.edit_teamname, req.body.edit_shorthandle, req.body.edit_team_list
   ], (err, dbres) => {
     if (err) {
       console.log(err.message);
@@ -289,8 +286,7 @@ app.post('/delete/team', (req, res) => {
 
   UPDATE live_teams
   SET teamname = 'NULL',
-  shorthandle = 'NULL',
-  logo = 'NULL'
+  shorthandle = 'NULL'
   WHERE shorthandle = ?;
 
   `;
@@ -323,9 +319,8 @@ app.post('/add/player', (req, res) => {
       nationality,
       team_id,
       con_link,
-      view_link,
-      avatar
-    ) VALUES (?, ?, ?, ?, ?, ?, ?);
+      view_link
+    ) VALUES (?, ?, ?, ?, ?, ?);
   `;
   db.query(sql, [
     req.body.add_nickname,
@@ -333,8 +328,7 @@ app.post('/add/player', (req, res) => {
     req.body.add_nationality,
     req.body.playeradd_team_list,
     req.body.add_con_link,
-    req.body.add_view_link,
-    req.body.add_avatar
+    req.body.add_view_link
   ], (err, dbres) => {
     if (err) {
       console.log(err.message);
@@ -363,24 +357,22 @@ app.post('/edit/player', (req, res) => {
   nationality = ?,
   team_id = ?,
   con_link = ?,
-  view_link = ?,
-  avatar = ?
+  view_link = ?
   WHERE nickname = ?;
 
   UPDATE live_players
   SET nickname = ?,
   fullname = ?,
   nationality = ?,
-  view_link = ?,
-  avatar = ?
+  view_link = ?
   WHERE nickname = ?;
 
   `;
   db.query(sql, [
     req.body.edit_nickname, req.body.edit_fullname, req.body.edit_nationality, req.body.playeredit_team_list,
-    req.body.edit_con_link, req.body.edit_view_link, req.body.edit_avatar, req.body.playeredit_player_list,
-    req.body.edit_nickname, req.body.edit_fullname, req.body.edit_nationality, 
-    req.body.edit_view_link, req.body.edit_avatar, req.body.playeredit_player_list
+    req.body.edit_con_link, req.body.edit_view_link, req.body.playeredit_player_list,
+    req.body.edit_nickname, req.body.edit_fullname, req.body.edit_nationality,
+    req.body.edit_view_link, req.body.playeredit_player_list
   ], (err, dbres) => {
     if (err) {
       console.log(err.message);
@@ -410,8 +402,7 @@ app.post('/delete/player', (req, res) => {
   SET nickname = 'NULL',
   fullname = 'NULL',
   nationality = 'NULL',
-  view_link = 'NULL',
-  avatar = 'NULL'
+  view_link = 'NULL'
   WHERE nickname = ?;
 
   `;
@@ -449,7 +440,7 @@ app.post('/get/teams', (req, res) => {
     } else {
       ////console.log("Response:");
       ////console.log(dbres);
-      // Override logo paths with dynamic file-based resolution
+      // Resolve asset paths from filesystem (not stored in DB)
       const teamsWithLogos = dbres.map(team => ({
         ...team,
         logo: getLogoPath(team.shorthandle)
@@ -474,7 +465,7 @@ app.post('/get/players', (req, res) => {
     } else {
       ////console.log("Response:");
       //console.log(dbres);
-      // Override avatar and flag paths with dynamic file-based resolution
+      // Resolve asset paths from filesystem (not stored in DB)
       const playersWithAssets = dbres.map(player => ({
         ...player,
         avatar: getAvatarPath(player.nickname),
@@ -525,16 +516,14 @@ app.post('/match/config', (req, res) => {
   UPDATE live_teams, teams
   SET
     live_teams.teamname=teams.teamname,
-    live_teams.shorthandle=teams.shorthandle,
-    live_teams.logo=teams.logo
+    live_teams.shorthandle=teams.shorthandle
   WHERE
     team_pos = 0 AND teams.teamname = ?;
 
     UPDATE live_teams, teams
     SET
       live_teams.teamname=teams.teamname,
-      live_teams.shorthandle=teams.shorthandle,
-      live_teams.logo=teams.logo
+      live_teams.shorthandle=teams.shorthandle
     WHERE
       team_pos = 1 AND teams.teamname = ?;
 
@@ -544,8 +533,7 @@ app.post('/match/config', (req, res) => {
        live_players.nickname=players.nickname,
        live_players.fullname=players.fullname,
        live_players.nationality=players.nationality,
-       live_players.view_link=CONCAT(players.view_link, ?),
-       live_players.avatar=players.avatar
+       live_players.view_link=CONCAT(players.view_link, ?)
      WHERE
        spec_pos = 0 AND players.nickname = ?;
 
@@ -555,8 +543,7 @@ app.post('/match/config', (req, res) => {
         live_players.nickname=players.nickname,
         live_players.fullname=players.fullname,
         live_players.nationality=players.nationality,
-        live_players.view_link=CONCAT(players.view_link, ?),
-        live_players.avatar=players.avatar
+        live_players.view_link=CONCAT(players.view_link, ?)
       WHERE
         spec_pos = 1 AND players.nickname = ?;
 
@@ -566,8 +553,7 @@ app.post('/match/config', (req, res) => {
          live_players.nickname=players.nickname,
          live_players.fullname=players.fullname,
          live_players.nationality=players.nationality,
-         live_players.view_link=CONCAT(players.view_link, ?),
-         live_players.avatar=players.avatar
+         live_players.view_link=CONCAT(players.view_link, ?)
        WHERE
          spec_pos = 2 AND players.nickname = ?;
 
@@ -577,8 +563,7 @@ app.post('/match/config', (req, res) => {
           live_players.nickname=players.nickname,
           live_players.fullname=players.fullname,
           live_players.nationality=players.nationality,
-          live_players.view_link=CONCAT(players.view_link, ?),
-          live_players.avatar=players.avatar
+          live_players.view_link=CONCAT(players.view_link, ?)
         WHERE
           spec_pos = 3 AND players.nickname = ?;
 
@@ -588,8 +573,7 @@ app.post('/match/config', (req, res) => {
            live_players.nickname=players.nickname,
            live_players.fullname=players.fullname,
            live_players.nationality=players.nationality,
-           live_players.view_link=CONCAT(players.view_link, ?),
-           live_players.avatar=players.avatar
+           live_players.view_link=CONCAT(players.view_link, ?)
          WHERE
            spec_pos = 4 AND players.nickname = ?;
 
@@ -599,8 +583,7 @@ app.post('/match/config', (req, res) => {
             live_players.nickname=players.nickname,
             live_players.fullname=players.fullname,
             live_players.nationality=players.nationality,
-            live_players.view_link=CONCAT(players.view_link, ?),
-            live_players.avatar=players.avatar
+            live_players.view_link=CONCAT(players.view_link, ?)
           WHERE
             spec_pos = 5 AND players.nickname = ?;
 
@@ -610,8 +593,7 @@ app.post('/match/config', (req, res) => {
              live_players.nickname=players.nickname,
              live_players.fullname=players.fullname,
              live_players.nationality=players.nationality,
-             live_players.view_link=CONCAT(players.view_link, ?),
-             live_players.avatar=players.avatar
+             live_players.view_link=CONCAT(players.view_link, ?)
            WHERE
              spec_pos = 6 AND players.nickname = ?;
 
@@ -621,8 +603,7 @@ app.post('/match/config', (req, res) => {
               live_players.nickname=players.nickname,
               live_players.fullname=players.fullname,
               live_players.nationality=players.nationality,
-              live_players.view_link=CONCAT(players.view_link, ?),
-              live_players.avatar=players.avatar
+              live_players.view_link=CONCAT(players.view_link, ?)
             WHERE
               spec_pos = 7 AND players.nickname = ?;
 
@@ -632,8 +613,7 @@ app.post('/match/config', (req, res) => {
                live_players.nickname=players.nickname,
                live_players.fullname=players.fullname,
                live_players.nationality=players.nationality,
-               live_players.view_link=CONCAT(players.view_link, ?),
-               live_players.avatar=players.avatar
+               live_players.view_link=CONCAT(players.view_link, ?)
              WHERE
                spec_pos = 8 AND players.nickname = ?;
 
@@ -643,8 +623,7 @@ app.post('/match/config', (req, res) => {
                 live_players.nickname=players.nickname,
                 live_players.fullname=players.fullname,
                 live_players.nationality=players.nationality,
-                live_players.view_link=CONCAT(players.view_link, ?),
-                live_players.avatar=players.avatar
+                live_players.view_link=CONCAT(players.view_link, ?)
               WHERE
                 spec_pos = 9 AND players.nickname = ?;
   `;
@@ -711,7 +690,7 @@ app.post('/get/live_teams', (req, res) => {
     } else {
       ////console.log("Response:");
       ////console.log(dbres);
-      // Override logo paths with dynamic file-based resolution
+      // Resolve asset paths from filesystem (not stored in DB)
       const teamsWithLogos = dbres.map(team => ({
         ...team,
         logo: getLogoPath(team.shorthandle)
@@ -734,7 +713,7 @@ app.post('/get/live_players', (req, res) => {
     } else {
       ////console.log("Response:");
       ////console.log(dbres);
-      // Override avatar and flag paths with dynamic file-based resolution
+      // Resolve asset paths from filesystem (not stored in DB)
       const playersWithAssets = dbres.map(player => ({
         ...player,
         avatar: getAvatarPath(player.nickname),
@@ -840,7 +819,7 @@ app.post('/fill/ingame', (req, res) => {
       } else {
         ////console.log("Response:");
         //console.log(dbres);
-        // Override avatar and flag paths with dynamic file-based resolution
+        // Resolve asset paths from filesystem (not stored in DB)
         const playersWithAssets = dbres.map(player => ({
           ...player,
           avatar: getAvatarPath(player.nickname),
@@ -865,7 +844,7 @@ app.post('/fill/fs_team', (req, res) => {
       } else {
         ////console.log("Response:");
         //console.log(dbres);
-        // Override logo paths with dynamic file-based resolution
+        // Resolve asset paths from filesystem (not stored in DB)
         const teamsWithLogos = dbres.map(team => ({
           ...team,
           logo: getLogoPath(team.shorthandle)
