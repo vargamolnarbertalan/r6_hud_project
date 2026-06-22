@@ -12,29 +12,24 @@
 
 <body>
 
-  <!-- Team 1 (Blue) - Players 0-4 -->
-  <div id="team-border-0" class="team-border team-border-blue">
-    <% for(let i = 0; i < 5; i++) { %>
+  <div class="camera">
+    <% for (let i = 0; i < 10; i++) { %>
       <div id="container<%= i %>" class="player-container">
-        <img id="spec_pos<%= i %>_pic" class="player-avatar" src="" alt="Player <%= i %> avatar">
         <iframe id="spec_pos<%= i %>" class="player-iframe" frameBorder="0" src=""></iframe>
+        <img id="spec_pos<%= i %>_pic" class="player-avatar" src="" alt="Player <%= i %> avatar">
       </div>
     <% } %>
   </div>
 
-  <!-- Team 2 (Orange) - Players 5-9 -->
-  <div id="team-border-1" class="team-border team-border-orange">
-    <% for(let i = 5; i < 10; i++) { %>
-      <div id="container<%= i %>" class="player-container">
-        <img id="spec_pos<%= i %>_pic" class="player-avatar" src="" alt="Player <%= i %> avatar">
-        <iframe id="spec_pos<%= i %>" class="player-iframe" frameBorder="0" src=""></iframe>
-      </div>
-    <% } %>
-  </div>
+  <div class="name_bg"></div>
+  <div id="team_color_bar" class="team_color_bar team-color-blue"></div>
 
-  <!-- Nameplates -->
-  <div id="blue_nameplate" class="nameplate blue_nameplate"></div>
-  <div id="orange_nameplate" class="nameplate orange_nameplate"></div>
+  <div class="info_div">
+    <div class="info_row">
+      <img id="team_logo" class="team_logo" src="" alt="">
+      <div id="player_name" class="PLAYERNAME"></div>
+    </div>
+  </div>
 
 </body>
 
@@ -42,16 +37,19 @@
 
 $(document).ready(function(){
 
-  // Team configuration: which team border to show for each position
   const teamConfig = {
     0: 'blue', 1: 'blue', 2: 'blue', 3: 'blue', 4: 'blue',
     5: 'orange', 6: 'orange', 7: 'orange', 8: 'orange', 9: 'orange'
   };
 
-  // Store player data globally
-  var playerData = [];
+  const teamColorClass = {
+    blue: 'team-color-blue',
+    orange: 'team-color-orange'
+  };
 
-  // Load player data and setup initial state
+  var playerData = [];
+  var teamLogos = [];
+
   $.ajax({
     url: "/fill/ingame",
     type: "POST",
@@ -61,8 +59,20 @@ $(document).ready(function(){
         $('#spec_pos' + i).prop('src', data[i].view_link + '&transparent&cover&cleanoutput?autoplay=on');
         $('#spec_pos' + i + '_pic').prop('src', data[i].avatar);
       }
-      // Initialize with position 0 visible
       selectPosition(0);
+    }
+  });
+
+  $.ajax({
+    url: "/fill/fs_team",
+    type: "POST",
+    success: function(data) {
+      for (var i = 0; i < data.length; i++) {
+        teamLogos[i] = data[i].logo;
+      }
+      if (playerData.length) {
+        selectPosition(0);
+      }
     }
   });
 
@@ -74,7 +84,7 @@ $(document).ready(function(){
     ws.onmessage = function(e){
       var server_message = e.data;
       console.log(server_message);
-      
+
       if (server_message == "c") {
         $('body').css('opacity','1');
       }
@@ -90,44 +100,34 @@ $(document).ready(function(){
       else if (server_message == "reload_view") {
         location.reload();
       }
-      // Handle position selection
       else if (server_message.startsWith("select_pos")) {
-        const pos = parseInt(server_message.replace("select_pos", ""));
+        const pos = parseInt(server_message.replace("select_pos", ""), 10);
         selectPosition(pos);
       }
     }
   });
 
-  // DRY function to select a position
   function selectPosition(pos) {
-    // Hide all containers and avatars
     $('.player-container').css('opacity', '0');
     $('.player-avatar').css('opacity', '0');
-    
-    // Hide all team borders
-    $('.team-border').css('opacity', '0');
-    
-    // Hide all nameplates
-    $('.nameplate').css('opacity', '0');
-    
-    // Show selected team border
-    if (teamConfig[pos] === 'blue') {
-      $('#team-border-0').css('opacity', '1');
-      // Show blue nameplate with player name
-      if (playerData[pos]) {
-        $('#blue_nameplate').text(playerData[pos].nickname).css('opacity', '1');
-      }
-    } else {
-      $('#team-border-1').css('opacity', '1');
-      // Show orange nameplate with player name
-      if (playerData[pos]) {
-        $('#orange_nameplate').text(playerData[pos].nickname).css('opacity', '1');
-      }
-    }
-    
-    // Show selected position
+
     $('#container' + pos).css('opacity', '1');
     $('#spec_pos' + pos + '_pic').css('opacity', '1');
+
+    if (!playerData[pos]) {
+      return;
+    }
+
+    const team = teamConfig[pos];
+    $('#team_color_bar')
+      .removeClass('team-color-blue team-color-orange')
+      .addClass(teamColorClass[team]);
+    $('#player_name').text(playerData[pos].nickname);
+
+    const teamIndex = team === 'blue' ? 0 : 1;
+    if (teamLogos[teamIndex]) {
+      $('#team_logo').prop('src', teamLogos[teamIndex]);
+    }
   }
 
 });
