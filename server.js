@@ -84,83 +84,97 @@ db.getConnection((err) => {
 });
 
 /**
- * Helper function to dynamically resolve player avatar path
- * Looks for nickname.png, then nickname.jpg, falls back to backup.png
- * @param {string} nickname - Player's nickname (case-sensitive)
+ * Finds an asset file in a directory by case-insensitive base name.
+ * Prefers .png over .jpg. Returns the URL using the file's actual on-disk name.
+ * @param {string} dir - Absolute path to the asset directory
+ * @param {string} webPrefix - URL prefix (e.g. '/img/avatars')
+ * @param {string} name - Base name to match (nickname, shorthandle, etc.)
+ * @param {string} backupFilename - Fallback filename in the same directory
+ * @returns {string} Path relative to site root
+ */
+function findAssetInDir(dir, webPrefix, name, backupFilename) {
+  const backupPath = `${webPrefix}/${backupFilename}`;
+  if (!name || name === 'NULL') {
+    return backupPath;
+  }
+
+  const nameLower = name.toLowerCase();
+  let files;
+  try {
+    files = fs.readdirSync(dir);
+  } catch {
+    return backupPath;
+  }
+
+  const pngMatch = files.find((file) => {
+    const ext = path.extname(file).toLowerCase();
+    if (ext !== '.png') return false;
+    return path.basename(file, ext).toLowerCase() === nameLower;
+  });
+  if (pngMatch) {
+    return `${webPrefix}/${pngMatch}`;
+  }
+
+  const jpgMatch = files.find((file) => {
+    const ext = path.extname(file).toLowerCase();
+    if (ext !== '.jpg') return false;
+    return path.basename(file, ext).toLowerCase() === nameLower;
+  });
+  if (jpgMatch) {
+    return `${webPrefix}/${jpgMatch}`;
+  }
+
+  return backupPath;
+}
+
+/**
+ * Resolves player avatar path from public/img/avatars (case-insensitive).
+ * Looks for {nickname}.png, then {nickname}.jpg, falls back to backup.png
+ * @param {string} nickname - Player's nickname
  * @returns {string} Path to the avatar image relative to /img/
  */
 function getAvatarPath(nickname) {
-  const avatarsDir = path.join(__dirname, 'public', 'img', 'avatars');
-  const pngPath = path.join(avatarsDir, `${nickname}.png`);
-  const jpgPath = path.join(avatarsDir, `${nickname}.jpg`);
-  const backupPath = '/img/avatars/backup.png';
-  
-  // Check for .png first
-  if (fs.existsSync(pngPath)) {
-    return `/img/avatars/${nickname}.png`;
-  }
-  
-  // Check for .jpg
-  if (fs.existsSync(jpgPath)) {
-    return `/img/avatars/${nickname}.jpg`;
-  }
-  
-  // Fall back to backup.png
-  return backupPath;
+  return findAssetInDir(
+    path.join(__dirname, 'public', 'img', 'avatars'),
+    '/img/avatars',
+    nickname,
+    'backup.png'
+  );
 }
 
 /**
- * Helper function to dynamically resolve team logo path
- * Looks for shorthandle.png, then shorthandle.jpg, falls back to backup.png
- * @param {string} shorthandle - Team's shorthandle (case-sensitive)
+ * Resolves team logo path from public/img/logos (case-insensitive).
+ * Looks for {shorthandle}.png, then {shorthandle}.jpg, falls back to backup.png
+ * @param {string} shorthandle - Team's shorthandle
  * @returns {string} Path to the logo image relative to /img/
  */
 function getLogoPath(shorthandle) {
-  const logosDir = path.join(__dirname, 'public', 'img', 'logos');
-  const pngPath = path.join(logosDir, `${shorthandle}.png`);
-  const jpgPath = path.join(logosDir, `${shorthandle}.jpg`);
-  const backupPath = '/img/logos/backup.png';
-  
-  // Check for .png first
-  if (fs.existsSync(pngPath)) {
-    return `/img/logos/${shorthandle}.png`;
-  }
-  
-  // Check for .jpg
-  if (fs.existsSync(jpgPath)) {
-    return `/img/logos/${shorthandle}.jpg`;
-  }
-  
-  // Fall back to backup.png
-  return backupPath;
+  return findAssetInDir(
+    path.join(__dirname, 'public', 'img', 'logos'),
+    '/img/logos',
+    shorthandle,
+    'backup.png'
+  );
 }
 
 /**
- * Helper function to dynamically resolve nationality flag path
- * Looks for countrycode.png, then countrycode.jpg, falls back to backup.png
- * @param {string} nationality - Country code or nationality identifier (case-sensitive)
+ * Resolves nationality flag path from public/img/flags (case-insensitive).
+ * Strips a trailing .png/.jpg from the DB value if present, then looks for
+ * {code}.png, then {code}.jpg, falls back to backup.png
+ * @param {string} nationality - Country code or nationality identifier
  * @returns {string} Path to the flag image relative to /img/
  */
 function getFlagPath(nationality) {
-  const flagsDir = path.join(__dirname, 'public', 'img', 'flags');
-  // Remove .png or .jpg extension if present in the nationality field
+  if (!nationality || nationality === 'NULL') {
+    return '/img/flags/backup.png';
+  }
   const nationalityBase = nationality.replace(/\.(png|jpg)$/i, '');
-  const pngPath = path.join(flagsDir, `${nationalityBase}.png`);
-  const jpgPath = path.join(flagsDir, `${nationalityBase}.jpg`);
-  const backupPath = '/img/flags/backup.png';
-  
-  // Check for .png first
-  if (fs.existsSync(pngPath)) {
-    return `/img/flags/${nationalityBase}.png`;
-  }
-  
-  // Check for .jpg
-  if (fs.existsSync(jpgPath)) {
-    return `/img/flags/${nationalityBase}.jpg`;
-  }
-  
-  // Fall back to backup.png
-  return backupPath;
+  return findAssetInDir(
+    path.join(__dirname, 'public', 'img', 'flags'),
+    '/img/flags',
+    nationalityBase,
+    'backup.png'
+  );
 }
 
 
