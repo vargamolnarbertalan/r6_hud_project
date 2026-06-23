@@ -12,23 +12,14 @@
 
 <body>
 
-  <div class="camera">
-    <% for (let i = 0; i < 10; i++) { %>
-      <div id="container<%= i %>" class="player-container">
-        <iframe id="spec_pos<%= i %>" class="player-iframe" frameBorder="0" src=""></iframe>
-        <img id="spec_pos<%= i %>_pic" class="player-avatar" src="" alt="Player <%= i %> avatar">
-      </div>
-    <% } %>
-  </div>
-
-  <div class="name_bg"></div>
-  <div id="team_color_bar" class="team_color_bar team-color-blue"></div>
-
-  <div class="info_div">
-    <div class="info_row">
-      <img id="team_logo" class="team_logo" src="" alt="">
-      <div id="player_name" class="PLAYERNAME"></div>
-      <img id="player_flag" class="player_flag" src="" alt="">
+  <div id="camera_frame" class="camera_frame team-color-blue">
+    <div class="camera">
+      <% for (let i = 0; i < 10; i++) { %>
+        <div id="container<%= i %>" class="player-container">
+          <iframe id="spec_pos<%= i %>" class="player-iframe" frameBorder="0" src=""></iframe>
+          <img id="spec_pos<%= i %>_pic" class="player-avatar" src="" alt="Player <%= i %> avatar">
+        </div>
+      <% } %>
     </div>
   </div>
 
@@ -49,7 +40,6 @@ $(document).ready(function(){
   };
 
   var playerData = [];
-  var teamLogos = [];
 
   $.ajax({
     url: "/fill/ingame",
@@ -61,19 +51,6 @@ $(document).ready(function(){
         $('#spec_pos' + i + '_pic').prop('src', data[i].avatar);
       }
       selectPosition(0);
-    }
-  });
-
-  $.ajax({
-    url: "/fill/fs_team",
-    type: "POST",
-    success: function(data) {
-      for (var i = 0; i < data.length; i++) {
-        teamLogos[i] = data[i].logo;
-      }
-      if (playerData.length) {
-        selectPosition(0);
-      }
     }
   });
 
@@ -115,23 +92,10 @@ $(document).ready(function(){
     $('#container' + pos).css('opacity', '1');
     $('#spec_pos' + pos + '_pic').css('opacity', '1');
 
-    if (!playerData[pos]) {
-      return;
-    }
-
     const team = teamConfig[pos];
-    $('#team_color_bar')
+    $('#camera_frame')
       .removeClass('team-color-blue team-color-orange')
       .addClass(teamColorClass[team]);
-    $('#player_name').text(playerData[pos].nickname);
-
-    const teamIndex = team === 'blue' ? 0 : 1;
-    if (teamLogos[teamIndex]) {
-      $('#team_logo').prop('src', teamLogos[teamIndex]);
-    }
-    if (playerData[pos].nationality) {
-      $('#player_flag').prop('src', playerData[pos].nationality);
-    }
   }
 
 });
