@@ -1,1 +1,1 @@
-bestzip _release/r6hud_mneb_26summer_v1-0.zip public views .env install_dependencies.bat package-lock.json package.json README.md run.bat server.js
+bestzip _release/r6hud_mneb_26summer_latest.zip public views .env install_dependencies.bat package-lock.json package.json README.md run.bat server.js
