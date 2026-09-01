@@ -1,3 +1,8 @@
 .env
 node_modules
 _release
+dist/
+bundle/
+*.log
+.vscode/
+Thumbs.db
