@@ -56,7 +56,7 @@ footer.
 
 **Semantic versioning**, tagged `vMAJOR.MINOR.PATCH` on `main`. `package.json`'s `version` field
 is the single source of truth. The app already has real broadcast history across several seasons,
-so — following the same precedent `chicken-dinner-feed` set — versioning starts at **`v1.0.0`**
+so — following the same precedent `chicken-dinner-feed` set — versioning starts at **`v2.0.0`**
 rather than `0.1.0`.
 
 A release is **triggered manually by pushing a tag**, not automatically on merge — releasing
