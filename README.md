@@ -119,6 +119,13 @@ See `PROJECT_ANALYSIS.md` for a longer internal overview.
 - Use `/readiness-scan` before going live to catch missing avatars, bad VDO links, and env issues.
 - View links should contain `view`; join (`con_link`) links should contain `push` (VDO.ninja convention). Duplicates are rejected at DB level and surfaced on readiness scan.
 
+## Development & releases
+
+Branch from `develop` as `feat/*`, `fix/*`, `chore/*` or `docs/*`; merge back by pull request.
+`main` is release-ready only. A release is a `vX.Y.Z` tag pushed to `main`, which triggers
+[`.github/workflows/release.yml`](.github/workflows/release.yml) to build and publish a ready-to-run
+ZIP (never including your live `.env`). Full details: [ADR-0001](docs/adr/0001-git-workflow-and-release-process.md).
+
 ## License
 
 Proprietary. **Not open source, not freeware.** All rights are reserved by Bertalan

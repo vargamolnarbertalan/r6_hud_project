@@ -1,0 +1,188 @@
+name: Release
+
+# Triggered by pushing a version tag, never automatically on merge - releasing (and picking
+# when the next event's build is cut) is a decision, not a side effect of merging. See
+# docs/adr/0001-git-workflow-and-release-process.md.
+on:
+  push:
+    tags: ['v*.*.*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to release (e.g. v1.0.0)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  bundle:
+    name: Build, verify and publish the all-in-one bundle
+    # Windows, not Ubuntu: iohook's global-hotkey driver is a prebuilt native binary that only
+    # exists for Windows, and the app itself is Windows-only (see README). Testing on Linux
+    # would test a platform nobody runs this on.
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Determine version
+        id: version
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="${{ github.event.inputs.tag || github.ref_name }}"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "version=${TAG#v}" >> "$GITHUB_OUTPUT"
+
+      # The tag is the source of truth for what gets published, so a tag that disagrees with
+      # what is actually checked out must stop the release rather than ship a ZIP labelled
+      # with the wrong version.
+      - name: Verify the tag matches package.json
+        shell: bash
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          if [ "$PKG_VERSION" != "$VERSION" ]; then
+            echo "::error::package.json is at $PKG_VERSION, but the tag says $VERSION. Bump" \
+                 "\"version\" in package.json and re-tag before releasing."
+            exit 1
+          fi
+
+      # Pinned to the exact version iohook has a working prebuilt binary for - not "latest",
+      # not even "latest 13.x". A newer Node here would make this whole job lie about whether
+      # the release actually works (see ADR-0001).
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '13.14.0'
+
+      - name: Install dependencies
+        shell: bash
+        run: npm ci --omit=dev
+
+      - name: Syntax-check server.js
+        shell: bash
+        run: node --check server.js
+
+      # No MySQL is available to this smoke test (Windows runners don't support service
+      # containers), so this cannot prove the app fully works end to end. What it does prove:
+      # iohook's native binary actually loads on this exact Node/Windows combination, Express
+      # binds its port, and nothing throws during startup - which is what a broken dependency
+      # or a syntax slip that `node --check` cannot catch would break. The app itself already
+      # tolerates a missing database without crashing (server.js logs and keeps running), which
+      # is what makes this check meaningful without a live database.
+      - name: Boot smoke test
+        shell: pwsh
+        run: |
+          Copy-Item env.template .env
+          $proc = Start-Process node -ArgumentList '--no-warnings','server.js' -PassThru -RedirectStandardOutput smoke-stdout.log -RedirectStandardError smoke-stderr.log
+          $ok = $false
+          for ($i = 0; $i -lt 30; $i++) {
+            Start-Sleep -Seconds 1
+            if ($proc.HasExited) { break }
+            try {
+              $resp = Invoke-WebRequest -Uri 'http://127.0.0.1:8083/readiness-scan' -UseBasicParsing -TimeoutSec 2
+              if ($resp.StatusCode -eq 200) { $ok = $true; break }
+            } catch {}
+          }
+          if ($proc.HasExited) {
+            Write-Host '::error::server.js exited during the boot smoke test.'
+            Get-Content smoke-stdout.log, smoke-stderr.log -ErrorAction SilentlyContinue
+            exit 1
+          }
+          if (-not $ok) {
+            Write-Host '::error::server.js did not answer http://127.0.0.1:8083/readiness-scan within 30s.'
+            Get-Content smoke-stdout.log, smoke-stderr.log -ErrorAction SilentlyContinue
+            Stop-Process -Id $proc.Id -Force
+            exit 1
+          }
+          Write-Host 'Boot smoke test passed: server answered /readiness-scan.'
+          Stop-Process -Id $proc.Id -Force
+          Remove-Item .env, smoke-stdout.log, smoke-stderr.log -ErrorAction SilentlyContinue
+
+      # Assemble exactly what an operator needs and nothing else: no demo/dev-only material,
+      # no design source files, no internal docs, no node_modules, and - the reason this
+      # workflow exists - never the live .env. install_dependencies.bat resolves node_modules
+      # dynamically on the operator's machine.
+      - name: Assemble bundle
+        shell: pwsh
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          $bundle = "bundle/r6-hud-$env:VERSION"
+          New-Item -ItemType Directory -Force -Path $bundle, "$bundle/misc" | Out-Null
+
+          Copy-Item server.js, package.json, package-lock.json, README.md, LICENSE, env.template, install_dependencies.bat, run.bat -Destination $bundle
+          Copy-Item views -Destination "$bundle/views" -Recurse
+          Copy-Item public -Destination "$bundle/public" -Recurse
+          Copy-Item misc/r6_hud.sql -Destination "$bundle/misc/r6_hud.sql"
+
+          @"
+          R6 HUD $env:VERSION
+
+          1. Run install_dependencies.bat once (needs internet). Safe to run again after an
+             update - it only installs when something has actually changed.
+          2. Copy env.template to .env and fill in your MySQL details.
+          3. Import misc/r6_hud.sql into that database.
+          4. Run run.bat before each broadcast, and leave the window open.
+
+          Full instructions: README.md
+          "@ | Out-File -FilePath "$bundle/README.txt" -Encoding utf8
+
+      - name: Verify the bundle contains nothing it should not
+        shell: pwsh
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          $bundle = "bundle/r6-hud-$env:VERSION"
+          $forbidden = @('.env', 'node_modules', 'demo_tools', 'gfx', 'PROJECT_ANALYSIS.md', 'camlink_generator.md')
+          $found = @()
+          foreach ($name in $forbidden) {
+            if (Get-ChildItem -Path $bundle -Recurse -Force -Filter $name -ErrorAction SilentlyContinue) {
+              $found += $name
+            }
+          }
+          if ($found.Count -gt 0) {
+            Write-Host "::error::The bundle contains things it should not: $($found -join ', ')"
+            exit 1
+          }
+          Write-Host 'Confirmed: the bundle contains none of the excluded paths.'
+
+      - name: Create ZIP
+        id: zip
+        shell: pwsh
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          $zipName = "r6-hud-$env:VERSION.zip"
+          Compress-Archive -Path "bundle/r6-hud-$env:VERSION" -DestinationPath $zipName
+          $hash = (Get-FileHash $zipName -Algorithm SHA256).Hash.ToLower()
+          "$hash  $zipName" | Out-File -FilePath "$zipName.sha256" -Encoding ascii
+          "path=$zipName" >> $env:GITHUB_OUTPUT
+          "checksum_path=$zipName.sha256" >> $env:GITHUB_OUTPUT
+          "checksum=$hash" >> $env:GITHUB_OUTPUT
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: ${{ steps.version.outputs.tag }}
+          generate_release_notes: true
+          files: |
+            ${{ steps.zip.outputs.path }}
+            ${{ steps.zip.outputs.checksum_path }}
+          body: |
+            ## Installation
+
+            1. Download and unpack `${{ steps.zip.outputs.path }}`.
+            2. Run `install_dependencies.bat` once - it needs an internet connection and
+               Node.js 13.14.0 (installer in `demo_tools/` in the source repo, or
+               <https://nodejs.org/dist/v13.14.0/> - a newer Node.js will NOT work, see README).
+            3. Copy `env.template` to `.env` and fill in your MySQL connection details.
+            4. Import `misc/r6_hud.sql` into that database.
+            5. Run `run.bat` before each broadcast, and leave the console window open.
+
+            **SHA-256:** `${{ steps.zip.outputs.checksum }}`
