@@ -42,7 +42,7 @@ REM iohook (global hotkeys) ships a prebuilt native binary pinned to one Node AB
 REM app needs a version FLOOR *and* CEILING, unlike a normal "any newer version is fine"
 REM check. The range comes from this bundle's own package.json ("engines"."node"), not two
 REM numbers copied into this script by hand.
-for /f "delims=" %%r in ('node -e "const r=require('./package.json').engines.node.match(/\d+/g); console.log(r[0]+' '+r[1])" 2^>nul') do set NODE_RANGE=%%r
+for /f "delims=" %%r in ('node -e "const s=require('./package.json').engines.node; console.log(s.match(/>=(\d+)/)[1]+' '+s.match(/<(\d+)/)[1])" 2^>nul') do set NODE_RANGE=%%r
 if not defined NODE_RANGE set NODE_RANGE=13 15
 for /f "tokens=1,2" %%a in ("!NODE_RANGE!") do (
     set MIN_MAJOR=%%a
