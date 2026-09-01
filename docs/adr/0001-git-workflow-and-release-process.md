@@ -105,8 +105,11 @@ silently regress into "the app just uses whatever's baked in."
 - The Node version range (13–14 only) is a real constraint on CI: the release workflow must pin an
   old Node version and run on Windows (native `iohook` binary), not the "any current LTS on Linux"
   setup a typical Node project's CI would use.
-- No automated test suite exists, so the release workflow's "does it actually work" check is a
-  boot-and-respond smoke test against a real MySQL service container, not a full test run.
+- No automated test suite exists, and the release workflow does **not** boot the app: `/readiness-scan`
+  — the only route worth polling — queries the database itself, so without a live MySQL it can only
+  time out, not prove anything, and Windows runners don't support service containers to fake one
+  cheaply. "Does it actually start" stays a manual check against a real database as part of
+  development (see README), not something CI pretends to verify with a throwaway DB.
 
 ## Hardened 2026-09-01 — the git history itself had a leaked database credential
 
