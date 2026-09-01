@@ -1,0 +1,109 @@
+PROPRIETARY SOFTWARE LICENSE
+
+Copyright (c) 2026 Bertalan Varga-Molnár <vargamolnarb@gmail.com>. All rights reserved.
+
+This is proprietary, commercial software. It is NOT open source and NOT freeware. No
+license, right, or permission of any kind is granted by publication, distribution, or mere
+possession of this repository or any build produced from it.
+
+1. DEFINITIONS
+
+   "Software" means the R6 HUD source code, object code, configuration, documentation, and
+   any build or bundle produced from this repository, in whole or in part.
+
+   "Licensor" means Bertalan Varga-Molnár, the sole owner of all rights in the Software.
+
+   "Licensee" means any natural or legal person who has been granted a written license under
+   Section 3.
+
+   "Event" means a single tournament, championship, league, cup, or other competition (the
+   bundling of qualifiers and playoffs is subject to a custom arrangement between the
+   Licensor and the Licensee) for which the Software is deployed to broadcast match data.
+
+   "Operator" means any broadcaster, production company, tournament organizer, or other party
+   that runs, deploys, or causes the Software to be run in connection with an Event.
+
+2. NO DEFAULT RIGHTS
+
+   No right to use, copy, modify, merge, publish, distribute, sublicense, rent, lease, host,
+   or otherwise exploit the Software, in whole or in part, is granted by default. Every use
+   requires the Licensor's prior permission under Section 3.
+
+3. COMMERCIAL LICENSE MODEL
+
+   The Licensor makes the Software available commercially on a per-Event basis. Before an
+   Operator may use the Software for a given Event, that Operator must obtain a separate,
+   paid usage / deployment license from the Licensor covering that specific Event
+   ("Event License"). An Event License:
+
+   a. authorizes use of the Software solely for the Event(s), date range, and Operator named
+      in it;
+   b. does not carry over to any other Event, season, or tournament, each of which requires
+      its own Event License and its own fee, unless the Licensor's terms for that
+      Event License expressly state otherwise;
+   c. is personal to the Operator and may not be transferred, assigned, or sublicensed to any
+      other party without the Licensor's prior consent.
+
+   Fees, payment terms, and the scope of each Event License are set out in that Event
+   License's own written agreement, not in this file. Contact the Licensor at
+   vargamolnarb@gmail.com to request one.
+
+4. RESTRICTIONS
+
+   Except to the extent an Event License expressly permits it, no one may:
+
+   a. use the Software for any Event, broadcast, rehearsal, or internal evaluation beyond a
+      scope the Licensor has authorized;
+   b. copy, redistribute, publish, or make the Software available to any third party;
+   c. modify, create derivative works from, reverse engineer, decompile, or disassemble the
+      Software, except to the minimum extent a mandatory law grants that right despite this
+      restriction;
+   d. remove, obscure, or alter any copyright, proprietary, or licensing notice contained in
+      the Software;
+   e. use the Software, or any output it produces, to build or support a competing product or
+      service.
+
+5. OWNERSHIP
+
+   The Software is licensed, not sold. The Licensor retains all right, title, and interest in
+   and to the Software, including all intellectual property rights, whether or not an Event
+   License has been granted.
+
+6. A DEVELOPMENT ENGAGEMENT IS NOT A USAGE LICENSE
+
+   Payment received by the Licensor for developing the Software — including under any
+   fixed-price development engagement, whether it predates this License or not — compensates
+   the Licensor for building the Software. It is not, by itself, a grant of any right to use
+   the Software for any Event, and it does not exempt the paying party, or any party
+   affiliated with it, from Section 3. Every Operator, including one that funded or
+   commissioned the Software's initial development, requires its own Event License for each
+   Event, unless the Licensor grants free or included use in a separate, explicit, written
+   statement that refers to this Section by name.
+
+7. TERM AND TERMINATION
+
+   Any rights granted under an Event License terminate automatically, without notice, upon
+   breach of this License or of that Event License's own terms. Sections 5, 6, 8, and 9
+   survive termination.
+
+8. NO WARRANTY
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+   PURPOSE, AND NONINFRINGEMENT.
+
+9. LIMITATION OF LIABILITY
+
+   IN NO EVENT SHALL THE LICENSOR BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING
+   FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR ITS USE, INCLUDING ANY LOSS OF DATA,
+   REVENUE, OR BROADCAST DOWNTIME, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+10. GOVERNING LAW
+
+    This License is governed by the laws of Hungary, without regard to its conflict-of-law
+    rules, unless a specific Event License states otherwise in writing.
+
+11. CONTACT
+
+    For licensing inquiries, Event License requests, or permission requests of any kind,
+    contact Bertalan Varga-Molnár at vargamolnarb@gmail.com.

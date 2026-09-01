@@ -117,4 +117,10 @@ See `PROJECT_ANALYSIS.md` for a longer internal overview.
 - Max **display** length for nickname: ~13 capital `M` width (longer names can be stored).
 - Max **display** length for fullname: ~22 capital `M` width.
 - Use `/readiness-scan` before going live to catch missing avatars, bad VDO links, and env issues.
+
+## License
+
+Proprietary. **Not open source, not freeware.** All rights are reserved by Bertalan
+Varga-Molnár; no use is permitted without a written, per-Event license. See
+[`LICENSE`](LICENSE) for the full terms and licensing contact.
 - View links should contain `view`; join (`con_link`) links should contain `push` (VDO.ninja convention). Duplicates are rejected at DB level and surfaced on readiness scan.
