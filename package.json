@@ -1,6 +1,6 @@
 {
   "name": "r6-hud",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Node.js broadcast overlay for Rainbow Six Siege. Connects observer spectate positions to player webcam feeds via VDO.ninja, with multiple HUD view templates for production.",
   "private": true,
   "license": "UNLICENSED",
